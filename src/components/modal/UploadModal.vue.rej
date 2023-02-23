@@ -1,0 +1,9 @@
+diff a/src/components/modal/UploadModal.vue b/src/components/modal/UploadModal.vue	(rejected hunks)
+@@ -1,6 +1,6 @@
+ <template>
+ <!-- 导入、导出 -->
+-	<a-modal v-model="modalVisible" @ok="handleOk" @cancel="handleCancel" :width="700" title="导入原始数据" okText="下一步">
++	<a-modal v-model="modalVisible" @ok="handleOk" @cancel="handleCancel" :width="700" :footer="null">
+ 		<!-- <template slot="footer">
+ 			<a style="float: left; " v-show="progress==0" @click="showImport">{{showImportLog?'返回':'导入记录'}}</a>
+ 			<a-button @click="handleBack" v-show="progress!=0">

@@ -1,0 +1,45 @@
+diff a/src/components/achievements/views.vue b/src/components/achievements/views.vue	(rejected hunks)
+@@ -74,36 +74,19 @@
+         </p>
+         <p class="p2" style="font-size:14px">计算过程</p>
+         <div class="gongshi">
+-          <div class="com">
+-            <div class="fenzi">
+-              3250
+-              <hr />
+-              3240
+-            </div>
+-            <div class="baifen">
+-              <img src="../../../public/symbol.jpg" alt="" />
+-            </div>
+-            <div class="dengyu">89%</div>
++          <div class="gongshi1">
++            <p style="line-height:50px;">100%- 8% X1% = 92%</p>
+           </div>
+-
+-          <div class="comn" style="width:60%;padding-top: 10px;">
+-            <div class="one">
+-              <!-- <img src="../../../public/shi.jpg" alt="" /> -->
+-              5-
+-            </div>
+-            <div class="two" style="height:80px;">
++          <div class="gongshi2">
++            <p style="width:23px;float: left; line-height: 50px;">5-</p>
++            <div class="fenshu2">
+               <p>100% - 2%</p>
+-              <hr />
++              <hr>
+               <p>1%</p>
+             </div>
+-            <div class="three">
+-              <img src="../../../public/cheng.jpg" alt="" />
+-            </div>
+-            <div class="four">98%</div>
++            <p style="line-height:50px;">&nbsp;&nbsp;X 1 = 98%</p>
+           </div>
+         </div>
+-        <!-- <img class="formula" src="../../../public/采集成功率.jpg" alt=""> -->
+-        <!-- <p class="p3" style="font-size:11px">公式</p> -->
+       </div>
+       <!-- 表单 -->
+       <div class="lower">
