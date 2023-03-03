@@ -9,8 +9,8 @@
       <div class="rowOne">
         <Item ImageSrc="驾驶舱" name="驾驶舱" @toggleClick="solveClick"></Item>
         <Item
-          ImageSrc="业务报装"
-          name="业务报装"
+          ImageSrc="业扩报装"
+          name="业扩报装"
           @toggleClick="solveClick"
         ></Item>
       </div>
@@ -130,7 +130,7 @@ export default {
           "http://plant3-ui-md.show.wiz.top:9600/#/modelCenter/index",
           "_blank"
         );
-      } else if (name == "业务报装") {
+      } else if (name == "业扩报装") {
         window.open(
           "http://plant3-ui-md.show.wiz.top:9600/#/mdPowerGrid/businessExpansionList",
           "_blank"
