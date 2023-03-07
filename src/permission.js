@@ -14,9 +14,7 @@ router.beforeEach((to, from, next) => {
   if (whiteList.includes(to.path)) {
     next();
   } else {
-    // 暂时修改跳转逻辑、与张升测试isc
     // next()
-    console.log(store.getters.token)
     if (store.getters.token) {
       if (to.meta.roles.includes(store.getters.role)) {
         next();
