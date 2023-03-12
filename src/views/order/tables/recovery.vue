@@ -5,28 +5,13 @@
       <SearchForm @formData="solveformData"></SearchForm>
     </div>
     <!-- 表格 -->
-    <Tables
-      @changeSelectedRowKeys="changeSelectedRowKeys"
-      @clickRow="clickRows"
-      :columns="columns"
-      :data="data"
-      :loading="loading"
-      xlsxName="电费回收"
-      :exportUrl="exportUrl"
-      :ids="ids"
-    >
+    <Tables @changeSelectedRowKeys="changeSelectedRowKeys" @clickRow="clickRows" :columns="columns" :data="data"
+      :loading="loading" xlsxName="电费回收" :exportUrl="exportUrl" :ids="ids">
     </Tables>
     <!-- 弹窗 -->
-    <NewModel
-      :visible="NewModalVisible"
-      modalName="工单详情"
-      @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
-      :situation="situation"
-      :dictionary="dictionary"
-      :progress="progress"
-      name="电费回收"
-    ></NewModel>
+    <NewModel :visible="NewModalVisible" modalName="工单详情" @changeModal="NewModalVisible = !NewModalVisible"
+      :NewModelData="NewModelData" :situation="situation" :dictionary="dictionary" :progress="progress" name="电费回收">
+    </NewModel>
   </div>
 </template>
 
@@ -118,7 +103,7 @@ const columns = [{
 }
 ]
 export default {
-  data () {
+  data() {
     return {
       NewModalVisible: false,
       loading: false,
@@ -143,12 +128,12 @@ export default {
     SearchForm,
     NewModel
   },
-  created () {
+  created() {
     this.loadData()
   },
   methods: {
     // 接口，时间格式状态转换
-    async loadData () {
+    async loadData() {
       this.loading = true
       const data = await postAction('recycleWorkOrder/selectAll')
       this.data = data.data
@@ -161,33 +146,49 @@ export default {
           'YYYY-MM-DD HH:MM:SS'
         )
         item.workOrderCycle = '连续 ' + item.workOrderCycle + ' 个月'
-        if (item.workOrderStatus == 'STATUS_ONE') {
+        if (item.workOrderStatus == '1') {
           item.workOrderStatus = '待处理'
-        } else if (item.workOrderStatus == 'STATUS_ONE') {
+        } else if (item.workOrderStatus == '2') {
           item.workOrderStatus = '处理中'
-        } else if (item.workOrderStatus == 'STATUS_ONE') {
+        } else if (item.workOrderStatus == '3') {
           item.workOrderStatus = '待归档'
         } else {
           item.workOrderStatus = '已归档'
         }
       })
-      setTimeout(() => {
-        this.loading = false
-      }, 1000)
+      this.loading = false
     },
     // 搜索数据处理
-    solveformData (e) {
+    solveformData(e) {
       console.log('搜索', e)
       recycleWorkOrder(e).then(({ data }) => {
-        console.log('搜索', records)
-        this.data = records
+        console.log('搜索', data)
+        this.data = data
+        this.data.map((item) => {
+        item.workorderTime = moment(item.workorderTime).format(
+          'YYYY-MM-DD HH:MM:SS'
+        )
+        item.processingTime = moment(item.processingTime).format(
+          'YYYY-MM-DD HH:MM:SS'
+        )
+        item.workOrderCycle = '连续 ' + item.workOrderCycle + ' 个月'
+        if (item.workOrderStatus == '1') {
+          item.workOrderStatus = '待处理'
+        } else if (item.workOrderStatus == '2') {
+          item.workOrderStatus = '处理中'
+        } else if (item.workOrderStatus == '3') {
+          item.workOrderStatus = '待归档'
+        } else {
+          item.workOrderStatus = '已归档'
+        }
+      })
       })
     },
-    changeSelectedRowKeys (e) {
+    changeSelectedRowKeys(e) {
       this.selectedRowKeys = e
     },
     // 步骤进度条  弹框
-    async clickRows (e) {
+    async clickRows(e) {
       this.dictionary = recoveryList
       this.NewModelData = e
       if (e.workOrderStatus === '待处理') {
@@ -233,12 +234,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody > tr > td {
+/deep/ .ant-table-tbody>tr>td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead > tr > th {
+/deep/ .ant-table-thead>tr>th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

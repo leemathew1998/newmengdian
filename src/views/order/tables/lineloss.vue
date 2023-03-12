@@ -5,25 +5,12 @@
       <SearchForm @formData="solveformData"></SearchForm>
     </div>
     <!-- 表格 -->
-    <Tables
-      @changeSelectedRowKeys="changeSelectedRowKeys"
-      @clickRow="clickRows"
-      :columns="columns"
-      :data="data"
-      :loading="loading"
-      :scroll="1000"
-    ></Tables>
+    <Tables @changeSelectedRowKeys="changeSelectedRowKeys" @clickRow="clickRows" :columns="columns" :data="data"
+      :loading="loading" :scroll="1000"></Tables>
     <!-- 弹窗 -->
-    <NewModel
-      :visible="NewModalVisible"
-      modalName="工单详情"
-      @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
-      :situation="situation"
-      :dictionary="dictionary"
-      :progress="progress"
-      name="线损治理"
-    ></NewModel>
+    <NewModel :visible="NewModalVisible" modalName="工单详情" @changeModal="NewModalVisible = !NewModalVisible"
+      :NewModelData="NewModelData" :situation="situation" :dictionary="dictionary" :progress="progress" name="线损治理">
+    </NewModel>
   </div>
 </template>
 <script>
@@ -104,7 +91,7 @@ const columns = [{
 }
 ]
 export default {
-  data () {
+  data() {
     return {
       NewModalVisible: false,
       loading: false,
@@ -125,16 +112,20 @@ export default {
     SearchForm,
     NewModel
   },
-  created () {
+  created() {
     this.loadData()
   },
   methods: {
     // 接口
-    async loadData () {
+    async loadData() {
       this.loading = true
       const res = await postAction('/lineloss/list')
       this.data = res
 
+      //张生要求，"采集你先把时间最近的放前面"
+      this.data.sort((a, b) => {
+        return moment(b.workOrderCtime).format('X') - moment(a.workOrderCtime).format('X')
+      })
       for (var i = 0; i < this.data.length; i++) {
         if (this.data[i].workOrderCycle == '1') {
           this.data[i].workOrderCycle = '连续1天工单'
@@ -155,11 +146,11 @@ export default {
       }
       this.loading = false
     },
-    changeSelectedRowKeys (e) {
+    changeSelectedRowKeys(e) {
       this.selectedRowKeys = e
     },
     // 处理详情页
-    async clickRows (e) {
+    async clickRows(e) {
       this.clickRow = e
       this.NewModalVisible = true
       this.dictionary = []
@@ -206,7 +197,7 @@ export default {
       // }
     },
     // 这个是处理搜索数据的
-    solveformData (e) {
+    solveformData(e) {
       linelosses(e).then(res => {
         this.data = res
         res.map(item => {
@@ -234,6 +225,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .warp {
+
   // display: flex;
   // flex-direction: column;
   // justify-content: center;
@@ -252,12 +244,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody > tr > td {
+/deep/ .ant-table-tbody>tr>td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead > tr > th {
+/deep/ .ant-table-thead>tr>th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

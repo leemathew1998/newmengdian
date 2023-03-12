@@ -672,11 +672,11 @@ export function dealSituation (data, liveVideo, livePhotos, liveSituation, liveT
  */
 
 export function dealWorkOrderStatus (obj) {
-  if (obj.workOrderStatus === 'STATUS_ONE') {
+  if (obj.workOrderStatus === '1') {
     obj.workOrderStatus = '待处理'
-  } else if (obj.workOrderStatus === 'STATUS_TWO') {
+  } else if (obj.workOrderStatus === '2') {
     obj.workOrderStatus = '处理中'
-  } else if (obj.workOrderStatus === 'STATUS_THREE') {
+  } else if (obj.workOrderStatus === '3') {
     obj.workOrderStatus = '待归档'
   } else {
     obj.workOrderStatus = '已归档'
