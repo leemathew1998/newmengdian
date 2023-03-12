@@ -141,10 +141,10 @@ export default {
   methods: {
     async loadData () {
       this.loading = true
-      const { data: { records } } = await postAction("superiorWorkOrder/selectAll")
-      this.data = records
+      const { data } = await postAction("superiorWorkOrder/selectAll")
+      this.data = data
       // 时间格式、状态转换
-      records.map(item => {
+      data.map(item => {
         if (item.whetherOutage == '是' && item.whetherSensitivity == '是' && item
           .examineStatus == 2) {
           item.userType = '频繁停电/敏感用户'
@@ -174,8 +174,8 @@ export default {
     },
     // 搜索
     solveformData (e) {
-      superiorWorkOrder(e).then(({ data: { records } }) => {
-        records.map(i => {
+      superiorWorkOrder(e).then(({ data }) => {
+        data.map(i => {
           if (i.whetherOutage == '是' && i.whetherSensitivity == '是' && i.examineStatus == 2) {
             i.userType = '频繁停电/敏感用户'
           } else if (i.whetherSensitivity == '是' && i.examineStatus == 2) {
@@ -188,7 +188,7 @@ export default {
           // 工单状态字段转换
           dealWorkOrderStatus(i)
         })
-        this.data = records
+        this.data = data
       })
     },
     changeSelectedRowKeys (e) {

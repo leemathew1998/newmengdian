@@ -137,8 +137,8 @@ export default {
     async loadData () {
       this.loading = true
       const data = await postAction(`feecontrolWorkOrder/selectAll`)
-      this.data = data.data.records
-      console.log(data.data.records)
+      this.data = data.data
+      console.log(data.data)
       for (var i = 0; i < this.data.length; i++) {
         Object.defineProperty(this.data[i], 'key', {
           value: i
@@ -167,7 +167,7 @@ export default {
     // 搜索数据处理
     solveformData (e) {
       feecontrolWorkOrder(e).then(res => {
-        this.data = res.data.records
+        this.data = res.data
         console.log(e)
         for (var i = 0; i < this.data.length; i++) {
           Object.defineProperty(this.data[i], 'key', {

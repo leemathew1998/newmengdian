@@ -151,7 +151,7 @@ export default {
     async loadData () {
       this.loading = true
       const data = await postAction('recycleWorkOrder/selectAll')
-      this.data = data.data.records
+      this.data = data.data
 
       this.data.map((item) => {
         item.workorderTime = moment(item.workorderTime).format(
@@ -178,7 +178,7 @@ export default {
     // 搜索数据处理
     solveformData (e) {
       console.log('搜索', e)
-      recycleWorkOrder(e).then(({ data: { records } }) => {
+      recycleWorkOrder(e).then(({ data }) => {
         console.log('搜索', records)
         this.data = records
       })
