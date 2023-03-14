@@ -31,83 +31,76 @@
 </template>
 
 <script>
-import moment from "moment"
-import Tables from "@/components/tables/Tables"
-import NewModel from "@/components/NewModel/serve.vue"
-import SearchForm from "@/components/searchform/SearchService"
-import {
-  getAction,
-  postAction,
-  superiorWorkOrder
-} from "@/api/manage"
-import {
-  serviceList
-} from "@/components/NewModel/constant.js"
-import {
-  dealWorkOrderStatus
-} from '@/utils/util.js'
-const columns = [{
-  title: "工单编号",
-  dataIndex: "workOrderNo",
-  align: "center",
-  width: 150,
-  scopedSlots: {
-    customRender: "workOrderNo",
+import moment from "moment";
+import Tables from "@/components/tables/Tables";
+import NewModel from "@/components/NewModel/serve.vue";
+import SearchForm from "@/components/searchform/SearchService";
+import { getAction, postAction, superiorWorkOrder } from "@/api/manage";
+import { serviceList } from "@/components/NewModel/constant.js";
+import { dealWorkOrderStatus } from "@/utils/util.js";
+const columns = [
+  {
+    title: "工单编号",
+    dataIndex: "workOrderNo",
+    align: "center",
+    width: 150,
+    scopedSlots: {
+      customRender: "workOrderNo",
+    },
   },
-},
-{
-  title: "工单来源",
-  dataIndex: "workOrderSource",
-  align: "center",
-  width: 80,
-},
-{
-  title: "业务类型",
-  dataIndex: "busiTypeCode",
-  align: "center",
-  width: 100,
-},
-{
-  title: "业务子类型",
-  dataIndex: "busiSubType",
-  align: "center",
-  width: 120,
-},
-{
-  title: "受理时间",
-  dataIndex: "handleTime",
-  align: "center",
-  width: 120,
-},
-{
-  title: "处理状态",
-  dataIndex: "workOrderStatus",
-  align: "center",
-  width: 100,
-},
-{
-  title: "台区经理",
-  dataIndex: "tgManager",
-  align: "center",
-  width: 100,
-},
-{
-  title: "用户类型",
-  dataIndex: "userType",
-  align: "center",
-  width: 100,
-},
+  {
+    title: "工单来源",
+    dataIndex: "workOrderSource",
+    align: "center",
+    width: 80,
+  },
+  {
+    title: "业务类型",
+    dataIndex: "busiTypeCode",
+    align: "center",
+    width: 100,
+  },
+  {
+    title: "业务子类型",
+    dataIndex: "busiSubType",
+    align: "center",
+    width: 120,
+  },
+  {
+    title: "受理时间",
+    dataIndex: "handleTime",
+    align: "center",
+    width: 120,
+  },
+  {
+    title: "处理状态",
+    dataIndex: "workOrderStatus",
+    align: "center",
+    width: 100,
+  },
+  {
+    title: "台区经理",
+    dataIndex: "tgManager",
+    align: "center",
+    width: 100,
+  },
+  {
+    title: "用户类型",
+    dataIndex: "userType",
+    align: "center",
+    width: 100,
+  },
 
-{
-  title: "工单日期",
-  dataIndex: "workOrderCtime",
-  align: "center",
-  width: 120,
-},
-]
+  {
+    title: "工单日期",
+    dataIndex: "workOrderCtime",
+    align: "center",
+    width: 120,
+  },
+];
 
 export default {
-  data () {
+  data() {
     return {
       NewModalVisible: false,
       loading: false,
@@ -125,92 +118,102 @@ export default {
       progress: {},
       isOutage: [],
       isSensitivity: [],
-      exportUrl: 'superiorWorkOrder',
-      ids: 'workOrderNo'
-    }
+      exportUrl: "superiorWorkOrder",
+      ids: "workOrderNo",
+    };
   },
   components: {
     Tables,
     SearchForm,
     NewModel,
   },
-  created () {
-    this.loadData()
+  created() {
+    this.loadData();
   },
   // 接口
   methods: {
-    async loadData () {
-      this.loading = true
-      const { data } = await postAction("superiorWorkOrder/selectAll")
-      this.data = data
+    async loadData() {
+      this.loading = true;
+      const { data } = await postAction("superiorWorkOrder/selectAll");
+      this.data = data;
       // 时间格式、状态转换
-      data.map(item => {
-        if (item.whetherOutage == '是' && item.whetherSensitivity == '是' && item
-          .examineStatus == 2) {
-          item.userType = '频繁停电/敏感用户'
-        } else if (item.whetherSensitivity == '是' && item.examineStatus == 2) {
-          item.userType = '敏感用户'
-        } else if (item.whetherOutage == '是') {
-          item.userType = '频繁停电'
+      data.map((item) => {
+        if (
+          item.whetherOutage == "是" &&
+          item.whetherSensitivity == "是" &&
+          item.examineStatus == 2
+        ) {
+          item.userType = "频繁停电/敏感用户";
+        } else if (item.whetherSensitivity == "是" && item.examineStatus == 2) {
+          item.userType = "敏感用户";
+        } else if (item.whetherOutage == "是") {
+          item.userType = "频繁停电";
         } else {
-          item.userType = '普通用户'
+          item.userType = "普通用户";
         }
-        if (item.whetherSensitivity == '是' && item.examineStatus != 2) {
-          item.whetherSensitivity = '否'
+        if (item.whetherSensitivity == "是" && item.examineStatus != 2) {
+          item.whetherSensitivity = "否";
         }
         item.workOrderTime = moment(item.workOrderTime).format(
           "MM-DD HH:MM:SS"
-        )
-        item.acceptedTime = moment(item.acceptedTime).format(
-          "MM-DD HH:MM:SS"
-        )
+        );
+        item.acceptedTime = moment(item.acceptedTime).format("MM-DD HH:MM:SS");
         // 工单状态字段转换
-        dealWorkOrderStatus(item)
-
-      })
+        dealWorkOrderStatus(item);
+      });
       setTimeout(() => {
-        this.loading = false
-      }, 1000)
+        this.loading = false;
+      }, 1000);
     },
     // 搜索
-    solveformData (e) {
+    solveformData(e) {
+      console.log("solveformData", e);
       superiorWorkOrder(e).then(({ data }) => {
-        data.map(i => {
-          if (i.whetherOutage == '是' && i.whetherSensitivity == '是' && i.examineStatus == 2) {
-            i.userType = '频繁停电/敏感用户'
-          } else if (i.whetherSensitivity == '是' && i.examineStatus == 2) {
-            i.userType = '敏感用户'
-          } else if (i.whetherOutage == '是') {
-            i.userType = '频繁停电'
+        data.map((i) => {
+          if (
+            i.whetherOutage == "是" &&
+            i.whetherSensitivity == "是" &&
+            i.examineStatus == 2
+          ) {
+            i.userType = "频繁停电/敏感用户";
+          } else if (i.whetherSensitivity == "是" && i.examineStatus == 2) {
+            i.userType = "敏感用户";
+          } else if (i.whetherOutage == "是") {
+            i.userType = "频繁停电";
           } else {
-            i.userType = '普通用户'
+            i.userType = "普通用户";
           }
           // 工单状态字段转换
-          dealWorkOrderStatus(i)
-        })
-        this.data = data
-      })
+          dealWorkOrderStatus(i);
+        });
+        if (e.workOrderStatus && e.workOrderStatus.length > 0) {
+          data = data.filter((item) => {
+            return e.workOrderStatus.includes(item.workOrderStatus);
+          });
+        }
+        this.data = data;
+      });
     },
-    changeSelectedRowKeys (e) {
-      this.selectedRowKeys = e
+    changeSelectedRowKeys(e) {
+      this.selectedRowKeys = e;
     },
     // 数据展示列表
-    async clickRows (e) {
-      this.dictionary = serviceList
-      this.NewModelData = e
-      console.log('优质服务', e)
+    async clickRows(e) {
+      this.dictionary = serviceList;
+      this.NewModelData = e;
+      console.log("优质服务", e);
 
       // 开始处理进度条
       if (e.workOrderStatus === "未处理") {
-        this.progress.progress = 0
+        this.progress.progress = 0;
       } else if (e.workOrderStatus === "处理中") {
-        this.progress.progress = 1
+        this.progress.progress = 1;
       } else if (e.workOrderStatus === "待归档") {
-        this.progress.progress = 2
-      } else if (e.workOrderStatus === '已归档') {
-        this.progress.progress = 3
+        this.progress.progress = 2;
+      } else if (e.workOrderStatus === "已归档") {
+        this.progress.progress = 3;
       }
-      this.NewModalVisible = true
+      this.NewModalVisible = true;
     },
   },
 };

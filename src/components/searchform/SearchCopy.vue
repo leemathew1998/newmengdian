@@ -54,24 +54,25 @@
             <a-select
               v-decorator="[
                 'workOrderStatus',
-                { rules: [{ message: '请选择工单状态' }] },
+                {
+                  rules: [
+                    {
+                      type: 'array',
+                      message: '请选择工单状态',
+                      trigger: 'blur',
+                    },
+                  ],
+                },
               ]"
               placeholder="请选择工单状态"
-              :style="{ width: '150px' }"
+              :style="{ minWidth: '150px' }"
               allowClear
+              mode="multiple"
             >
-              <a-select-option value="WORK_ORDER_ENUM_ONE"
-                >待处理</a-select-option
-              >
-              <a-select-option value="WORK_ORDER_ENUM_TWO"
-                >处理中</a-select-option
-              >
-              <a-select-option value="WORK_ORDER_ENUM_THREE"
-                >待归档</a-select-option
-              >
-              <a-select-option value="WORK_ORDER_ENUM_FOUR"
-                >已归档</a-select-option
-              >
+              <a-select-option value="待处理">待处理</a-select-option>
+              <a-select-option value="处理中">处理中</a-select-option>
+              <a-select-option value="待归档">待归档</a-select-option>
+              <a-select-option value="已归档">已归档</a-select-option>
             </a-select>
           </a-form-item>
           <!-- 工单编号 -->
@@ -115,36 +116,36 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       form: this.$form.createForm(this, {
         name: "searchform",
       }),
-    }
+    };
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
-      this.form.validateFields()
-    })
+      this.form.validateFields();
+    });
   },
   methods: {
-    handleSubmit (e) {
-      e.preventDefault()
+    handleSubmit(e) {
+      e.preventDefault();
 
       this.form.validateFields((err, values) => {
-        this.$emit("formData", values)
+        this.$emit("formData", values);
         // if (!err) {
         // 	console.log("Received values of form: ", values);
         // }
-      })
+      });
     },
-    handleReset () {
-      this.form.resetFields()
-      this.$parent.loadData()
+    handleReset() {
+      this.form.resetFields();
+      this.$parent.loadData();
     },
 
-    onChange (date, dateString) {
-      console.log(date, dateString)
+    onChange(date, dateString) {
+      console.log(date, dateString);
     },
   },
 };
@@ -165,6 +166,7 @@ export default {
 
     .buttonRegion {
       flex: 1;
+      align-self: baseline;
       display: flex;
       align-items: center;
       justify-content: center;
