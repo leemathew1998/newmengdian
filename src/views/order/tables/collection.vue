@@ -137,18 +137,20 @@ export default {
     // 数据展示分装
     async initList() {
       this.loading = true;
-      const res = await coll();
+      let res = await coll();
       this.data = res;
-      res = res.map(async (val) => {
+      this.data.map((val) => {
         this.convertFormat(val);
       });
-        this.loading = false;
+      this.data = res;
+      this.loading = false;
       // });
     },
     // 搜索
     solveformData(e) {
       console.log("solveformData", e);
       coll(e).then((res) => {
+        this.data = res;
         res = res.map((item) => this.convertFormat(item));
         if (e.workOrderStatus && e.workOrderStatus.length > 0) {
           res = res.filter((item) => {

@@ -136,7 +136,7 @@ export default {
     // 接口
     async loadData() {
       this.loading = true;
-      const res = await postAction("mwo/selectAll");
+      let res = await postAction("mwo/selectAll");
       res.data.records = res.data.records.map((item) => {
         if (item.workOrderStatus == 1) {
           item.workOrderStatus = "待处理";
