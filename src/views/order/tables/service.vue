@@ -138,6 +138,21 @@ export default {
       this.data = data;
       // 时间格式、状态转换
       data.map((item) => {
+        if (item.workOrderStatus == "1") {
+          item.workOrderStatus = "待处理";
+        } else if (item.workOrderStatus == "2") {
+          item.workOrderStatus = "处理中";
+        } else if (item.workOrderStatus == "3") {
+          item.workOrderStatus = "待归档";
+        } else {
+          item.workOrderStatus = "已归档";
+        }
+        item.handleTime = moment(item.handleTime).format(
+              "MM-DD HH:MM:SS"
+            );
+            item.workOrderCtime = moment(item.workOrderCtime).format(
+              "MM-DD HH:MM:SS"
+            );
         if (
           item.whetherOutage == "是" &&
           item.whetherSensitivity == "是" &&
@@ -174,6 +189,21 @@ export default {
       superiorWorkOrder(e)
         .then(({ data }) => {
           data.map((i) => {
+            item.handleTime = moment(item.handleTime).format(
+              "MM-DD HH:MM:SS"
+            );
+            item.workOrderCtime = moment(item.workOrderCtime).format(
+              "MM-DD HH:MM:SS"
+            );
+            if (item.workOrderStatus == "1") {
+              item.workOrderStatus = "待处理";
+            } else if (item.workOrderStatus == "2") {
+              item.workOrderStatus = "处理中";
+            } else if (item.workOrderStatus == "3") {
+              item.workOrderStatus = "待归档";
+            } else {
+              item.workOrderStatus = "已归档";
+            }
             if (
               i.whetherOutage == "是" &&
               i.whetherSensitivity == "是" &&
@@ -211,7 +241,7 @@ export default {
       console.log("优质服务", e);
 
       // 开始处理进度条
-      if (e.workOrderStatus === "未处理") {
+      if (e.workOrderStatus === "待处理") {
         this.progress.progress = 0;
       } else if (e.workOrderStatus === "处理中") {
         this.progress.progress = 1;
