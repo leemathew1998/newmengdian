@@ -86,11 +86,11 @@ const columns = [
     // width: "12.5%",
     // width:60,
   },
-  // {
-  // 	title: "用户电话",
-  // 	dataIndex: "userPhone",
-  // 	ellipsis: true,
-  // },
+  {
+    title: "计量事件类型",
+    dataIndex: "eventType",
+    align: "center",
+  },
   {
     title: "工单状态",
     dataIndex: "workOrderStatus",
@@ -99,7 +99,7 @@ const columns = [
   },
   {
     title: "工单创建时间",
-    dataIndex: "workOrderCtime",
+    dataIndex: "workOrderStime",
     // ellipsis: true,
     // align: "center",
   },
@@ -138,6 +138,9 @@ export default {
       this.loading = true;
       let res = await postAction("mwo/selectAll");
       res.data.records = res.data.records.map((item) => {
+        item.workOrderStime = moment(item.workOrderStime).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
         if (item.workOrderStatus == 1) {
           item.workOrderStatus = "待处理";
         } else if (item.workOrderStatus == 2) {
@@ -316,6 +319,9 @@ export default {
     solveformData(e) {
       mwo(e).then((res) => {
         res.data.records = res.data.records.map((item) => {
+          item.workOrderStime = moment(item.workOrderStime).format(
+            "YYYY-MM-DD HH:mm:ss"
+          );
           if (item.workOrderStatus == 1) {
             item.workOrderStatus = "待处理";
           } else if (item.workOrderStatus == 2) {

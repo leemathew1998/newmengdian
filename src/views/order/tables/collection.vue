@@ -54,7 +54,7 @@ const columns = [
   },
   {
     title: "台区名称",
-    dataIndex: "tgId",
+    dataIndex: "tgName",
     align: "center",
     width: 150,
   },
@@ -138,27 +138,24 @@ export default {
     async initList() {
       this.loading = true;
       let res = await coll();
-      this.data = res;
-      this.data.map((val) => {
+      res.map((val) => {
         this.convertFormat(val);
       });
       this.data = res;
       this.loading = false;
-      // });
     },
     // 搜索
     solveformData(e) {
       console.log("solveformData", e);
       coll(e).then((res) => {
-        this.data = res;
-        res = res.map((item) => this.convertFormat(item));
+        console.log("search data", res);
+        res.map((item) => this.convertFormat(item));
         if (e.workOrderStatus && e.workOrderStatus.length > 0) {
           res = res.filter((item) => {
             return e.workOrderStatus.includes(item.workOrderStatus);
           });
         }
         this.data = res;
-        console.log(res, "pp");
       });
     },
     changeSelectedRowKeys(e) {

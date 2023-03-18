@@ -1,126 +1,124 @@
-import Vue from 'vue'
-import {
-	axios
-} from '@/utils/request'
-import signMd5Utils from '@/utils/encryption/signMd5Utils'
+import Vue from "vue";
+import { axios } from "@/utils/request";
+import signMd5Utils from "@/utils/encryption/signMd5Utils";
 
 const api = {
-	user: '/mock/api/user',
-	role: '/mock/api/role',
-	service: '/mock/api/service',
-	permission: '/mock/api/permission',
-	permissionNoPager: '/mock/api/permission/no-pager'
-}
+  user: "/mock/api/user",
+  role: "/mock/api/role",
+  service: "/mock/api/service",
+  permission: "/mock/api/permission",
+  permissionNoPager: "/mock/api/permission/no-pager",
+};
 
-export default api
+export default api;
 
 // post
-export function postAction (url, parameter) {
-	// let sign = signMd5Utils.getSign(url, parameter)
-	// // 将签名和时间戳，添加在请求接口 Header
-	// let signHeader = {
-	// 	'X-Sign': sign,
-	// 	'X-TIMESTAMP': signMd5Utils.getDateTimeToString(),
-	// 	'token': '1222'
-	// }
+export function postAction(url, parameter) {
+  // let sign = signMd5Utils.getSign(url, parameter)
+  // // 将签名和时间戳，添加在请求接口 Header
+  // let signHeader = {
+  // 	'X-Sign': sign,
+  // 	'X-TIMESTAMP': signMd5Utils.getDateTimeToString(),
+  // 	'token': '1222'
+  // }
 
-	return axios({
-		url: url,
-		method: 'post',
-		data: parameter,
-		// headers: signHeader
-	})
+  return axios({
+    url: url,
+    method: "post",
+    data: parameter,
+    // headers: signHeader
+  });
 }
 
 // post method= {post | put}
-export function httpAction (url, parameter, method) {
-	let sign = signMd5Utils.getSign(url, parameter)
-	// 将签名和时间戳，添加在请求接口 Header
-	let signHeader = {
-		'X-Sign': sign,
-		'X-TIMESTAMP': signMd5Utils.getDateTimeToString()
-	}
+export function httpAction(url, parameter, method) {
+  let sign = signMd5Utils.getSign(url, parameter);
+  // 将签名和时间戳，添加在请求接口 Header
+  let signHeader = {
+    "X-Sign": sign,
+    "X-TIMESTAMP": signMd5Utils.getDateTimeToString(),
+  };
 
-	return axios({
-		url: url,
-		method: method,
-		data: parameter,
-		headers: signHeader
-	})
+  return axios({
+    url: url,
+    method: method,
+    data: parameter,
+    headers: signHeader,
+  });
 }
 
 // put
-export function putAction (url, parameter) {
-	return axios({
-		url: url,
-		method: 'put',
-		data: parameter
-	})
+export function putAction(url, parameter) {
+  return axios({
+    url: url,
+    method: "put",
+    data: parameter,
+  });
 }
 
 // get
-export function getAction (url, parameter) {
-	// let sign = signMd5Utils.getSign(url, parameter)
-	// // 将签名和时间戳，添加在请求接口 Header
-	// let signHeader = { 'X-Sign': sign, 'X-TIMESTAMP': signMd5Utils.getDateTimeToString() }
+export function getAction(url, parameter) {
+  // let sign = signMd5Utils.getSign(url, parameter)
+  // // 将签名和时间戳，添加在请求接口 Header
+  // let signHeader = { 'X-Sign': sign, 'X-TIMESTAMP': signMd5Utils.getDateTimeToString() }
 
-	return axios({
-		url: url,
-		method: 'get',
-		params: parameter,
-		// headers: signHeader
-	})
+  return axios({
+    url: url,
+    method: "get",
+    params: parameter,
+    // headers: signHeader
+  });
 }
 
 // deleteAction
-export function deleteAction (url, parameter) {
-	return axios({
-		url: url,
-		method: 'delete',
-		params: parameter
-	})
+export function deleteAction(url, parameter) {
+  return axios({
+    url: url,
+    method: "delete",
+    params: parameter,
+  });
 }
 
-export function getUserList (parameter) {
-	return axios({
-		url: api.user,
-		method: 'get',
-		params: parameter
-	})
+export function getUserList(parameter) {
+  return axios({
+    url: api.user,
+    method: "get",
+    params: parameter,
+  });
 }
 
-export function getRoleList (parameter) {
-	return axios({
-		url: api.role,
-		method: 'get',
-		params: parameter
-	})
+export function getRoleList(parameter) {
+  return axios({
+    url: api.role,
+    method: "get",
+    params: parameter,
+  });
 }
 
-export function getServiceList (parameter) {
-	return axios({
-		url: api.service,
-		method: 'get',
-		params: parameter
-	})
+export function getServiceList(parameter) {
+  return axios({
+    url: api.service,
+    method: "get",
+    params: parameter,
+  });
 }
 
-export function getPermissions (parameter) {
-	return axios({
-		url: api.permissionNoPager,
-		method: 'get',
-		params: parameter
-	})
+export function getPermissions(parameter) {
+  return axios({
+    url: api.permissionNoPager,
+    method: "get",
+    params: parameter,
+  });
 }
 
 // id == 0 add     post
 // id != 0 update  put
-export function saveService (parameter) {
-	return axios({
-		url: api.service,
-		method: parameter.id == 0 ? 'post' : 'put',
-		data: parameter
-	})
+export function saveService(parameter) {
+  return axios({
+    url: api.service,
+    method: parameter.id == 0 ? "post" : "put",
+    data: parameter,
+  });
 }
 
 /**
@@ -129,13 +127,13 @@ export function saveService (parameter) {
  * @param parameter
  * @returns {*}
  */
-export function downFile (url, parameter) {
-	return axios({
-		url: url,
-		params: parameter,
-		method: 'get',
-		responseType: 'blob'
-	})
+export function downFile(url, parameter) {
+  return axios({
+    url: url,
+    params: parameter,
+    method: "get",
+    responseType: "blob",
+  });
 }
 
 /**
@@ -145,26 +143,26 @@ export function downFile (url, parameter) {
  * @param parameter
  * @returns {*}
  */
-export function downloadFile (url, fileName, parameter) {
-	return downFile(url, parameter).then((data) => {
-		if (!data || data.size === 0) {
-			Vue.prototype['$message'].warning('文件下载失败')
-			return
-		}
-		if (typeof window.navigator.msSaveBlob !== 'undefined') {
-			window.navigator.msSaveBlob(new Blob([data]), fileName)
-		} else {
-			let url = window.URL.createObjectURL(new Blob([data]))
-			let link = document.createElement('a')
-			link.style.display = 'none'
-			link.href = url
-			link.setAttribute('download', fileName)
-			document.body.appendChild(link)
-			link.click()
-			document.body.removeChild(link) // 下载完成移除元素
-			window.URL.revokeObjectURL(url) // 释放掉blob对象
-		}
-	})
+export function downloadFile(url, fileName, parameter) {
+  return downFile(url, parameter).then((data) => {
+    if (!data || data.size === 0) {
+      Vue.prototype["$message"].warning("文件下载失败");
+      return;
+    }
+    if (typeof window.navigator.msSaveBlob !== "undefined") {
+      window.navigator.msSaveBlob(new Blob([data]), fileName);
+    } else {
+      let url = window.URL.createObjectURL(new Blob([data]));
+      let link = document.createElement("a");
+      link.style.display = "none";
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link); // 下载完成移除元素
+      window.URL.revokeObjectURL(url); // 释放掉blob对象
+    }
+  });
 }
 
 /**
@@ -173,15 +171,15 @@ export function downloadFile (url, fileName, parameter) {
  * @param parameter
  * @returns {*}
  */
-export function uploadAction (url, parameter) {
-	return axios({
-		url: url,
-		data: parameter,
-		method: 'post',
-		headers: {
-			'Content-Type': 'multipart/form-data' // 文件上传
-		}
-	})
+export function uploadAction(url, parameter) {
+  return axios({
+    url: url,
+    data: parameter,
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data", // 文件上传
+    },
+  });
 }
 
 /**
@@ -190,146 +188,143 @@ export function uploadAction (url, parameter) {
  * @param subStr
  * @returns {*}
  */
-export function getFileAccessHttpUrl (avatar, subStr) {
-	if (!subStr) subStr = 'http'
-	try {
-		if (avatar && avatar.startsWith(subStr)) {
-			return avatar
-		} else {
-			if (avatar && avatar.length > 0 && avatar.indexOf('[') == -1) {
-				return window._CONFIG['staticDomainURL'] + '/' + avatar
-			}
-		}
-	} catch (err) {
-
-	}
+export function getFileAccessHttpUrl(avatar, subStr) {
+  if (!subStr) subStr = "http";
+  try {
+    if (avatar && avatar.startsWith(subStr)) {
+      return avatar;
+    } else {
+      if (avatar && avatar.length > 0 && avatar.indexOf("[") == -1) {
+        return window._CONFIG["staticDomainURL"] + "/" + avatar;
+      }
+    }
+  } catch (err) {}
 }
 
 export const selectAll = (params) => {
-	return axios({
-		url: '/superiorSensitivity/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "/superiorSensitivity/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 
 export const FselectAll = (params) => {
-	return axios({
-		url: 'superiorFrequentoutages/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "superiorFrequentoutages/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const cMpItRela = (params) => {
-	return axios({
-		url: '/cMpItRela/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "/cMpItRela/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const rCp = (params) => {
-	return axios({
-		url: '/rCp/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "/rCp/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const dMeter = (params) => {
-	return axios({
-		url: '/dMeter2/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "/dMeter2/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const sItScheme = (params) => {
-	return axios({
-		url: '/sItScheme/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "/sItScheme/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const cContact = (params) => {
-	return axios({
-		url: 'cContact/selectMessage',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "cContact/selectMessage",
+    method: "post",
+    params: params,
+  });
+};
 export const cMp = (params) => {
-	return axios({
-		url: '/cMp/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "/cMp/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const selEleVal = (params) => {
-	return axios({
-		url: 'mwo/selEleVal',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "mwo/selEleVal",
+    method: "post",
+    params: params,
+  });
+};
 export const mwo = (params) => {
-	return axios({
-		url: 'mwo/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "mwo/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const coll = (params) => {
-	return axios({
-		url: 'coll/list1',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "coll/list1",
+    method: "post",
+    params: params,
+  });
+};
 export const runWorkOrder = (params) => {
-	return axios({
-		url: 'runWorkOrder/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "runWorkOrder/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const feecontrolWorkOrder = (params) => {
-	return axios({
-		url: 'feecontrolWorkOrder/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "feecontrolWorkOrder/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const linelosses = (params) => {
-	return axios({
-		url: 'lineloss/list1',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "lineloss/list1",
+    method: "post",
+    params: params,
+  });
+};
 export const recycleWorkOrder = (params) => {
-	return axios({
-		url: 'recycleWorkOrder/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "recycleWorkOrder/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const repairsWorkOrder = (params) => {
-	return axios({
-		url: 'repairsWorkOrder/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "repairsWorkOrder/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const superiorWorkOrder = (params) => {
-	return axios({
-		url: 'superiorWorkOrder/selectAll',
-		method: 'post',
-		params: params
-	})
-}
+  return axios({
+    url: "superiorWorkOrder/selectAll",
+    method: "post",
+    params: params,
+  });
+};
 export const activeOperation = (params) => {
-	return axios({
-		url: 'activeOperation/list1',
-		method: 'post',
-		params: params
-	})
-}
-
+  return axios({
+    url: "activeOperation/list1",
+    method: "post",
+    params: params,
+  });
+};

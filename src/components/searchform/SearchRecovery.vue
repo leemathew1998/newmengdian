@@ -45,6 +45,20 @@
               </a-select-option>
             </a-select>
           </a-form-item>
+          <!-- 时间 -->
+          <a-form-model-item>
+            <a-date-picker
+              v-decorator="[
+                'workOrderCtime',
+                {
+                  rules: [{ required: false, message: '请选择日期' }],
+                },
+              ]"
+              valueFormat="yyyy-MM-DD"
+              :style="{ width: '150px' }"
+              placeholder="请选择日期"
+            />
+          </a-form-model-item>
           <!-- 工单状态 -->
           <a-form-item>
             <a-select

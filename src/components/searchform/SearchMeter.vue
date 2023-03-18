@@ -26,28 +26,20 @@
             >
             </a-input>
           </a-form-item>
-          <!-- 台区名称 -->
-          <a-form-item>
-            <a-select
+          <!-- 时间 -->
+          <a-form-model-item>
+            <a-date-picker
               v-decorator="[
-                'orgName',
-                { rules: [{ message: '请选择供电单位' }] },
+                'workOrderStime',
+                {
+                  rules: [{ required: false, message: '请选择日期' }],
+                },
               ]"
-              placeholder="请选择供电单位"
+              valueFormat="yyyy-MM-DD"
               :style="{ width: '150px' }"
-              allowClear
-            >
-              <a-select-option value="哈克供电营业站">
-                哈克供电营业站
-              </a-select-option>
-              <a-select-option value="园丁供电营业站">
-                园丁供电营业站
-              </a-select-option>
-              <a-select-option value="光明供电营业站">
-                光明供电营业站
-              </a-select-option>
-            </a-select>
-          </a-form-item>
+              placeholder="请选择日期"
+            />
+          </a-form-model-item>
           <!-- 工单状态 -->
           <a-form-item>
             <a-select
