@@ -169,37 +169,44 @@ export default {
     },
     // 搜索数据处理
     solveformData(e) {
+      this.loading = true;
       console.log("搜索", e);
-      runWorkOrder(e).then(({ data: { records } }) => {
-        records.map((item, i) => {
-          if (item.workOrderStatus == "1") {
-            item.workOrderStatus = "待处理";
-          } else if (item.workOrderStatus == "2") {
-            item.workOrderStatus = "处理中";
-          } else if (item.workOrderStatus == "3") {
-            item.workOrderStatus = "待归档";
-          } else {
-            item.workOrderStatus = "已归档";
-          }
-          item.key = i;
-          item.meterGenerationTime = moment(item.meterGenerationTime).format(
-            "MM-DD HH:MM:SS"
-          );
-          item.meterCycle = "连续 " + item.meterCycle + " 个月";
-          if (item.warningStatus == "0") {
-            item.warningStatus = "正常工单";
-          } else {
-            item.warningStatus = "一级预警";
-          }
-        });
-        if (e.workOrderStatus && e.workOrderStatus.length > 0) {
-          records = records.filter((item) => {
-            return e.workOrderStatus.includes(item.workOrderStatus);
+      let tempStatus = e.workOrderStatus;
+      delete e.workOrderStatus;
+      runWorkOrder(e)
+        .then(({ data: { records } }) => {
+          records.map((item, i) => {
+            if (item.workOrderStatus == "1") {
+              item.workOrderStatus = "待处理";
+            } else if (item.workOrderStatus == "2") {
+              item.workOrderStatus = "处理中";
+            } else if (item.workOrderStatus == "3") {
+              item.workOrderStatus = "待归档";
+            } else {
+              item.workOrderStatus = "已归档";
+            }
+            item.key = i;
+            item.meterGenerationTime = moment(item.meterGenerationTime).format(
+              "MM-DD HH:MM:SS"
+            );
+            item.meterCycle = "连续 " + item.meterCycle + " 个月";
+            if (item.warningStatus == "0") {
+              item.warningStatus = "正常工单";
+            } else {
+              item.warningStatus = "一级预警";
+            }
           });
-        }
-        console.log("res", records);
-        this.data = records;
-      });
+          if (tempStatus && tempStatus.length > 0) {
+            records = records.filter((item) => {
+              return tempStatus.includes(item.workOrderStatus);
+            });
+          }
+          console.log("res", records);
+          this.data = records;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     changeSelectedRowKeys(e) {
       this.selectedRowKeys = e;

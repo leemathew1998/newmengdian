@@ -30,7 +30,7 @@
           <a-form-model-item>
             <a-date-picker
               v-decorator="[
-                'workOrderStime',
+                'workOrderCtime1',
                 {
                   rules: [{ required: false, message: '请选择日期' }],
                 },

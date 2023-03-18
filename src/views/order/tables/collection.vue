@@ -147,16 +147,24 @@ export default {
     // 搜索
     solveformData(e) {
       console.log("solveformData", e);
-      coll(e).then((res) => {
-        console.log("search data", res);
-        res.map((item) => this.convertFormat(item));
-        if (e.workOrderStatus && e.workOrderStatus.length > 0) {
-          res = res.filter((item) => {
-            return e.workOrderStatus.includes(item.workOrderStatus);
-          });
-        }
-        this.data = res;
-      });
+      let tempStatus = e.workOrderStatus;
+      delete e.workOrderStatus;
+      this.loading = true;
+      coll(e)
+        .then((res) => {
+          console.log("search data", res);
+          res.map((item) => this.convertFormat(item));
+          if (tempStatus && tempStatus.length > 0) {
+            res = res.filter((item) => {
+              return tempStatus.includes(item.workOrderStatus);
+            });
+          }
+          console.log("after search data", res);
+          this.data = res;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     changeSelectedRowKeys(e) {
       this.selectedRowKeys = e;

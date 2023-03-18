@@ -126,7 +126,7 @@ const err = (error) => {
 // request interceptor
 service.interceptors.request.use(
   (config) => {
-    // console.log('config', config)
+    console.log("request config", config);
     config.headers["Authorization"] = store.getters.token; // 让每个请求携带自定义 token 请根据实际情况自行修改
     if (config.method == "get") {
       if (config.url.indexOf("sys/dict/getDictItems") < 0) {

@@ -317,29 +317,36 @@ export default {
     },
     // 这个是处理搜索数据的
     solveformData(e) {
-      mwo(e).then((res) => {
-        res.data.records = res.data.records.map((item) => {
-          item.workOrderStime = moment(item.workOrderStime).format(
-            "YYYY-MM-DD HH:mm:ss"
-          );
-          if (item.workOrderStatus == 1) {
-            item.workOrderStatus = "待处理";
-          } else if (item.workOrderStatus == 2) {
-            item.workOrderStatus = "处理中";
-          } else if (item.workOrderStatus == 3) {
-            item.workOrderStatus = "待归档";
-          } else if (item.workOrderStatus == 4) {
-            item.workOrderStatus = "已归档";
-          }
-          return item;
-        });
-        if (e.workOrderStatus && e.workOrderStatus.length > 0) {
-          res.data.records = res.data.records.filter((item) => {
-            return e.workOrderStatus.includes(item.workOrderStatus);
+      this.loading = true;
+      let tempStatus = e.workOrderStatus;
+      delete e.workOrderStatus;
+      mwo(e)
+        .then((res) => {
+          res.data.records = res.data.records.map((item) => {
+            item.workOrderStime = moment(item.workOrderStime).format(
+              "YYYY-MM-DD HH:mm:ss"
+            );
+            if (item.workOrderStatus == 1) {
+              item.workOrderStatus = "待处理";
+            } else if (item.workOrderStatus == 2) {
+              item.workOrderStatus = "处理中";
+            } else if (item.workOrderStatus == 3) {
+              item.workOrderStatus = "待归档";
+            } else if (item.workOrderStatus == 4) {
+              item.workOrderStatus = "已归档";
+            }
+            return item;
           });
-        }
-        this.data = res.data.records;
-      });
+          if (tempStatus && tempStatus.length > 0) {
+            res.data.records = res.data.records.filter((item) => {
+              return tempStatus.includes(item.workOrderStatus);
+            });
+          }
+          this.data = res.data.records;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
   },
 };

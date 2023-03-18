@@ -26,30 +26,11 @@
             >
             </a-input>
           </a-form-item>
-          <!-- 台区名称 -->
-          <a-form-item>
-            <a-select
-              v-decorator="[
-                'orgNo',
-                { rules: [{ message: '请选择供电单位' }] },
-              ]"
-              placeholder="请选择供电单位"
-              :style="{ width: '150px' }"
-              allowClear
-            >
-              <a-select-option value="龙辰供电营业所">
-                龙辰供电营业所
-              </a-select-option>
-              <a-select-option value="园丁供电营业站">
-                园丁供电营业站
-              </a-select-option>
-            </a-select>
-          </a-form-item>
           <!-- 时间 -->
           <a-form-model-item>
             <a-date-picker
               v-decorator="[
-                'workOrderCtime',
+                'workOrderCtime1',
                 {
                   rules: [{ required: false, message: '请选择日期' }],
                 },
@@ -58,6 +39,30 @@
               :style="{ width: '150px' }"
               placeholder="请选择日期"
             />
+          </a-form-model-item>
+          <!-- 分类 -->
+          <a-form-model-item>
+            <a-select
+              v-decorator="[
+                'elecTypeCode',
+                { rules: [{ message: '请选择用电类别' }] },
+              ]"
+              placeholder="请选择用电类别"
+              :style="{ width: '150px' }"
+              allowClear
+            >
+              <a-select-option value="大工业用电"> 大工业用电 </a-select-option>
+              <a-select-option value="城镇居民商业用电">
+                城镇居民商业用电
+              </a-select-option>
+              <a-select-option value="农业生产用电">
+                农业生产用电
+              </a-select-option>
+              <a-select-option value="普通工业"> 普通工业 </a-select-option>
+              <a-select-option value="商业用电"> 商业用电 </a-select-option>
+              <a-select-option value="非工业"> 非工业 </a-select-option>
+              <a-select-option value="非居民照明"> 非居民照明 </a-select-option>
+            </a-select>
           </a-form-model-item>
           <!-- 工单状态 -->
           <a-form-item>

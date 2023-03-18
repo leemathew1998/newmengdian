@@ -90,7 +90,7 @@ const columns = [
     width: 120,
   },
   {
-    title: "用户类别",
+    title: "用电类别",
     dataIndex: "elecTypeCode",
     scopedSlots: {
       customRender: "elecTypeCode",
@@ -170,33 +170,40 @@ export default {
     // 搜索数据处理
     solveformData(e) {
       console.log("搜索", e);
-      recycleWorkOrder(e).then(({ data }) => {
-        console.log("搜索", data);
-        this.data = data;
-        this.data.map((item) => {
-          item.workorderTime = moment(item.workorderTime).format(
-            "YYYY-MM-DD HH:MM:SS"
-          );
-          item.processingTime = moment(item.processingTime).format(
-            "YYYY-MM-DD HH:MM:SS"
-          );
-          item.workOrderCycle = "连续 " + item.workOrderCycle + " 个月";
-          if (item.workOrderStatus == "1") {
-            item.workOrderStatus = "待处理";
-          } else if (item.workOrderStatus == "2") {
-            item.workOrderStatus = "处理中";
-          } else if (item.workOrderStatus == "3") {
-            item.workOrderStatus = "待归档";
-          } else {
-            item.workOrderStatus = "已归档";
-          }
-        });
-        if (e.workOrderStatus && e.workOrderStatus.length > 0) {
-          this.data = this.data.filter((item) => {
-            return e.workOrderStatus.includes(item.workOrderStatus);
+      this.loading = true;
+      let tempStatus = e.workOrderStatus;
+      delete e.workOrderStatus;
+      recycleWorkOrder(e)
+        .then(({ data }) => {
+          console.log("搜索", data);
+          this.data = data;
+          this.data.map((item) => {
+            item.workorderTime = moment(item.workorderTime).format(
+              "YYYY-MM-DD HH:MM:SS"
+            );
+            item.processingTime = moment(item.processingTime).format(
+              "YYYY-MM-DD HH:MM:SS"
+            );
+            item.workOrderCycle = "连续 " + item.workOrderCycle + " 个月";
+            if (item.workOrderStatus == "1") {
+              item.workOrderStatus = "待处理";
+            } else if (item.workOrderStatus == "2") {
+              item.workOrderStatus = "处理中";
+            } else if (item.workOrderStatus == "3") {
+              item.workOrderStatus = "待归档";
+            } else {
+              item.workOrderStatus = "已归档";
+            }
           });
-        }
-      });
+          if (tempStatus && tempStatus.length > 0) {
+            this.data = this.data.filter((item) => {
+              return tempStatus.includes(item.workOrderStatus);
+            });
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     changeSelectedRowKeys(e) {
       this.selectedRowKeys = e;

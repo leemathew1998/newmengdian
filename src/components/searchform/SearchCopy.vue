@@ -33,7 +33,7 @@
           <a-form-model-item>
             <a-date-picker
               v-decorator="[
-                'workOrderCtime',
+                'workOrderCtime1',
                 {
                   rules: [{ required: false, message: '请选择日期' }],
                 },
@@ -43,26 +43,6 @@
               placeholder="请选择日期"
             />
           </a-form-model-item>
-          <!-- 台区名称 -->
-          <a-form-item>
-            <a-select
-              v-decorator="[
-                'orgName',
-                { rules: [{ message: '请选择供电单位' }] },
-              ]"
-              placeholder="请选择供电单位"
-              :style="{ width: '150px' }"
-              allowClear
-            >
-              <a-select-option value="龙辰供电营业所">
-                龙辰供电营业所
-              </a-select-option>
-              <a-select-option value="大雁供电所"> 大雁供电所 </a-select-option>
-              <a-select-option value="阿荣旗供电服务中心">
-                阿荣旗供电服务中心
-              </a-select-option>
-            </a-select>
-          </a-form-item>
           <!-- 工单状态 -->
           <a-form-item>
             <a-select

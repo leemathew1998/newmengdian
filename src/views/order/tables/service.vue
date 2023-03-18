@@ -168,31 +168,38 @@ export default {
     // 搜索
     solveformData(e) {
       console.log("solveformData", e);
-      superiorWorkOrder(e).then(({ data }) => {
-        data.map((i) => {
-          if (
-            i.whetherOutage == "是" &&
-            i.whetherSensitivity == "是" &&
-            i.examineStatus == 2
-          ) {
-            i.userType = "频繁停电/敏感用户";
-          } else if (i.whetherSensitivity == "是" && i.examineStatus == 2) {
-            i.userType = "敏感用户";
-          } else if (i.whetherOutage == "是") {
-            i.userType = "频繁停电";
-          } else {
-            i.userType = "普通用户";
-          }
-          // 工单状态字段转换
-          dealWorkOrderStatus(i);
-        });
-        if (e.workOrderStatus && e.workOrderStatus.length > 0) {
-          data = data.filter((item) => {
-            return e.workOrderStatus.includes(item.workOrderStatus);
+      let tempStatus = e.workOrderStatus;
+      delete e.workOrderStatus;
+      this.loading = true;
+      superiorWorkOrder(e)
+        .then(({ data }) => {
+          data.map((i) => {
+            if (
+              i.whetherOutage == "是" &&
+              i.whetherSensitivity == "是" &&
+              i.examineStatus == 2
+            ) {
+              i.userType = "频繁停电/敏感用户";
+            } else if (i.whetherSensitivity == "是" && i.examineStatus == 2) {
+              i.userType = "敏感用户";
+            } else if (i.whetherOutage == "是") {
+              i.userType = "频繁停电";
+            } else {
+              i.userType = "普通用户";
+            }
+            // 工单状态字段转换
+            dealWorkOrderStatus(i);
           });
-        }
-        this.data = data;
-      });
+          if (tempStatus && tempStatus.length > 0) {
+            data = data.filter((item) => {
+              return tempStatus.includes(item.workOrderStatus);
+            });
+          }
+          this.data = data;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     changeSelectedRowKeys(e) {
       this.selectedRowKeys = e;

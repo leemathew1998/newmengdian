@@ -50,6 +50,12 @@ const columns = [
     width: 100,
   },
   {
+    title: "工单下发时间",
+    dataIndex: "remoteDate",
+    align: "center",
+    width: 100,
+  },
+  {
     title: "台区经理",
     dataIndex: "tgManager",
     align: "center",
@@ -142,6 +148,9 @@ export default {
         this.data[i].workOrderTime = moment(this.data[i].workOrderTime).format(
           "YYYY-MM-DD HH:MM:SS"
         );
+        this.data[i].remoteDate = moment(this.data[i].remoteDate).format(
+          "YYYY-MM-DD HH:MM:SS"
+        );
         if (this.data[i].workOrderStatus == "1") {
           this.data[i].workOrderStatus = "待处理";
         } else if (this.data[i].workOrderStatus == "2") {
@@ -160,34 +169,44 @@ export default {
     // 搜索数据处理
     solveformData(e) {
       console.log("solveformData", e);
-      feecontrolWorkOrder(e).then((res) => {
-        this.data = res.data;
-        for (var i = 0; i < this.data.length; i++) {
-          Object.defineProperty(this.data[i], "key", {
-            value: i,
-          });
-          this.data[i].failTime = moment(this.data[i].failTime).format(
-            "YYYY-MM-DD HH:MM:SS"
-          );
-          // this.data[i].workOrderTime = moment(this.data[i].workOrderTime).format(
-          //   'YYYY-MM-DD HH:MM:SS'
-          // )
-          if (this.data[i].workOrderStatus == "1") {
-            this.data[i].workOrderStatus = "待处理";
-          } else if (this.data[i].workOrderStatus == "2") {
-            this.data[i].workOrderStatus = "处理中";
-          } else if (this.data[i].workOrderStatus == "3") {
-            this.data[i].workOrderStatus = "待归档";
-          } else if (this.data[i].workOrderStatus == "4") {
-            this.data[i].workOrderStatus = "已归档";
+      let tempStatus = e.workOrderStatus;
+      delete e.workOrderStatus;
+      this.loading = true;
+      feecontrolWorkOrder(e)
+        .then((res) => {
+          this.data = res.data;
+          for (var i = 0; i < this.data.length; i++) {
+            Object.defineProperty(this.data[i], "key", {
+              value: i,
+            });
+            this.data[i].failTime = moment(this.data[i].failTime).format(
+              "YYYY-MM-DD HH:MM:SS"
+            );
+            this.data[i].workOrderTime = moment(
+              this.data[i].workOrderTime
+            ).format("YYYY-MM-DD HH:MM:SS");
+            this.data[i].remoteDate = moment(this.data[i].remoteDate).format(
+              "YYYY-MM-DD HH:MM:SS"
+            );
+            if (this.data[i].workOrderStatus == "1") {
+              this.data[i].workOrderStatus = "待处理";
+            } else if (this.data[i].workOrderStatus == "2") {
+              this.data[i].workOrderStatus = "处理中";
+            } else if (this.data[i].workOrderStatus == "3") {
+              this.data[i].workOrderStatus = "待归档";
+            } else if (this.data[i].workOrderStatus == "4") {
+              this.data[i].workOrderStatus = "已归档";
+            }
           }
-        }
-        if (e.workOrderStatus && e.workOrderStatus.length > 0) {
-          this.data = this.data.filter((item) => {
-            return e.workOrderStatus.includes(item.workOrderStatus);
-          });
-        }
-      });
+          if (tempStatus && tempStatus.length > 0) {
+            this.data = this.data.filter((item) => {
+              return tempStatus.includes(item.workOrderStatus);
+            });
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     // 弹框、现场处理
     async clickRows(e) {
