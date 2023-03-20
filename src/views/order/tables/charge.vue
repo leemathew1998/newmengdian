@@ -138,6 +138,13 @@ export default {
       const data = await postAction(`feecontrolWorkOrder/selectAll`);
       this.data = data.data;
       console.log(data.data);
+      //张生要求，"采集你先把时间最近的放前面"
+      this.data.sort((a, b) => {
+        return (
+          moment(b.workOrderCtime).format("X") -
+          moment(a.workOrderCtime).format("X")
+        );
+      });
       for (var i = 0; i < this.data.length; i++) {
         Object.defineProperty(this.data[i], "key", {
           value: i,
@@ -175,6 +182,13 @@ export default {
       feecontrolWorkOrder(e)
         .then((res) => {
           this.data = res.data;
+          //张生要求，"采集你先把时间最近的放前面"
+          this.data.sort((a, b) => {
+            return (
+              moment(b.workOrderCtime).format("X") -
+              moment(a.workOrderCtime).format("X")
+            );
+          });
           for (var i = 0; i < this.data.length; i++) {
             Object.defineProperty(this.data[i], "key", {
               value: i,

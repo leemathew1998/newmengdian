@@ -219,7 +219,7 @@ export default {
     solveformData(e) {
       console.log("solveformData", e);
       linelosses(e).then((res) => {
-        res = res.map((item, i) => {
+        res.forEach((item, i) => {
           item.key = i;
           item.workOrderCtime = moment(item.workOrderCtime).format(
             "YYYY-MM-DD HH:MM:SS"

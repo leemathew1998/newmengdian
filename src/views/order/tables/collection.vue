@@ -53,6 +53,12 @@ const columns = [
     width: 130,
   },
   {
+    title: "电能表资产号",
+    dataIndex: "meterAssetNo",
+    align: "center",
+    width: 130,
+  },
+  {
     title: "台区名称",
     dataIndex: "tgName",
     align: "center",
@@ -68,6 +74,13 @@ const columns = [
   {
     title: "用户名称",
     dataIndex: "consName",
+    // ellipsis: true,
+    align: "center",
+    width: 100,
+  },
+  {
+    title: "用户编号",
+    dataIndex: "consNo",
     // ellipsis: true,
     align: "center",
     width: 100,
@@ -138,6 +151,13 @@ export default {
     async initList() {
       this.loading = true;
       let res = await coll();
+      //张生要求，"采集你先把时间最近的放前面"
+      res.sort((a, b) => {
+        return (
+          moment(b.workOrderCtime).format("X") -
+          moment(a.workOrderCtime).format("X")
+        );
+      });
       res.map((val) => {
         this.convertFormat(val);
       });
@@ -152,7 +172,13 @@ export default {
       this.loading = true;
       coll(e)
         .then((res) => {
-          console.log("search data", res);
+          //张生要求，"采集你先把时间最近的放前面"
+          res.sort((a, b) => {
+            return (
+              moment(b.workOrderCtime).format("X") -
+              moment(a.workOrderCtime).format("X")
+            );
+          });
           res.map((item) => this.convertFormat(item));
           if (tempStatus && tempStatus.length > 0) {
             res = res.filter((item) => {

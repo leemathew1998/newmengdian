@@ -136,6 +136,13 @@ export default {
       this.loading = true;
       const { data } = await postAction("superiorWorkOrder/selectAll");
       this.data = data;
+      //张生要求，"采集你先把时间最近的放前面"
+      this.data.sort((a, b) => {
+        return (
+          moment(b.workOrderCtime).format("X") -
+          moment(a.workOrderCtime).format("X")
+        );
+      });
       // 时间格式、状态转换
       data.map((item) => {
         if (item.workOrderStatus == "1") {
@@ -147,12 +154,10 @@ export default {
         } else {
           item.workOrderStatus = "已归档";
         }
-        item.handleTime = moment(item.handleTime).format(
-              "MM-DD HH:MM:SS"
-            );
-            item.workOrderCtime = moment(item.workOrderCtime).format(
-              "MM-DD HH:MM:SS"
-            );
+        item.handleTime = moment(item.handleTime).format("MM-DD HH:MM:SS");
+        item.workOrderCtime = moment(item.workOrderCtime).format(
+          "MM-DD HH:MM:SS"
+        );
         if (
           item.whetherOutage == "是" &&
           item.whetherSensitivity == "是" &&
@@ -188,10 +193,16 @@ export default {
       this.loading = true;
       superiorWorkOrder(e)
         .then(({ data }) => {
-          data.map((i) => {
-            item.handleTime = moment(item.handleTime).format(
-              "MM-DD HH:MM:SS"
+          this.data = data;
+          //张生要求，"采集你先把时间最近的放前面"
+          this.data.sort((a, b) => {
+            return (
+              moment(b.workOrderCtime).format("X") -
+              moment(a.workOrderCtime).format("X")
             );
+          });
+          this.data.map((item) => {
+            item.handleTime = moment(item.handleTime).format("MM-DD HH:MM:SS");
             item.workOrderCtime = moment(item.workOrderCtime).format(
               "MM-DD HH:MM:SS"
             );
@@ -205,27 +216,29 @@ export default {
               item.workOrderStatus = "已归档";
             }
             if (
-              i.whetherOutage == "是" &&
-              i.whetherSensitivity == "是" &&
-              i.examineStatus == 2
+              item.whetherOutage == "是" &&
+              item.whetherSensitivity == "是" &&
+              item.examineStatus == 2
             ) {
-              i.userType = "频繁停电/敏感用户";
-            } else if (i.whetherSensitivity == "是" && i.examineStatus == 2) {
-              i.userType = "敏感用户";
-            } else if (i.whetherOutage == "是") {
-              i.userType = "频繁停电";
+              item.userType = "频繁停电/敏感用户";
+            } else if (
+              item.whetherSensitivity == "是" &&
+              item.examineStatus == 2
+            ) {
+              item.userType = "敏感用户";
+            } else if (item.whetherOutage == "是") {
+              item.userType = "频繁停电";
             } else {
-              i.userType = "普通用户";
+              item.userType = "普通用户";
             }
             // 工单状态字段转换
-            dealWorkOrderStatus(i);
+            dealWorkOrderStatus(item);
           });
           if (tempStatus && tempStatus.length > 0) {
-            data = data.filter((item) => {
+            this.data = this.data.filter((item) => {
               return tempStatus.includes(item.workOrderStatus);
             });
           }
-          this.data = data;
         })
         .finally(() => {
           this.loading = false;

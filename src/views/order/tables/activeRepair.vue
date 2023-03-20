@@ -236,10 +236,17 @@ export default {
       const {
         data: { records },
       } = await postAction("repairsWorkOrder/selectAll");
-      this.data = records;
       records.map((item) => {
         this.dealData(item);
       });
+      //张生要求，"采集你先把时间最近的放前面"
+      records.sort((a, b) => {
+        return (
+          moment(b.workOrderCtime).format("X") -
+          moment(a.workOrderCtime).format("X")
+        );
+      });
+      this.data = records;
     },
     changeSelectedRowKeys(e) {
       this.selectedRowKeys = e;
@@ -250,7 +257,13 @@ export default {
       const {
         data: { records },
       } = await repairsWorkOrder(e);
-
+      //张生要求，"采集你先把时间最近的放前面"
+      records.sort((a, b) => {
+        return (
+          moment(b.workOrderCtime).format("X") -
+          moment(a.workOrderCtime).format("X")
+        );
+      });
       records.map((item) => {
         this.dealData(item);
       });

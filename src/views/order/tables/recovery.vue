@@ -146,7 +146,13 @@ export default {
       this.loading = true;
       const data = await postAction("recycleWorkOrder/selectAll");
       this.data = data.data;
-
+      //张生要求，"采集你先把时间最近的放前面"
+      this.data.sort((a, b) => {
+        return (
+          moment(b.workOrderCtime).format("X") -
+          moment(a.workOrderCtime).format("X")
+        );
+      });
       this.data.map((item) => {
         item.workorderTime = moment(item.workorderTime).format(
           "YYYY-MM-DD HH:MM:SS"
@@ -177,6 +183,13 @@ export default {
         .then(({ data }) => {
           console.log("搜索", data);
           this.data = data;
+          //张生要求，"采集你先把时间最近的放前面"
+          this.data.sort((a, b) => {
+            return (
+              moment(b.workOrderCtime).format("X") -
+              moment(a.workOrderCtime).format("X")
+            );
+          });
           this.data.map((item) => {
             item.workorderTime = moment(item.workorderTime).format(
               "YYYY-MM-DD HH:MM:SS"

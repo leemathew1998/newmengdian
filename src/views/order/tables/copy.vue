@@ -138,6 +138,13 @@ export default {
       const data = await postAction("runWorkOrder/selectAll");
       console.log(data);
       this.data = data.data.records;
+      //张生要求，"采集你先把时间最近的放前面"
+      this.data.sort((a, b) => {
+        return (
+          moment(b.workOrderCtime).format("X") -
+          moment(a.workOrderCtime).format("X")
+        );
+      });
       for (var i = 0; i < this.data.length; i++) {
         if (this.data[i].workOrderStatus == "1") {
           this.data[i].workOrderStatus = "待处理";
@@ -175,6 +182,13 @@ export default {
       delete e.workOrderStatus;
       runWorkOrder(e)
         .then(({ data: { records } }) => {
+          //张生要求，"采集你先把时间最近的放前面"
+          records.sort((a, b) => {
+            return (
+              moment(b.workOrderCtime).format("X") -
+              moment(a.workOrderCtime).format("X")
+            );
+          });
           records.map((item, i) => {
             if (item.workOrderStatus == "1") {
               item.workOrderStatus = "待处理";

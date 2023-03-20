@@ -152,6 +152,13 @@ export default {
         }
         return item;
       });
+      //张生要求，"采集你先把时间最近的放前面"
+      res.data.records.sort((a, b) => {
+        return (
+          moment(b.workOrderCtime).format("X") -
+          moment(a.workOrderCtime).format("X")
+        );
+      });
       this.data = res.data.records;
       setTimeout(() => {
         this.loading = false;
@@ -336,6 +343,13 @@ export default {
               item.workOrderStatus = "已归档";
             }
             return item;
+          });
+          //张生要求，"采集你先把时间最近的放前面"
+          res.data.records.sort((a, b) => {
+            return (
+              moment(b.workOrderCtime).format("X") -
+              moment(a.workOrderCtime).format("X")
+            );
           });
           if (tempStatus && tempStatus.length > 0) {
             res.data.records = res.data.records.filter((item) => {

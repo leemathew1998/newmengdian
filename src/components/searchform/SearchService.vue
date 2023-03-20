@@ -7,7 +7,7 @@
           <a-form-item>
             <a-input
               v-decorator="[
-                'workOrderNo',
+                'appNo',
                 { rules: [{ message: '请输入工单编号' }] },
               ]"
               placeholder="工单编号"
