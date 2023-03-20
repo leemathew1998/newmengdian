@@ -41,11 +41,11 @@ import { dealWorkOrderStatus } from "@/utils/util.js";
 const columns = [
   {
     title: "工单编号",
-    dataIndex: "workOrderNo",
+    dataIndex: "appNo",
     align: "center",
     width: 150,
     scopedSlots: {
-      customRender: "workOrderNo",
+      customRender: "appNo",
     },
   },
   {
@@ -85,13 +85,6 @@ const columns = [
     width: 100,
   },
   {
-    title: "用户类型",
-    dataIndex: "userType",
-    align: "center",
-    width: 100,
-  },
-
-  {
     title: "工单日期",
     dataIndex: "workOrderCtime",
     align: "center",
@@ -119,7 +112,7 @@ export default {
       isOutage: [],
       isSensitivity: [],
       exportUrl: "superiorWorkOrder",
-      ids: "workOrderNo",
+      ids: "appNo",
     };
   },
   components: {
