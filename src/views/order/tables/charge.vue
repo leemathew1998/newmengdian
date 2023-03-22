@@ -155,6 +155,9 @@ export default {
         this.data[i].workOrderTime = moment(this.data[i].workOrderTime).format(
           "YYYY-MM-DD HH:MM:SS"
         );
+        this.data[i].workOrderCtime = moment(
+          this.data[i].workOrderCtime
+        ).format("YYYY-MM-DD HH:MM:SS");
         this.data[i].remoteDate = moment(this.data[i].remoteDate).format(
           "YYYY-MM-DD HH:MM:SS"
         );
@@ -196,6 +199,9 @@ export default {
             this.data[i].failTime = moment(this.data[i].failTime).format(
               "YYYY-MM-DD HH:MM:SS"
             );
+            this.data[i].workOrderCtime = moment(
+              this.data[i].workOrderCtime
+            ).format("YYYY-MM-DD HH:MM:SS");
             this.data[i].workOrderTime = moment(
               this.data[i].workOrderTime
             ).format("YYYY-MM-DD HH:MM:SS");
