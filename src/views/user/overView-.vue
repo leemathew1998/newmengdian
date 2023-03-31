@@ -5,15 +5,45 @@
     </div>
     <div class="main animated bounceInUp" @click="solveClick">
       <div class="rowOne">
-        <Item id="jiashi" class="item anim" ImageSrc="newjiashicang" name="驾驶舱"></Item>
-        <Item id="yekuo" class="item anim" ImageSrc="yekuobaozhuang" name="业扩报装"></Item>
-        <Item id="achievements" class="item anim" ImageSrc="jixiaoguanli" name="绩效管理">
+        <Item
+          id="jiashi"
+          class="item anim"
+          ImageSrc="newjiashicang"
+          name="驾驶舱"
+        ></Item>
+        <Item
+          id="yekuo"
+          class="item anim"
+          ImageSrc="yekuobaozhuang"
+          name="业扩报装"
+        ></Item>
+        <Item
+          id="achievements"
+          class="item anim"
+          ImageSrc="jixiaoguanli"
+          name="绩效管理"
+        >
         </Item>
       </div>
       <div class="rowTwo">
-        <Item id="sanwei" class="item anim" ImageSrc="sanwei" name="三维模型管理"></Item>
-        <Item id="antitheft" class="item anim" ImageSrc="fanqiechawei" name="反窃查违"></Item>
-        <Item id="order" class="item anim" ImageSrc="yewugongdan" name="业务工单">
+        <Item
+          id="sanwei"
+          class="item anim"
+          ImageSrc="sanwei"
+          name="三维模型管理"
+        ></Item>
+        <Item
+          id="antitheft"
+          class="item anim"
+          ImageSrc="fanqiechawei"
+          name="反窃查违"
+        ></Item>
+        <Item
+          id="order"
+          class="item anim"
+          ImageSrc="yewugongdan"
+          name="业务工单"
+        >
         </Item>
       </div>
     </div>
@@ -31,104 +61,119 @@
           <div>{{ thisWeek }}</div>
           <div>7/25</div>
         </div>
-        <img @click="solveClick('/basic')" style="width: 50px; margin-left: 10px" src="" />
+        <img
+          @click="solveClick('/basic')"
+          style="width: 50px; margin-left: 10px"
+          src=""
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Item from './components/Item.vue'
-import LoginAccount from './LoginAccount.vue'
-import {
-  mapActions
-} from 'vuex'
-import moment from 'moment'
-import {
-  getAction,
-} from '@/api/manage'
-let timer
+import Item from "./components/Item.vue";
+import LoginAccount from "./LoginAccount.vue";
+import { mapActions } from "vuex";
+import moment from "moment";
+import { getAction } from "@/api/manage";
+let timer;
 export default {
   data() {
     return {
-      nowTime: '',
-      thisWeek: '',
-      date: '',
-      userName: '',
+      nowTime: "",
+      thisWeek: "",
+      date: "",
+      userName: "",
 
       rememberMe: false,
-
-    }
+    };
   },
   computed: {
     buttonName() {
-      return this.$store.getters.username ? '退出' : "登录"
-    }
+      return this.$store.getters.username ? "退出" : "登录";
+    },
   },
   async created() {
     // 初始化时间
-    this.userName = this.$store.getters.username
-    this.nowTime = moment().format('HH:mm')
-    this.date = moment().format('MM/DD')
-    const day = moment().format('d')
+    this.userName = this.$store.getters.username;
+    this.nowTime = moment().format("HH:mm");
+    this.date = moment().format("MM/DD");
+    const day = moment().format("d");
     if (day == 1) {
-      this.thisWeek = '周一'
+      this.thisWeek = "周一";
     } else if (day == 2) {
-      this.thisWeek = '周二'
+      this.thisWeek = "周二";
     } else if (day == 3) {
-      this.thisWeek = '周三'
+      this.thisWeek = "周三";
     } else if (day == 4) {
-      this.thisWeek = '周四'
+      this.thisWeek = "周四";
     } else if (day == 5) {
-      this.thisWeek = '周五'
+      this.thisWeek = "周五";
     } else if (day == 6) {
-      this.thisWeek = '周六'
+      this.thisWeek = "周六";
     } else if (day == 0) {
-      this.thisWeek = '周日'
+      this.thisWeek = "周日";
     }
 
     timer = setInterval(() => {
-      this.nowTime = moment().format('HH:mm')
-    }, 10000)
+      this.nowTime = moment().format("HH:mm");
+    }, 10000);
     // 张升isc集成测试
-    const href = window.location.href
-    if (href.includes('ticket')) {
-      const res = await getAction(`SysUser/login1`)
-      console.log('张升注意看返回值！', res)
+    const href = window.location.href;
+    if (href.includes("ticket")) {
+      const res = await getAction(`SysUser/login1`);
+      console.log("张升注意看返回值！", res);
     }
 
     // this.handleSubmit()
   },
   beforeDestroy() {
-    clearInterval(timer)
+    clearInterval(timer);
   },
 
   methods: {
-    ...mapActions(['Login']),
+    ...mapActions(["Login"]),
     solveClick(e) {
-      let refName
-      if (e == '/basic') {
-        this.$router.push('/basic')
-        return
-      } else if (e.target.className == 'img' || e.target.className == '' || e.target.className == 'title') {
-        refName = e.target.parentNode.id
-      } else if (e.target.className == 'arrow' || e.target.className == 'text') {
-        refName = e.target.parentNode.parentNode.id
+      let refName;
+      if (e == "/basic") {
+        this.$router.push("/basic");
+        return;
+      } else if (
+        e.target.className == "img" ||
+        e.target.className == "" ||
+        e.target.className == "title"
+      ) {
+        refName = e.target.parentNode.id;
+      } else if (
+        e.target.className == "arrow" ||
+        e.target.className == "text"
+      ) {
+        refName = e.target.parentNode.parentNode.id;
       } else {
-        refName = e.target.id
+        refName = e.target.id;
       }
       if (refName) {
-        if (refName == 'jiashi') {
-          window.open('http://plant3-ui-md.show.wiz.top:9600/#/mdPowerGrid/powerCenter', "_blank")
-        } else if (refName == 'sanwei') {
-          window.open('http://plant3-ui-md.show.wiz.top:9600/#/modelCenter/index', "_blank")
-        } else if (refName == 'yekuo') {
-          window.open('http://plant3-ui-md.show.wiz.top:9600/#/mdPowerGrid/businessExpansionList', "_blank")
-        } else{
+        if (refName == "jiashi") {
+          window.open(
+            "http://plant3-ui-md.show.wiz.top:9600/#/mdPowerGrid/powerCenter",
+            "_blank"
+          );
+        } else if (refName == "sanwei") {
+          window.open(
+            "http://plant3-ui-md.show.wiz.top:9600/#/modelCenter/index",
+            "_blank"
+          );
+        } else if (refName == "yekuo") {
+          window.open(
+            "http://plant3-ui-md.show.wiz.top:9600/#/mdPowerGrid/businessExpansionList",
+            "_blank"
+          );
+        } else {
           let routeData = this.$router.resolve({
             name: refName,
           });
-          window.open(routeData.href, '_blank');
+          window.open(routeData.href, "_blank");
         }
       }
       // if (refName) {
@@ -140,48 +185,49 @@ export default {
     },
 
     async logOut() {
-      if (this.buttonName == '登录') {
-        const res = await getAction(`SysUser/login`)
-        console.log('张升注意看返回值！', res)
+      if (this.buttonName == "登录") {
+        const res = await getAction(`SysUser/login`);
+        console.log("张升注意看返回值！", res);
         // window.location.href = 'http://10.173.78.137:17001/isc_sso/login?service=http://25.73.1.171:80'
       } else {
-        this.$store.commit('clearUserInfo', [])
-        this.$notification['success']({
-          message: '注销成功',
+        this.$store.commit("clearUserInfo", []);
+        this.$notification["success"]({
+          message: "注销成功",
           duration: 4,
-        })
-        this.$router.push('/user/login')
+        });
+        this.$router.push("/overView");
+        // this.$router.push('/user/login')
       }
     },
     // 免登录获取token
     handleSubmit() {
       this.Login()
         .then((res) => {
-          this.$store.commit('setUserInfo', {
-            'token': res.token,
-            'username': '刘月焱',
-            'role': 'admin',
-            'password': 111,
-            'department': '哈克供电营业站'
-          })
-          this.$emit('success', res)
+          this.$store.commit("setUserInfo", {
+            token: res.token,
+            username: "刘月焱",
+            role: "admin",
+            password: 111,
+            department: "哈克供电营业站",
+          });
+          this.$emit("success", res);
         })
         .catch((err) => {
-          this.$emit('fail', err)
+          this.$emit("fail", err);
           // if (err.info == "用户已存在,自动登录") {
           // 	// this.$router.push('/dashboard')
           // 	this.$emit('success', err.info)
           // } else {
           // 	this.$emit('fail', err)
           // }
-        })
+        });
     },
   },
   components: {
     Item,
-    LoginAccount
+    LoginAccount,
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

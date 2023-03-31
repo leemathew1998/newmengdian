@@ -40,30 +40,6 @@
               placeholder="请选择日期"
             />
           </a-form-model-item>
-          <!-- 分类 -->
-          <a-form-model-item>
-            <a-select
-              v-decorator="[
-                'elecTypeCode',
-                { rules: [{ message: '请选择用电类别' }] },
-              ]"
-              placeholder="请选择用电类别"
-              :style="{ width: '150px' }"
-              allowClear
-            >
-              <a-select-option value="大工业用电"> 大工业用电 </a-select-option>
-              <a-select-option value="城镇居民商业用电">
-                城镇居民商业用电
-              </a-select-option>
-              <a-select-option value="农业生产用电">
-                农业生产用电
-              </a-select-option>
-              <a-select-option value="普通工业"> 普通工业 </a-select-option>
-              <a-select-option value="商业用电"> 商业用电 </a-select-option>
-              <a-select-option value="非工业"> 非工业 </a-select-option>
-              <a-select-option value="非居民照明"> 非居民照明 </a-select-option>
-            </a-select>
-          </a-form-model-item>
           <!-- 工单状态 -->
           <a-form-item>
             <a-select
@@ -90,6 +66,30 @@
               <a-select-option value="已归档">已归档</a-select-option>
             </a-select>
           </a-form-item>
+          <!-- 分类 -->
+          <a-form-model-item>
+            <a-tree-select
+              style="width: 100%"
+              :tree-data="treeData"
+              tree-checkable
+              v-decorator="[
+                'elecTypeCode',
+                {
+                  rules: [
+                    {
+                      type: 'array',
+                      message: '请选择用电类别',
+                      trigger: 'blur',
+                    },
+                  ],
+                },
+              ]"
+              search-placeholder="请选择用电类别"
+              placeholder="请选择用电类别"
+              :style="{ minWidth: '150px', maxWidth: '250px' }"
+              allowClear
+            />
+          </a-form-model-item>
           <!-- 工单编号 -->
           <!-- <a-form-item>
 						<a-input v-decorator="[
@@ -131,12 +131,96 @@
 </template>
 
 <script>
+const treeData = [
+  {
+    title: "大工业用电",
+    value: "大工业用电",
+    key: "大工业用电",
+  },
+  {
+    title: "居民生活用电",
+    value: "居民生活用电",
+    key: "居民生活用电",
+    children: [
+      {
+        title: "乡村居民生活用电",
+        value: "乡村居民生活用电",
+        key: "乡村居民生活用电",
+      },
+      {
+        title: "城镇居民生活用电",
+        value: "城镇居民生活用电",
+        key: "城镇居民生活用电",
+      },
+      {
+        title: "中小学教学用电",
+        value: "中小学教学用电",
+        key: "中小学教学用电",
+      },
+    ],
+  },
+  {
+    title: "农业生产用电",
+    value: "农业生产用电",
+    key: "农业生产用电",
+  },
+  {
+    title: "一般工商业",
+    value: "一般工商业",
+    key: "一般工商业",
+    children: [
+      {
+        title: "非居民照明",
+        value: "非居民照明",
+        key: "非居民照明",
+      },
+      {
+        title: "非工业",
+        value: "非工业",
+        key: "非工业",
+      },
+      {
+        title: "普通工业",
+        value: "普通工业",
+        key: "普通工业",
+      },
+      {
+        title: "商业用电",
+        value: "商业用电",
+        key: "商业用电",
+      },
+    ],
+  },
+  {
+    title: "泵售",
+    value: "泵售",
+    key: "泵售",
+  },
+  {
+    title: "大用户直购电",
+    value: "大用户直购电",
+    key: "大用户直购电",
+    children: [
+      {
+        title: "大用户直购电",
+        value: "大用户直购电",
+        key: "大用户直购电",
+      },
+    ],
+  },
+  {
+    title: "其它用电",
+    value: "其它用电",
+    key: "其它用电",
+  },
+];
 export default {
   data() {
     return {
       form: this.$form.createForm(this, {
         name: "searchform",
       }),
+      treeData,
     };
   },
   mounted() {

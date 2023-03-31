@@ -194,8 +194,8 @@ export default {
         duration: 4,
       });
       console.log("与张升测试ISC，在此处修改跳转，如需要改变，直接切换即可！");
-      // this.$router.push('/overView')
-      this.$router.push("/user/login");
+      this.$router.push("/overView");
+      // this.$router.push("/user/login");
     },
   },
   components: {

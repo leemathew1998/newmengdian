@@ -105,12 +105,13 @@ export default {
       this.nowTime = moment().format("YYYY-MM-DD HH:mm");
     }, 10000);
     // 张升isc集成测试
-    const href = window.location.href;
-    if (href.includes("ticket")) {
-      const res = await getAction(`SysUser/login1`);
-      console.log("张升注意看返回值！", res);
-    }
-
+    // const href = window.location.href;
+    // if (href.includes("ticket")) {
+    //   const res = await getAction(`SysUser/login1`);
+    //   console.log("张升注意看返回值！", res);
+    // }
+    // const res = await getAction(`SysUser/login1`);
+    // console.log("张升注意看返回值！", res);
     // this.handleSubmit()
   },
   beforeDestroy() {
@@ -154,31 +155,34 @@ export default {
         message: "注销成功",
         duration: 4,
       });
-      this.$router.push("/user/login");
+      // this.$router.push("/user/login");
+      this.$router.push("/overView");
     },
     // 免登录获取token
-    handleSubmit() {
-      this.userName = "？？？";
-      this.Login()
-        .then((res) => {
-          this.$store.commit("setUserInfo", {
-            token: res.token,
-            username: "刘月焱",
-            role: "admin",
-            password: 111,
-            department: "哈克供电营业站",
-          });
-          this.$emit("success", res);
-        })
-        .catch((err) => {
-          this.$emit("fail", err);
-          // if (err.info == "用户已存在,自动登录") {
-          // 	// this.$router.push('/dashboard')
-          // 	this.$emit('success', err.info)
-          // } else {
-          // 	this.$emit('fail', err)
-          // }
-        });
+    async handleSubmit() {
+      const res = await getAction(`SysUser/login1`);
+      console.log("张升注意看返回值！", res);
+      // this.userName = "？？？";
+      // this.Login()
+      //   .then((res) => {
+      //     this.$store.commit("setUserInfo", {
+      //       token: res.token,
+      //       username: "刘月焱",
+      //       role: "admin",
+      //       password: 111,
+      //       department: "哈克供电营业站",
+      //     });
+      //     this.$emit("success", res);
+      //   })
+      //   .catch((err) => {
+      //     this.$emit("fail", err);
+      //     // if (err.info == "用户已存在,自动登录") {
+      //     // 	// this.$router.push('/dashboard')
+      //     // 	this.$emit('success', err.info)
+      //     // } else {
+      //     // 	this.$emit('fail', err)
+      //     // }
+      //   });
     },
   },
   components: {
@@ -291,7 +295,7 @@ export default {
     }
     .right {
       font-size: 28px;
-      color: #AFB4C0;
+      color: #afb4c0;
     }
   }
 }

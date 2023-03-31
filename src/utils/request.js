@@ -160,8 +160,8 @@ service.interceptors.response.use((response) => {
     console.log("response", response);
     store.commit("clearUserInfo", []);
     console.log("与张升测试ISC，在此处修改跳转，如需要改变，直接切换即可！");
-    // router.push('/overView')
-    router.push("/user/login");
+    router.push("/overView");
+    // router.push("/user/login");
   } else {
     // console.log('else')
     return response.data;

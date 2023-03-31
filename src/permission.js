@@ -32,9 +32,9 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       next();
-      //   // next({
-      //   // 	path: "/overView?redirect=" + to.path
-      //   // })
+      // next({
+      //   path: "/overView?redirect=" + to.path,
+      // });
       // next({
       //   path: "/user/login?redirect=" + to.path,
       // });

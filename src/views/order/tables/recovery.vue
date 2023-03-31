@@ -178,7 +178,9 @@ export default {
       console.log("搜索", e);
       this.loading = true;
       let tempStatus = e.workOrderStatus;
+      let tempelecTypeCode = e.elecTypeCode;
       delete e.workOrderStatus;
+      delete e.elecTypeCode;
       recycleWorkOrder(e)
         .then(({ data }) => {
           console.log("搜索", data);
@@ -211,6 +213,11 @@ export default {
           if (tempStatus && tempStatus.length > 0) {
             this.data = this.data.filter((item) => {
               return tempStatus.includes(item.workOrderStatus);
+            });
+          }
+          if (tempelecTypeCode && tempelecTypeCode.length > 0) {
+            this.data = this.data.filter((item) => {
+              return tempelecTypeCode.includes(item.elecTypeCode);
             });
           }
         })
