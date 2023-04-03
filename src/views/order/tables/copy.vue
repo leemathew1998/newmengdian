@@ -146,11 +146,11 @@ export default {
         );
       });
       for (var i = 0; i < this.data.length; i++) {
-        if (this.data[i].workOrderStatus == "1") {
+        if (this.data[i].workOrderStatus1 == "1") {
           this.data[i].workOrderStatus = "待处理";
-        } else if (this.data[i].workOrderStatus == "2") {
+        } else if (this.data[i].workOrderStatus1 == "2") {
           this.data[i].workOrderStatus = "处理中";
-        } else if (this.data[i].workOrderStatus == "3") {
+        } else if (this.data[i].workOrderStatus1 == "3") {
           this.data[i].workOrderStatus = "待归档";
         } else {
           this.data[i].workOrderStatus = "已归档";
@@ -190,11 +190,11 @@ export default {
             );
           });
           records.map((item, i) => {
-            if (item.workOrderStatus == "1") {
+            if (item.workOrderStatus1 == "1") {
               item.workOrderStatus = "待处理";
-            } else if (item.workOrderStatus == "2") {
+            } else if (item.workOrderStatus1 == "2") {
               item.workOrderStatus = "处理中";
-            } else if (item.workOrderStatus == "3") {
+            } else if (item.workOrderStatus1 == "3") {
               item.workOrderStatus = "待归档";
             } else {
               item.workOrderStatus = "已归档";
