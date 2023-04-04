@@ -18,7 +18,7 @@
           </a-form-item>
           <!-- 时间 -->
           <a-form-model-item>
-            <a-date-picker
+            <a-range-picker
               v-decorator="[
                 'workOrderCtime1',
                 {
@@ -26,8 +26,7 @@
                 },
               ]"
               valueFormat="yyyy-MM-DD"
-              :style="{ width: '150px' }"
-              placeholder="请选择日期"
+              :style="{ width: '200px' }"
             />
           </a-form-model-item>
           <!-- 工单状态 -->
@@ -56,14 +55,41 @@
               <a-select-option value="已归档">已归档</a-select-option>
             </a-select>
           </a-form-item>
+          <!-- 用户类别 -->
+          <a-form-item>
+            <a-select
+              v-decorator="[
+                'userType',
+                {
+                  rules: [
+                    {
+                      message: '请选择用户类别',
+                      trigger: 'blur',
+                    },
+                  ],
+                },
+              ]"
+              placeholder="请选择用户类别"
+              :style="{ minWidth: '150px' }"
+              allowClear
+            >
+              <a-select-option value="频繁停电">频繁停电用户</a-select-option>
+              <a-select-option value="敏感用户">敏感用户</a-select-option>
+            </a-select>
+          </a-form-item>
           <!-- 工单编号 -->
-          <!-- <a-form-item>
-						<a-input v-decorator="[
-                'workOrderNo',
-                { rules: [{ message: '请输入用户名称' }] },
-              ]" placeholder="请输入用户名称" :style="{ width: '150px' }" allowClear>
-						</a-input>
-					</a-form-item> -->
+          <a-form-item>
+            <a-input
+              v-decorator="[
+                'tgManager',
+                { rules: [{ message: '请输入台区经理名称' }] },
+              ]"
+              placeholder="请输入台区经理名称"
+              :style="{ width: '150px' }"
+              allowClear
+            >
+            </a-input>
+          </a-form-item>
           <!-- 开始时间 -->
           <!-- <a-form-item>
 						<a-range-picker v-decorator="['synchro_time']" :style="{ width: '230px' }" @change="onChange"

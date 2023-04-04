@@ -181,8 +181,12 @@ export default {
     // 搜索
     solveformData(e) {
       console.log("solveformData", e);
-      let tempStatus = e.workOrderStatus;
-      delete e.workOrderStatus;
+      // let tempStatus = e.workOrderStatus;
+      // delete e.workOrderStatus;
+      // let tempworkOrderCtime1 = e.workOrderCtime1;
+      // delete e.workOrderCtime1;
+      // let tempuserType = e.userType;
+      // delete e.userType;
       this.loading = true;
       superiorWorkOrder(e)
         .then(({ data }) => {
@@ -230,6 +234,21 @@ export default {
           if (tempStatus && tempStatus.length > 0) {
             this.data = this.data.filter((item) => {
               return tempStatus.includes(item.workOrderStatus);
+            });
+          }
+          if (tempworkOrderCtime1 && tempworkOrderCtime1.length > 0) {
+            this.data = this.data.filter((item) => {
+              return (
+                moment(tempworkOrderCtime1[0]).format("x") <
+                  moment(item.workOrderCtime).format("x") &&
+                moment(tempworkOrderCtime1[1]).format("x") >
+                  moment(item.workOrderCtime).format("x")
+              );
+            });
+          }
+          if (tempuserType && tempuserType.length > 0) {
+            this.data = this.data.filter((item) => {
+              return item.userType.indexOf(tempuserType) !== -1;
             });
           }
         })
