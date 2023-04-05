@@ -245,10 +245,8 @@ export default {
         }
         this.dictionary = unUsualList;
       }
-      // this.situation = []
-      const data = await postAction("coll/load", {
-        workOrderNo: e.workOrderNo,
-      });
+      this.situation = []
+      const data = await postAction(`coll/load?workOrderNo=${e.workOrderNo}`);
       console.log(data);
       const item = await dealSituation(
         data,
