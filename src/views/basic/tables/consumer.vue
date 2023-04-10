@@ -27,112 +27,104 @@
   </div>
 </template>
 <script>
-import Tables from "@/components/tables/baseTables"
-import NewModel from "@/components/NewModel/consumerModel"
-import SearchForm from "@/components/searchform/consumerSearch"
-import {
-  getAction,
-  postAction
-} from "@/api/manage"
-const columns = [{
-  title: "用户编号",
-  dataIndex: "consNo",
-  align: "center",
-  ellipsis: true,
-  width: 120
-},
-{
-  title: "用户名称",
-  dataIndex: "consName",
-  ellipsis: true,
-  align: "center",
-  width: 150
-},
-{
-  title: "用户地址",
-  dataIndex: "consAddr",
-  ellipsis: true,
-  align: "center",
-  width: 170
-},
-{
-  title: "供电单位",
-  dataIndex: "orgName",
-  ellipsis: true,
-  align: "center",
-  width: 100
-},
-{
-  title: "用户状态",
-  dataIndex: "consState",
-  align: "center",
-  width: 100
-},
-{
-  title: "抄表段编号",
-  dataIndex: "mrSectNo",
-  align: "center",
-  width: 90
-},
-{
-  title: "用户分类",
-  dataIndex: "consSortCode",
-  align: "center",
-  width: 135
-},
-{
-  title: "用户类别",
-  dataIndex: "elecTypeCode",
-  align: "center",
-  width: 130
-},
-{
-  title: "行业分类",
-  dataIndex: "tradeCode",
-  ellipsis: true,
-  align: "center",
-  width: 130
-},
-{
-  title: "供电电压",
-  dataIndex: "voltCode",
-  ellipsis: true,
-  align: "center",
-  width: 80
-},
-{
-  title: "合同容量(kVA)",
-  dataIndex: "contractCap",
-  align: "center",
-  width: 130
-},
-{
-  title: "运行容量(kVA)",
-  dataIndex: "runCap",
-  align: "center",
-  width: 130
-},
-{
-  title: "用电标志",
-  dataIndex: "elecCode",
-  align: "center",
-  width: 80
-},
-{
-  title: "抄表员姓名",
-  dataIndex: "readerName",
-  align: "center",
-  width: 80
-},
-{
-  title: "催费员姓名",
-  dataIndex: "remindName",
-  align: "center",
-  width: 80
-}
-]
+import Tables from "@/components/tables/baseTables";
+import NewModel from "@/components/NewModel/consumerModel";
+import SearchForm from "@/components/searchform/consumerSearch";
+import { getAction, postAction } from "@/api/manage";
+const columns = [
+  {
+    title: "用户编号",
+    dataIndex: "consNo",
+    align: "center",
+    ellipsis: true,
+    width: 120,
+  },
+  {
+    title: "用户名称",
+    dataIndex: "consName",
+    ellipsis: true,
+    align: "center",
+    width: 150,
+  },
+  {
+    title: "供电单位编号",
+    dataIndex: "orgNo",
+    ellipsis: true,
+    align: "center",
+    width: 120,
+  },
+  {
+    title: "用户地址",
+    dataIndex: "elecAddr",
+    ellipsis: true,
+    align: "center",
+    width: 170,
+  },
+  {
+    title: "用户状态",
+    dataIndex: "statusCode",
+    align: "center",
+    width: 100,
+  },
+  {
+    title: "用户分类",
+    dataIndex: "consSortCode",
+    align: "center",
+    width: 135,
+  },
+  {
+    title: "行业分类",
+    dataIndex: "tradeCode",
+    ellipsis: true,
+    align: "center",
+    width: 130,
+  },
+  {
+    title: "供电电压",
+    dataIndex: "voltCode",
+    ellipsis: true,
+    align: "center",
+    width: 80,
+  },
+  {
+    title: "合同容量(kVA)",
+    dataIndex: "contractCap",
+    align: "center",
+    width: 130,
+  },
+  {
+    title: "临时用电标志",
+    dataIndex: "tmpFlag",
+    align: "center",
+    width: 80,
+  },
+  {
+    title: "抄表段编号",
+    dataIndex: "mrSectNo",
+    align: "center",
+    width: 90,
+  },
+  {
+    title: "用户类别",
+    dataIndex: "elecTypeCode",
+    align: "center",
+    width: 130,
+  },
+  {
+    title: "运行容量(kVA)",
+    dataIndex: "runCap",
+    align: "center",
+    width: 130,
+  },
+  {
+    title: "抄表员姓名",
+    dataIndex: "readerName",
+    align: "center",
+    width: 80,
+  },
+];
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       data: [],
@@ -143,59 +135,64 @@ export default {
       // 弹窗数据
       ccontactData: [],
       cinformationData: [],
-      electricityPriceData: []
-    }
+      electricityPriceData: [],
+    };
   },
   components: {
     Tables,
     SearchForm,
     NewModel,
   },
-  created () {
-    this.initList()
+  created() {
+    this.initList();
   },
   methods: {
     // 数据展示分装
-    async initList (message = '') {
-      // this.loading = true
-      const res = await postAction('cContact/selectMessage?pageNo=1&pageSize=1000000&message=' + message)
-      this.data = res.data.userBasInfor[0].records
-      this.data.map((item) => {
-        item.ccontact = []
-        item.cinformation = []
-        item.electricityPrice = []
-        for (let i = 0; i < res.data.ccontact.length; i++) {
-          if (item.consNo == res.data.ccontact[i].consNo) {
-            item.ccontact.push(res.data.ccontact[i])
-          }
-        }
-        for (let i = 0; i < res.data.cinformation.length; i++) {
-          if (item.consNo == res.data.cinformation[i].consNo) {
-            item.cinformation.push(res.data.cinformation[i])
-          }
-        }
-        for (let i = 0; i < res.data.electricityPrice.length; i++) {
-          if (item.consNo == res.data.electricityPrice[i].consNo) {
-            item.electricityPrice.push(res.data.electricityPrice[i])
-          }
-        }
-      })
-      this.loading = false
+    async initList(
+      payload = {
+        consNo: "",
+        consName: "",
+        orgName: "",
+        elecTypeCode: "",
+      }
+    ) {
+      this.loading = true;
+      this.data = [];
+      const res = await postAction(
+        `coll/getConsListweb?consNo=${payload.consNo}&consName=${payload.consName}&orgName=${payload.orgName}&elecTypeCode=${payload.elecTypeCode}`
+      );
+      if (
+        res &&
+        res.length > 0 &&
+        !(res.hasOwnProperty("code") && res.code == 20001)
+      ) {
+        console.log("基本信息", res);
+        this.data = [...res];
+      }
+      this.loading = false;
     },
     // 搜索
-    solveformData (e) {
-      console.log("e", e)
-      this.initList(e.consNo)
+    solveformData(e) {
+      for (let key in e) {
+        if (!e[key]) {
+          e[key] = "";
+        }
+      }
+      console.log("e", e);
+      this.initList(e);
     },
-    changeSelectedRowKeys (e) {
-      this.selectedRowKeys = e
+    changeSelectedRowKeys(e) {
+      this.selectedRowKeys = e;
     },
     // 处理点击进入详情的数据
-    async clickRows (e) {
-      this.ccontactData = e.ccontact
-      this.cinformationData = e.cinformation
-      this.electricityPriceData = e.electricityPrice
-      this.NewModalVisible = true
+    clickRows(e) {
+      this.ccontactData = [];
+      postAction(`coll/getConsListMobile?consNo=${e.consNo}`).then((res) => {
+        console.log("电话：", res);
+        this.ccontactData = res;
+      });
+      this.cinformationData = e;
+      this.NewModalVisible = true;
     },
   },
 };

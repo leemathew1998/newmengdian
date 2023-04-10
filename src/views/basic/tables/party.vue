@@ -30,9 +30,9 @@
   </div>
 </template>
 <script>
-import Tables from "@/components/tables/baseTables"
-import NewModel from "@/components/NewModel/partyModel"
-import SearchForm from "@/components/searchform/partySearch"
+import Tables from "@/components/tables/baseTables";
+import NewModel from "@/components/NewModel/partyModel";
+import SearchForm from "@/components/searchform/partySearch";
 import {
   getAction,
   postAction,
@@ -40,61 +40,56 @@ import {
   cMpItRela,
   rCp,
   dMeter,
-  sItScheme
-} from "@/api/manage"
-const columns = [{
-  title: "计量点编号",
-  dataIndex: "mpNo",
-  align: "center",
-  width: 50,
-},
-{
-  title: "计量点容量",
-  dataIndex: "mpCap",
-  align: "center",
-  width: 70,
-},
-{
-  title: "电压等级",
-  dataIndex: "voltCode",
-  // ellipsis: true,
-  align: "center",
-  width: 70,
-},
-{
-  title: "电价金额",
-  dataIndex: "kwhPrc",
-  // ellipsis: true,
-  align: "center",
-  width: 70,
-},
-{
-  title: "电价名称",
-  dataIndex: "catPrcName",
-  align: "center",
-  width: 130,
-},
-{
-  title: "定比定量值",
-  dataIndex: "fqrValue",
-  align: "center",
-  width: 90,
-},
-{
-  title: "定比扣减标志",
-  dataIndex: "frDeductFlag",
-  align: "center",
-  width: 70,
-},
-{
-  title: "计量方式",
-  dataIndex: "measMode",
-  align: "center",
-  width: 70,
-},
-]
+  sItScheme,
+} from "@/api/manage";
+const columns = [
+  {
+    title: "计量点编号",
+    dataIndex: "mpNo",
+    align: "center",
+    width: 50,
+  },
+  {
+    title: "计量点容量",
+    dataIndex: "mpCap",
+    align: "center",
+    width: 70,
+  },
+  {
+    title: "电压等级",
+    dataIndex: "voltCode",
+    // ellipsis: true,
+    align: "center",
+    width: 70,
+  },
+  {
+    title: "计算方式",
+    dataIndex: "calcMode",
+    // ellipsis: true,
+    align: "center",
+    width: 70,
+  },
+  {
+    title: "定比扣减标志",
+    dataIndex: "frDeductFlag",
+    align: "center",
+    width: 130,
+  },
+  {
+    title: "计量方式",
+    dataIndex: "measMode",
+    align: "center",
+    width: 90,
+  },
+  {
+    title: "台区名称",
+    dataIndex: "tgName",
+    align: "center",
+    width: 70,
+  },
+];
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       data: [],
@@ -112,71 +107,77 @@ export default {
       pageConfig: {
         current: 1,
         total: 10,
-        pageSize: 10
-      }
-    }
+        pageSize: 10,
+      },
+    };
   },
   components: {
     Tables,
     SearchForm,
     NewModel,
   },
-  created () {
-    this.initList()
+  created() {
+    this.initList();
   },
   watch: {
-    'pageConfig': {
+    pageConfig: {
       handler: function (newVal) {
-        this.initList()
+        this.initList();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     // 数据展示分装
-    async initList () {
-      this.loading = true
-      const res = await postAction(
-        `/cMp/selectAll?current=${this.pageConfig.current}&size=${this.pageConfig.pageSize}`)
-      this.data = res.data.records
-      this.pageConfig.pageSize = res.data.size
-      this.pageConfig.total = res.data.total
-      this.pageConfig.current = res.data.current
-      this.loading = false
+    async initList(payload = { mpId: "" }) {
+      this.loading = true;
+      let mpId = payload.mpId;
+      let postList = [
+        postAction(`coll/getMeter1?mpId=${mpId}`),
+        postAction(`coll/getMeter2?mpId=${mpId}`),
+        postAction(`coll/getMeter3?mpId=${mpId}`),
+        postAction(`coll/getMeter4?mpId=${mpId}`),
+      ];
+      const res = await Promise.all(postList);
+      if (res) {
+        if (
+          res[0] &&
+          !(res[0].hasOwnProperty("code") && res[0].code == 20001)
+        ) {
+          this.basics = res[0];
+        }
+        if (
+          res[1] &&
+          !(res[1].hasOwnProperty("code") && res[1].code == 20001)
+        ) {
+          this.mpNo = res[1];
+        }
+        if (
+          res[2] &&
+          !(res[2].hasOwnProperty("code") && res[2].code == 20001)
+        ) {
+          this.dMeter = [...res[2]];
+        }
+        if (
+          res[3] &&
+          !(res[3].hasOwnProperty("code") && res[3].code == 20001)
+        ) {
+          this.sItScheme = res[3];
+        }
+      }
+      console.log("全部打印", res);
+      this.loading = false;
     },
     // 搜索
-    solveformData (e) {
-      cMp(e).then(res => {
-        this.data = res.data.records
-      })
+    solveformData(e) {
+      this.initList(e);
     },
-    changeSelectedRowKeys (e) {
-      this.selectedRowKeys = e
+    changeSelectedRowKeys(e) {
+      this.selectedRowKeys = e;
     },
     // 处理点击进入详情的数据
-    async clickRows (e) {
-      this.NewModalVisible = true
-      this.basics = e
-      cMpItRela({
-        mpNo: e.mpNo
-      }).then((res) => {
-        this.mpNo = res.data.records
-      })
-      rCp({
-        mpNo: e.mpNo
-      }).then((res) => {
-        this.rCpmpNo = res.data.records
-      })
-      dMeter({
-        mpNo: e.mpNo
-      }).then((res) => {
-        this.dMeter = res.data.records
-      })
-      sItScheme({
-        mpNo: e.mpNo
-      }).then((res) => {
-        this.sItScheme = res.data.records
-      })
+    async clickRows(e) {
+      this.NewModalVisible = true;
     },
   },
 };

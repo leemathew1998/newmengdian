@@ -44,17 +44,27 @@
         </a-form-item>
         <!-- 台区名称 -->
         <a-form-item>
-          <a-select
+          <a-tree-select
+            style="width: 100%"
+            :tree-data="treeData"
+            tree-checkable
             v-decorator="[
               'elecTypeCode',
-              { rules: [{ message: '请选择用户类别' }] },
+              {
+                rules: [
+                  {
+                    type: 'array',
+                    message: '请选择用电类别',
+                    trigger: 'blur',
+                  },
+                ],
+              },
             ]"
-            placeholder="请选择用户类别"
-            :style="{ width: '150px' }"
+            search-placeholder="请选择用电类别"
+            placeholder="请选择用电类别"
+            :style="{ minWidth: '150px', maxWidth: '250px' }"
             allowClear
-          >
-            <a-select-option value="大工业用电"> 大工业用电 </a-select-option>
-          </a-select>
+          />
         </a-form-item>
         <!-- 标记时间 -->
         <!-- <a-form-item>
@@ -93,34 +103,118 @@
 </template>
 
 <script>
+const treeData = [
+  {
+    title: "大工业用电",
+    value: "大工业用电",
+    key: "大工业用电",
+  },
+  {
+    title: "居民生活用电",
+    value: "居民生活用电",
+    key: "居民生活用电",
+    children: [
+      {
+        title: "乡村居民生活用电",
+        value: "乡村居民生活用电",
+        key: "乡村居民生活用电",
+      },
+      {
+        title: "城镇居民生活用电",
+        value: "城镇居民生活用电",
+        key: "城镇居民生活用电",
+      },
+      {
+        title: "中小学教学用电",
+        value: "中小学教学用电",
+        key: "中小学教学用电",
+      },
+    ],
+  },
+  {
+    title: "农业生产用电",
+    value: "农业生产用电",
+    key: "农业生产用电",
+  },
+  {
+    title: "一般工商业",
+    value: "一般工商业",
+    key: "一般工商业",
+    children: [
+      {
+        title: "非居民照明",
+        value: "非居民照明",
+        key: "非居民照明",
+      },
+      {
+        title: "非工业",
+        value: "非工业",
+        key: "非工业",
+      },
+      {
+        title: "普通工业",
+        value: "普通工业",
+        key: "普通工业",
+      },
+      {
+        title: "商业用电",
+        value: "商业用电",
+        key: "商业用电",
+      },
+    ],
+  },
+  {
+    title: "泵售",
+    value: "泵售",
+    key: "泵售",
+  },
+  {
+    title: "大用户直购电",
+    value: "大用户直购电",
+    key: "大用户直购电",
+    children: [
+      {
+        title: "大用户直购电",
+        value: "大用户直购电",
+        key: "大用户直购电",
+      },
+    ],
+  },
+  {
+    title: "其它用电",
+    value: "其它用电",
+    key: "其它用电",
+  },
+];
 export default {
   props: {
     // value:{
     // 	type:Object
     // },
   },
-  data () {
+  data() {
     return {
       form: this.$form.createForm(this, {
         name: "searchform",
       }),
-    }
+      treeData,
+    };
   },
-  mounted () {
+  mounted() {
     // 验证字段
     this.$nextTick(() => {
-      this.form.validateFields()
-    })
+      this.form.validateFields();
+    });
   },
   methods: {
     // 搜索传值
-    handleSubmit (e) {
-      e.preventDefault()
+    handleSubmit(e) {
+      e.preventDefault();
       this.form.validateFields((err, values) => {
-        this.$emit("formData", values)
+        this.$emit("formData", values);
         // this.$emit('input', values);
         // console.log(values,'asdd');
-      })
+      });
     },
     // searchList(){
     // 	const inputValue = e.target.values;
@@ -133,17 +227,17 @@ export default {
     // 	});
     // },
     // 重置为空
-    handleReset (e) {
-      this.form.resetFields()
-      e.preventDefault()
+    handleReset(e) {
+      this.form.resetFields();
+      e.preventDefault();
 
       this.form.validateFields((err, values) => {
-        this.$emit("formData", values)
-      })
+        this.$emit("formData", values);
+      });
     },
 
-    onChange (date, dateString) {
-      console.log(dateString)
+    onChange(date, dateString) {
+      console.log(dateString);
     },
     // ande: function(e){
     // 	console.log(e,'e')
