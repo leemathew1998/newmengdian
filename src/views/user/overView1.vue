@@ -104,17 +104,6 @@ export default {
       fileList.forEach((file) => {
         formData.append("file", file);
       });
-      axios({
-        url: "http://25.73.1.171:18080/api/file/upload",
-        method: "post",
-        data: formData,
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log("报错了：", err);
-        });
       postAction("file/upload", formData)
         .then((res) => {
           console.log(res);
@@ -122,7 +111,6 @@ export default {
         .catch((err) => {
           console.log("报错了：", err);
         });
-      // console.log(res);
     },
     beforeUpload(file) {
       this.fileList = [...this.fileList, file];

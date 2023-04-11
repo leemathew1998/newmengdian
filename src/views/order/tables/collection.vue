@@ -1,22 +1,21 @@
 <template>
-  <div class="warp">
-    <div class="cardShadow">
-      <!-- 搜索 -->
-      <div class="form">
-        <SearchForm @formData="solveformData"></SearchForm>
-        <!-- <SearchForm v-model="solveformData"></SearchForm> -->
-      </div>
-
-      <!-- 表格 -->
-      <Tables
-        @changeSelectedRowKeys="changeSelectedRowKeys"
-        @clickRow="clickRows"
-        :columns="columns"
-        :data="data"
-        :loading="loading"
-        :scroll="1500"
-      ></Tables>
+  <div class="warp-order">
+    <!-- 搜索 -->
+    <div class="form">
+      <SearchForm @formData="solveformData"></SearchForm>
+      <!-- <SearchForm v-model="solveformData"></SearchForm> -->
     </div>
+
+    <!-- 表格 -->
+    <Tables
+      style="height: calc(100% - 100px)"
+      @changeSelectedRowKeys="changeSelectedRowKeys"
+      @clickRow="clickRows"
+      :columns="columns"
+      :data="data"
+      :loading="loading"
+      :scroll="1500"
+    ></Tables>
     <!-- 弹窗 -->
     <NewModel
       :visible="NewModalVisible"
@@ -245,7 +244,7 @@ export default {
         }
         this.dictionary = unUsualList;
       }
-      this.situation = []
+      this.situation = [];
       const data = await postAction(`coll/load?workOrderNo=${e.workOrderNo}`);
       console.log(data);
       const item = await dealSituation(
@@ -367,9 +366,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.warp {
-  // display: flex;
-  // flex-direction: column;
+.warp-order {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   // justify-content: center;
   // align-items: center;
   .form {

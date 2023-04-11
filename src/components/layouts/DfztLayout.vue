@@ -6,7 +6,13 @@
       <DfztHeader />
 
       <a-layout-content
-        :style="{padding: '120px 20px 0 20px', background: '#fff', minHeight: '280px', overflow: 'initial' }">
+        :style="{
+          padding: '120px 20px 0 20px',
+          background: '#fff',
+          minHeight: '280px',
+          overflow: 'initial',
+        }"
+      >
         <router-view />
       </a-layout-content>
     </a-layout>
@@ -38,31 +44,28 @@
         </a-layout-footer>
       </a-layout>
     </a-layout> -->
-
-
-
 </template>
 <script>
-  import DfztSider from '@/components/layouts/DfztSider'
-  import DfztHeader from '@/components/layouts/DfztHeader'
-  export default {
-    data() {
-      return {
-
-      };
-    },
-    components: {
-      DfztSider,
-      DfztHeader
-    }
-  };
+import DfztSider from "@/components/layouts/DfztSider";
+import DfztHeader from "@/components/layouts/DfztHeader";
+export default {
+  data() {
+    return {};
+  },
+  components: {
+    DfztSider,
+    DfztHeader,
+  },
+};
 </script>
 <style lang="less" scoped>
-
-  #components-layout-demo-fixed-sider .logo {
+#components-layout-demo-fixed-sider {
+  height: 100%;
+  .logo {
     height: 32px;
-    
+
     background: rgba(255, 255, 255, 0.2);
     margin: 16px;
   }
+}
 </style>

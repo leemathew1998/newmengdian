@@ -96,7 +96,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       selectItem: [
         "collection",
@@ -109,35 +109,47 @@ export default {
         "activeMetering",
         "activeRepair",
       ],
-    }
+    };
   },
-  mounted () {
-    this.$refs[this.$route.name].children[0].style.backgroundColor = "#28599d"
-    this.$refs[this.$route.name].children[0].style.borderTopLeftRadius = "5px"
-    this.$refs[this.$route.name].children[0].style.borderTopRightRadius = "5px"
-    this.$refs[this.$route.name].children[1].style.borderTopLeftRadius = "5px"
-    this.$refs[this.$route.name].children[1].style.borderTopRightRadius = "5px"
-    this.$refs[this.$route.name].children[1].style.lineHeight = "50px"
-    this.$refs[this.$route.name].children[1].style.background = "#28599d"
+  mounted() {
+    this.$refs[this.$route.name].children[0].style.backgroundColor = "#28599d";
+    this.$refs[this.$route.name].children[0].style.borderTopLeftRadius = "5px";
+    this.$refs[this.$route.name].children[0].style.borderTopRightRadius = "5px";
+    this.$refs[this.$route.name].children[1].style.borderTopLeftRadius = "5px";
+    this.$refs[this.$route.name].children[1].style.borderTopRightRadius = "5px";
+    this.$refs[this.$route.name].children[1].style.lineHeight = "50px";
+    this.$refs[this.$route.name].children[1].style.background = "#28599d";
   },
   methods: {
-    changePages (path) {
+    changePages(path) {
       // console.log(path.split('/')[2],this.$refs['collection'],this.$refs)
       for (let item = 0; item < this.selectItem.length; item++) {
-        this.$refs[this.selectItem[item]].children[0].style.backgroundColor = "#f3f3f3"
-        this.$refs[this.selectItem[item]].children[0].style.borderTopLeftRadius = "0"
-        this.$refs[this.selectItem[item]].children[0].style.borderTopRightRadius = "0"
-        this.$refs[this.selectItem[item]].children[1].style.borderTopLeftRadius = "0"
-        this.$refs[this.selectItem[item]].children[1].style.borderTopRightRadius = "0"
-        this.$refs[this.selectItem[item]].children[1].style.lineHeight = "25px"
-        this.$refs[this.selectItem[item]].children[1].style.background = "#aaaaaa"
+        this.$refs[this.selectItem[item]].children[0].style.backgroundColor =
+          "#f3f3f3";
+        this.$refs[
+          this.selectItem[item]
+        ].children[0].style.borderTopLeftRadius = "0";
+        this.$refs[
+          this.selectItem[item]
+        ].children[0].style.borderTopRightRadius = "0";
+        this.$refs[
+          this.selectItem[item]
+        ].children[1].style.borderTopLeftRadius = "0";
+        this.$refs[
+          this.selectItem[item]
+        ].children[1].style.borderTopRightRadius = "0";
+        this.$refs[this.selectItem[item]].children[1].style.lineHeight = "25px";
+        this.$refs[this.selectItem[item]].children[1].style.background =
+          "#aaaaaa";
       }
-      this.$refs[path.split("/")[2]].children[0].style.height = "0px"
-      this.$refs[path.split("/")[2]].children[1].style.borderTopLeftRadius = "5px"
-      this.$refs[path.split("/")[2]].children[1].style.borderTopRightRadius = "5px"
-      this.$refs[path.split("/")[2]].children[1].style.lineHeight = "50px"
-      this.$refs[path.split("/")[2]].children[1].style.background = "#28599d"
-      this.$router.push(path)
+      this.$refs[path.split("/")[2]].children[0].style.height = "0px";
+      this.$refs[path.split("/")[2]].children[1].style.borderTopLeftRadius =
+        "5px";
+      this.$refs[path.split("/")[2]].children[1].style.borderTopRightRadius =
+        "5px";
+      this.$refs[path.split("/")[2]].children[1].style.lineHeight = "50px";
+      this.$refs[path.split("/")[2]].children[1].style.background = "#28599d";
+      this.$router.push(path);
     },
   },
 };
@@ -147,7 +159,7 @@ export default {
 .warp {
   display: flex;
   flex-direction: column;
-
+  height: calc(100% - 20px);
   #table_tr {
     display: flex;
     align-items: center;

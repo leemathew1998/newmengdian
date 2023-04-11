@@ -135,9 +135,9 @@ service.interceptors.request.use(
         };
       }
     }
-    if (config.url.indexOf("/file/upload") !== -1) {
-      config.headers["Content-Type"] = "multipart/form-data";
-    }
+    // if (config.url.indexOf("/file/upload") !== -1) {
+    //   config.headers["Content-Type"] = "multipart/form-data";
+    // }
     return config;
   },
   (error) => {
