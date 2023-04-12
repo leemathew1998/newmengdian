@@ -139,6 +139,7 @@ export default {
         postAction(`coll/getMeter4?mpId=${mpId}`),
       ];
       const res = await Promise.all(postList);
+      console.log("全部打印", res);
       if (res) {
         if (
           res[0] &&
@@ -156,7 +157,7 @@ export default {
           res[2] &&
           !(res[2].hasOwnProperty("code") && res[2].code == 20001)
         ) {
-          this.dMeter = [...res[2]];
+          this.dMeter = [res[2]];
         }
         if (
           res[3] &&
@@ -165,7 +166,6 @@ export default {
           this.sItScheme = res[3];
         }
       }
-      console.log("全部打印", res);
       this.loading = false;
     },
     // 搜索

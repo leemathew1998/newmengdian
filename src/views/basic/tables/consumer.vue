@@ -118,7 +118,7 @@ const columns = [
   },
   {
     title: "抄表员姓名",
-    dataIndex: "readerName",
+    dataIndex: "realName",
     align: "center",
     width: 80,
   },

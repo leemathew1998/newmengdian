@@ -23,7 +23,7 @@
 					</a-input>
 				</a-form-item> -->
         <!-- 台区名称 -->
-        <a-form-item>
+        <!-- <a-form-item>
           <a-select
             v-decorator="[
               'voltCode',
@@ -36,7 +36,7 @@
             <a-select-option value="交流10kV"> 交流10kV </a-select-option>
             <a-select-option value="交流100kV"> 交流100kV </a-select-option>
           </a-select>
-        </a-form-item>
+        </a-form-item> -->
 
         <!-- 供电单位 -->
         <!-- <a-form-item>
