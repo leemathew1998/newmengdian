@@ -157,7 +157,7 @@ export default {
           res[2] &&
           !(res[2].hasOwnProperty("code") && res[2].code == 20001)
         ) {
-          this.dMeter = [res[2]];
+          this.dMeter = res[2];
         }
         if (
           res[3] &&
