@@ -10,7 +10,7 @@ NProgress.configure({
 const whiteList = ["/user/login", "/404", "/overView", "/overView1"]; // no redirect whitelist
 router.beforeEach((to, from, next) => {
   NProgress.start(); // start progress bar
-  console.log("router enter", to.path);
+  console.log("router enter", to);
   if (whiteList.includes(to.path)) {
     next();
   } else {
@@ -30,14 +30,16 @@ router.beforeEach((to, from, next) => {
           });
         }
       }
-    } else {
+    } else if (to.query && to.query.forcedRouting) {
       next();
-      // next({
-      //   path: "/overView?redirect=" + to.path,
-      // });
       // next({
       //   path: "/user/login?redirect=" + to.path,
       // });
+    } else {
+      // next();
+      next({
+        path: "/overView?redirect=" + to.path,
+      });
     }
   }
 });
