@@ -190,7 +190,7 @@ export default {
       const temp = await postAction(
         "mwo/loadwkoreder?workOrderNo=" + this.clickRow.workOrderNo
       );
-      const res = dealSituation(
+      const res = await dealSituation(
         temp,
         "liveVideo",
         "livePhotos",

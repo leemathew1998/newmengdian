@@ -237,7 +237,7 @@ export default {
       const { data } = await getAction(
         "feecontrolWorkOrder/selectWorkOrderScene?workOrderNo=" + e.workOrderNo
       );
-      const res = dealSituation(
+      const res = await dealSituation(
         data,
         "liveVideo",
         "livePhotos",

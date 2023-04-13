@@ -253,7 +253,7 @@ export default {
       // 初始化现场情况
       this.situation = [];
       const { data } = await getAction("runWorkOrder/queryOne?gdNo=" + e.appNo);
-      const res = dealSituation(
+      const res = await dealSituation(
         data,
         "gdEventVideo",
         "gdEventPhoto",

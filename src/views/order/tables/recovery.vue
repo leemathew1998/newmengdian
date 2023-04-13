@@ -246,7 +246,7 @@ export default {
       const { data } = await postAction(
         "recycleWorkOrder/selectWordOrderId?workOrderId=" + e.workOrderNo
       );
-      const res = dealSituation(
+      const res = await dealSituation(
         data,
         "liveVideo",
         "livePhotos",

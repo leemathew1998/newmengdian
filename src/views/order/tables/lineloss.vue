@@ -182,7 +182,7 @@ export default {
       const data = await postAction(
         "/lineloss/load?workOrderNo=" + e.workOrderNo
       );
-      const res = dealSituation(
+      const res = await dealSituation(
         data,
         "liveVideo",
         "livePhotos",
