@@ -7,10 +7,10 @@ function setCookie(json, days) {
   // 设置过期时间
   let data = new Date(
     new Date().getTime() + days * 24 * 60 * 60 * 1000
-  ).toUTCString();
+  ).toUTCString()
 
   for (var key in json) {
-    document.cookie = key + "=" + json[key] + "; expires=" + data;
+    document.cookie = key + '=' + json[key] + '; expires=' + data
   }
 }
 
@@ -19,11 +19,11 @@ function setCookie(json, days) {
  * @param {String} name 需要获取cookie的key
  */
 function getCookie(name) {
-  var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+  var arr = document.cookie.match(new RegExp('(^| )' + name + '=([^;]*)(;|$)'))
   if (arr != null) {
-    return unescape(arr[2]);
+    return unescape(arr[2])
   } else {
-    return null;
+    return null
   }
 }
 
@@ -32,13 +32,13 @@ function getCookie(name) {
  * @param {String} name 需要删除cookie的key
  */
 function clearCookie(name) {
-  let json = {};
-  json[name] = "";
-  setCookie(json, -1);
+  let json = {}
+  json[name] = ''
+  setCookie(json, -1)
 }
 
 export default {
   setCookie,
   getCookie,
-  clearCookie,
-};
+  clearCookie
+}

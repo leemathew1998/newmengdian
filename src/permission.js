@@ -1,49 +1,49 @@
-import Vue from "vue";
-import router from "./router";
-import store from "./store";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
-import { constantRouterMap, roleOne } from "@/config/router.config";
+import Vue from 'vue'
+import router from './router'
+import store from './store'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+import { constantRouterMap, roleOne } from '@/config/router.config'
 NProgress.configure({
-  showSpinner: false,
-});
-const whiteList = ["/user/login", "/404", "/overView", "/overView1"]; // no redirect whitelist
+  showSpinner: false
+})
+const whiteList = ['/user/login', '/404', '/overView', '/overView1'] // no redirect whitelist
 router.beforeEach((to, from, next) => {
-  NProgress.start(); // start progress bar
-  console.log("router enter", to);
+  NProgress.start() // start progress bar
+  console.log('router enter', to)
   if (whiteList.includes(to.path)) {
-    next();
+    next()
   } else {
     // next()
     if (store.getters.token) {
       if (to.meta.roles.includes(store.getters.role)) {
-        next();
+        next()
       } else {
         // 此处证明他为台区经理，跳转到他台区经理绩效界面
-        if (to.path == "/achievements") {
+        if (to.path == '/achievements') {
           next({
-            path: "/achievements/manger",
-          });
+            path: '/achievements/manger'
+          })
         } else {
           next({
-            path: "/404",
-          });
+            path: '/404'
+          })
         }
       }
     } else if (to.query && to.query.forcedRouting) {
-      next();
+      next()
       // next({
       //   path: "/user/login?redirect=" + to.path,
       // });
     } else {
-      // next();
-      next({
-        path: "/overView?redirect=" + to.path,
-      });
+      next()
+      // next({
+      //   path: "/overView?redirect=" + to.path,
+      // });
     }
   }
-});
+})
 
 router.afterEach(() => {
-  NProgress.done(); // finish progress bar
-});
+  NProgress.done() // finish progress bar
+})

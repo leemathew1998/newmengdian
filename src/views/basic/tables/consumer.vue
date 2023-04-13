@@ -164,7 +164,7 @@ export default {
       if (
         res &&
         res.length > 0 &&
-        !(res.hasOwnProperty('code') && res.code == 20001)
+        !(res.hasOwnProperty('code') && res.code === 20001)
       ) {
         console.log('基本信息', res)
         this.data = [...res]

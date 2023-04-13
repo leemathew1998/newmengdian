@@ -53,11 +53,14 @@ const user = {
 
 	mutations: {
 		setUserInfo: (state, info) => {
-			state.token = info.token
-			state.username = info.username
-			state.password = info.password
-			state.department = info.department
-			state.role = info.role
+			for (let key in info) {
+				state[key] = info[key]
+			}
+			// state.token = info.token
+			// state.username = info.username
+			// state.password = info.password
+			// state.department = info.department
+			// state.role = info.role
 			localStorage.setItem('UserInfo', JSON.stringify({
 				'token': info.token,
 				'username': info.username,
