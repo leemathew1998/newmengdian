@@ -37,7 +37,7 @@
           </a-collapse-panel>
           <a-collapse-panel header="计费关系" :disabled="false" key="2">
             <div class="box" v-for="(item, key) in mpNo" :key="key + '2'">
-              <p class="two">关系分类：{{ item.relationType }}</p>
+              <p class="two">关系分类：{{ item.relaSortCode }}</p>
               <p class="two">计量点：{{ item.mpName }}</p>
               <p class="two">计量点编号：{{ item.mpId }}</p>
               <p class="two">用电客户：{{ item.consName }}</p>
@@ -60,7 +60,7 @@
           <a-collapse-panel header="电能表档案" :disabled="false" key="4">
             <div class="box" v-for="(item, key) in dMeter" :key="key + '4'">
               <p class="first">资产编号：{{ item.assetNo }}</p>
-              <p class="first">综合倍率：{{ item.tFactor }}</p>
+              <p class="first">综合倍率：{{ item.tfactor }}</p>
               <p class="first">是否参考表：{{ item.refMeterFlag }}</p>
               <p class="first">额定电压：{{ item.voltCode }}</p>
               <p class="first">标定电流：{{ item.ratedCurrent }}</p>
@@ -70,8 +70,8 @@
               <p class="first">接入方式：{{ item.conMode }}</p>
               <p class="first">制造单位：{{ item.manufacturer }}</p>
               <p class="first">通信规约：{{ item.commProtCode }}</p>
-              <p class="first">终端地址码：{{ item.terminalAddr }}</p>
-              <p class="first">终端关型：{{ item.terminalTypeCode }}</p>
+              <!-- <p class="first">终端地址码：{{ item.terminalAddr }}</p>
+              <p class="first">终端关型：{{ item.terminalTypeCode }}</p> -->
               <p class="first"></p>
             </div>
           </a-collapse-panel>
