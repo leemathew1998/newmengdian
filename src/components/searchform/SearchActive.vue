@@ -1,136 +1,163 @@
 <template>
-	<div class="warp">
-		<a-form layout="inline" :form="form" @submit="handleSubmit" class="form">
-			<div class="formRegion">
-				<div class="rowOne">
-					<!-- 工单编号 -->
-					
-					<!-- 台区编号 -->
-					<a-form-item>
-						<a-input v-decorator="[
+  <div class="warp">
+    <a-form layout="inline" :form="form" @submit="handleSubmit" class="form">
+      <div class="formRegion">
+        <div class="rowOne">
+          <!-- 工单编号 -->
+
+          <!-- 台区编号 -->
+          <a-form-item>
+            <a-input
+              v-decorator="[
                 'tgNo',
                 { rules: [{ message: '请输入台区编号' }] },
-              ]" placeholder="台区编号" :style="{ width: '150px' }" allowClear>
-						</a-input>
-					</a-form-item>
-					<!-- 台区经理 -->
-					<a-form-item>
-						<a-input v-decorator="[
+              ]"
+              placeholder="台区编号"
+              :style="{ width: '150px' }"
+              allowClear>
+            </a-input>
+          </a-form-item>
+          <!-- 台区经理 -->
+          <a-form-item>
+            <a-input
+              v-decorator="[
                 'tgManager',
                 { rules: [{ message: '请输入台区经理' }] },
-              ]" placeholder="台区经理" :style="{ width: '150px' }" allowClear>
-						</a-input>
-					</a-form-item>
-					
-					<!-- 工单状态 -->
-					<a-form-item>
-						<a-select v-decorator="[
+              ]"
+              placeholder="台区经理"
+              :style="{ width: '150px' }"
+              allowClear>
+            </a-input>
+          </a-form-item>
+
+          <!-- 工单状态 -->
+          <a-form-item>
+            <a-select
+              v-decorator="[
                 'workOrderStatus',
-                { rules: [{ message: '请选择工单状态' }] },
-              ]" placeholder="请选择工单状态" :style="{ width: '150px' }" allowClear>
-							<a-select-option value="1">待处理</a-select-option>
-							<a-select-option value="2">处理中</a-select-option>
-							<a-select-option value="3">待归档</a-select-option>
-							<a-select-option value="4">已归档</a-select-option>
-						</a-select>
-					</a-form-item>
-					<!-- 工单编号 -->
-					<!-- <a-form-item>
+                {
+                  initialValue: ['1', '2', '3'],
+                  rules: [
+                    {
+                      type: 'array',
+                      message: '请选择工单状态',
+                      trigger: 'blur',
+                    },
+                  ],
+                },
+              ]"
+              placeholder="请选择工单处理状态"
+              :style="{ minWidth: '150px' }"
+              allowClear
+              mode="multiple">
+              <a-select-option value="1">待处理</a-select-option>
+              <a-select-option value="2">处理中</a-select-option>
+              <a-select-option value="3">待归档</a-select-option>
+              <a-select-option value="4">已归档</a-select-option>
+            </a-select>
+          </a-form-item>
+          <!-- 工单编号 -->
+          <!-- <a-form-item>
 						<a-input v-decorator="[
                 'workOrderNo',
                 { rules: [{ message: '请输入用户名称' }] },
               ]" placeholder="请输入用户名称" :style="{ width: '150px' }" allowClear>
 						</a-input>
 					</a-form-item> -->
-					<!-- 开始时间 -->
-					<!-- <a-form-item>
+          <!-- 开始时间 -->
+          <!-- <a-form-item>
 						<a-range-picker v-decorator="['synchro_time']" :style="{ width: '230px' }" @change="onChange"
 							allowClear />
 					</a-form-item> -->
-					<!-- 结束时间 -->
-				</div>
-			</div>
+          <!-- 结束时间 -->
+        </div>
+      </div>
 
-			<div class="buttonRegion">
-				<a-form-item>
-					<a-button type="primary" icon="search" html-type="submit" style="background-color: #28599d;"
-						@click="handleSubmit">查询</a-button>
-				</a-form-item>
-				<a-form-item>
-					<a-button icon="reload" @click="handleReset"> 重置 </a-button>
-				</a-form-item>
-			</div>
+      <div class="buttonRegion">
+        <a-form-item>
+          <a-button
+            type="primary"
+            icon="search"
+            html-type="submit"
+            style="background-color: #28599d;"
+            @click="handleSubmit">查询</a-button>
+        </a-form-item>
+        <a-form-item>
+          <a-button icon="reload" @click="handleReset"> 重置 </a-button>
+        </a-form-item>
+      </div>
 
-			<a-form-item>
-				<slot name="import"></slot>
-			</a-form-item>
-		</a-form>
-	</div>
+      <a-form-item>
+        <slot name="import"></slot>
+      </a-form-item>
+    </a-form>
+  </div>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				form: this.$form.createForm(this, {
-					name: "searchform",
-				}),
-			};
-		},
-		mounted() {
-			this.$nextTick(() => {
-				this.form.validateFields();
-			});
-		},
-		methods: {
-			handleSubmit(e) {
-				e.preventDefault();
+export default {
+  data() {
+    return {
+      form: this.$form.createForm(this, {
+        name: 'searchform'
+      })
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.form.validateFields()
+      this.handleSubmit()
+    })
+  },
+  methods: {
+    handleSubmit(e) {
+      e && e.preventDefault()
+      this.form.validateFields((err, values) => {
+        values.workOrderStatus = values.workOrderStatus.join(',')
+        this.$emit('formData', values)
+        if (!err) {
+          console.log('Received values of form: ', values)
+        }
+      })
+    },
+    handleReset() {
+      this.form.resetFields()
+      this.handleSubmit()
+    },
 
-				this.form.validateFields((err, values) => {
-					this.$emit("formData", values);
-					// if (!err) {
-					// 	console.log("Received values of form: ", values);
-					// }
-				});
-			},
-			handleReset() {
-				this.form.resetFields();
-				this.$parent.loadData()
-			},
-
-			onChange(date, dateString) {
-				console.log(date, dateString);
-			},
-		},
-	};
+    onChange(date, dateString) {
+      console.log(date, dateString)
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
-	.warp {
-		.form {
-			display: flex;
-			width: 100%;
+.warp {
+  .form {
+    display: flex;
+    width: 100%;
 
-			.formRegion {
-				flex: 5;
-				display: flex;
-				flex-wrap: nowrap;
-				flex-direction: column;
-			}
+    .formRegion {
+      flex: 5;
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: column;
+    }
 
-			.buttonRegion {
-				flex: 1;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-		}
-	}
+    .buttonRegion {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
 
-	.ant-form,
-	.ant-form-inline {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
+.ant-form,
+.ant-form-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

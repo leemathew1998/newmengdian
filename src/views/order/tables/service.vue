@@ -5,6 +5,7 @@
     </div>
     <Tables
       @changeSelectedRowKeys="changeSelectedRowKeys"
+      @tablePaginationChange="loadData"
       @clickRow="clickRows"
       :columns="columns"
       :data="data"
@@ -13,7 +14,8 @@
       xlsxName="优质服务"
       :exportUrl="exportUrl"
       :ids="ids"
-    ></Tables>
+      ref="table">
+    </Tables>
     <NewModel
       :visible="NewModalVisible"
       modalName="工单详情"
@@ -25,72 +27,71 @@
       :isSensitivity="isSensitivity"
       :isOutage="isOutage"
       name="优质服务"
-      :loading="loading"
-    ></NewModel>
+      :loading="loading"></NewModel>
   </div>
 </template>
 
 <script>
-import moment from "moment";
-import Tables from "@/components/tables/Tables";
-import NewModel from "@/components/NewModel/serve.vue";
-import SearchForm from "@/components/searchform/SearchService";
-import { getAction, postAction, superiorWorkOrder } from "@/api/manage";
-import { serviceList } from "@/components/NewModel/constant.js";
-import { dealWorkOrderStatus } from "@/utils/util.js";
+import moment from 'moment'
+import Tables from '@/components/tables/Tables'
+import NewModel from '@/components/NewModel/serve.vue'
+import SearchForm from '@/components/searchform/SearchService'
+import { getAction, postAction, superiorWorkOrder } from '@/api/manage'
+import { serviceList } from '@/components/NewModel/constant.js'
+import { dealWorkOrderStatus } from '@/utils/util.js'
 const columns = [
   {
-    title: "工单编号",
-    dataIndex: "appNo",
-    align: "center",
+    title: '工单编号',
+    dataIndex: 'appNo',
+    align: 'center',
     width: 150,
     scopedSlots: {
-      customRender: "appNo",
-    },
+      customRender: 'appNo'
+    }
   },
   {
-    title: "工单来源",
-    dataIndex: "workOrderSource",
-    align: "center",
-    width: 80,
+    title: '工单来源',
+    dataIndex: 'workOrderSource',
+    align: 'center',
+    width: 80
   },
   {
-    title: "业务类型",
-    dataIndex: "busiTypeCode",
-    align: "center",
-    width: 100,
+    title: '业务类型',
+    dataIndex: 'busiTypeCode',
+    align: 'center',
+    width: 100
   },
   {
-    title: "业务子类型",
-    dataIndex: "busiSubType",
-    align: "center",
-    width: 120,
+    title: '业务子类型',
+    dataIndex: 'busiSubType',
+    align: 'center',
+    width: 120
   },
   {
-    title: "受理时间",
-    dataIndex: "handleTime",
-    align: "center",
-    width: 120,
+    title: '受理时间',
+    dataIndex: 'handleTime',
+    align: 'center',
+    width: 120
   },
   {
-    title: "处理状态",
-    dataIndex: "workOrderStatus",
-    align: "center",
-    width: 100,
+    title: '处理状态',
+    dataIndex: 'workOrderStatus',
+    align: 'center',
+    width: 100
   },
   {
-    title: "台区经理",
-    dataIndex: "tgManager",
-    align: "center",
-    width: 100,
+    title: '台区经理',
+    dataIndex: 'tgManager',
+    align: 'center',
+    width: 100
   },
   {
-    title: "工单日期",
-    dataIndex: "workOrderCtime",
-    align: "center",
-    width: 120,
-  },
-];
+    title: '工单日期',
+    dataIndex: 'workOrderCtime',
+    align: 'center',
+    width: 120
+  }
+]
 
 export default {
   data() {
@@ -111,174 +112,137 @@ export default {
       progress: {},
       isOutage: [],
       isSensitivity: [],
-      exportUrl: "superiorWorkOrder",
-      ids: "appNo",
-    };
+      exportUrl: 'superiorWorkOrder',
+      ids: 'appNo',
+      copyTheQueryParams: {}
+    }
   },
   components: {
     Tables,
     SearchForm,
-    NewModel,
-  },
-  created() {
-    this.loadData();
+    NewModel
   },
   // 接口
   methods: {
     async loadData() {
-      this.loading = true;
-      const { data } = await postAction("superiorWorkOrder/selectAll");
-      this.data = data;
-      //张生要求，"采集你先把时间最近的放前面"
-      this.data.sort((a, b) => {
-        return (
-          moment(b.workOrderCtime).format("X") -
-          moment(a.workOrderCtime).format("X")
-        );
-      });
+      this.loading = true
+      const { data } = await superiorWorkOrder({
+        ...this.copyTheQueryParams,
+        ...this.$refs.table.pageParamsReturn()
+      })
+      this.data = data
       // 时间格式、状态转换
       data.map((item) => {
-        if (item.workOrderStatus == "1") {
-          item.workOrderStatus = "待处理";
-        } else if (item.workOrderStatus == "2") {
-          item.workOrderStatus = "处理中";
-        } else if (item.workOrderStatus == "3") {
-          item.workOrderStatus = "待归档";
+        if (item.workOrderStatus == '1') {
+          item.workOrderStatus = '待处理'
+        } else if (item.workOrderStatus == '2') {
+          item.workOrderStatus = '处理中'
+        } else if (item.workOrderStatus == '3') {
+          item.workOrderStatus = '待归档'
         } else {
-          item.workOrderStatus = "已归档";
+          item.workOrderStatus = '已归档'
         }
-        item.handleTime = moment(item.handleTime).format("MM-DD HH:MM:SS");
+        item.handleTime = moment(item.handleTime).format('MM-DD HH:MM:SS')
         item.workOrderCtime = moment(item.workOrderCtime).format(
-          "MM-DD HH:MM:SS"
-        );
+          'MM-DD HH:MM:SS'
+        )
         if (
-          item.whetherOutage == "是" &&
-          item.whetherSensitivity == "是" &&
+          item.whetherOutage == '是' &&
+          item.whetherSensitivity == '是' &&
           item.examineStatus == 2
         ) {
-          item.userType = "频繁停电/敏感用户";
-        } else if (item.whetherSensitivity == "是" && item.examineStatus == 2) {
-          item.userType = "敏感用户";
-        } else if (item.whetherOutage == "是") {
-          item.userType = "频繁停电";
+          item.userType = '频繁停电/敏感用户'
+        } else if (item.whetherSensitivity == '是' && item.examineStatus == 2) {
+          item.userType = '敏感用户'
+        } else if (item.whetherOutage == '是') {
+          item.userType = '频繁停电'
         } else {
-          item.userType = "普通用户";
+          item.userType = '普通用户'
         }
-        if (item.whetherSensitivity == "是" && item.examineStatus != 2) {
-          item.whetherSensitivity = "否";
+        if (item.whetherSensitivity == '是' && item.examineStatus != 2) {
+          item.whetherSensitivity = '否'
         }
         item.workOrderTime = moment(item.workOrderTime).format(
-          "MM-DD HH:MM:SS"
-        );
-        item.acceptedTime = moment(item.acceptedTime).format("MM-DD HH:MM:SS");
+          'MM-DD HH:MM:SS'
+        )
+        item.acceptedTime = moment(item.acceptedTime).format('MM-DD HH:MM:SS')
         // 工单状态字段转换
-        dealWorkOrderStatus(item);
-      });
-      setTimeout(() => {
-        this.loading = false;
-      }, 1000);
+        dealWorkOrderStatus(item)
+      })
+      this.loading = false
     },
     // 搜索
     solveformData(e) {
-      console.log("solveformData", e);
-      // let tempStatus = e.workOrderStatus;
-      // delete e.workOrderStatus;
-      // let tempworkOrderCtime1 = e.workOrderCtime1;
-      // delete e.workOrderCtime1;
-      // let tempuserType = e.userType;
-      // delete e.userType;
-      this.loading = true;
-      superiorWorkOrder(e)
+      console.log('solveformData', e)
+      this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
+      this.loading = true
+      superiorWorkOrder({
+        ...this.copyTheQueryParams,
+        ...this.$refs.table.pageParamsReturn()
+      })
         .then(({ data }) => {
-          this.data = data;
-          //张生要求，"采集你先把时间最近的放前面"
-          this.data.sort((a, b) => {
-            return (
-              moment(b.workOrderCtime).format("X") -
-              moment(a.workOrderCtime).format("X")
-            );
-          });
+          this.data = data
           this.data.map((item) => {
-            item.handleTime = moment(item.handleTime).format("MM-DD HH:MM:SS");
+            item.handleTime = moment(item.handleTime).format('MM-DD HH:MM:SS')
             item.workOrderCtime = moment(item.workOrderCtime).format(
-              "MM-DD HH:MM:SS"
-            );
-            if (item.workOrderStatus == "1") {
-              item.workOrderStatus = "待处理";
-            } else if (item.workOrderStatus == "2") {
-              item.workOrderStatus = "处理中";
-            } else if (item.workOrderStatus == "3") {
-              item.workOrderStatus = "待归档";
+              'MM-DD HH:MM:SS'
+            )
+            if (item.workOrderStatus == '1') {
+              item.workOrderStatus = '待处理'
+            } else if (item.workOrderStatus == '2') {
+              item.workOrderStatus = '处理中'
+            } else if (item.workOrderStatus == '3') {
+              item.workOrderStatus = '待归档'
             } else {
-              item.workOrderStatus = "已归档";
+              item.workOrderStatus = '已归档'
             }
             if (
-              item.whetherOutage == "是" &&
-              item.whetherSensitivity == "是" &&
+              item.whetherOutage == '是' &&
+              item.whetherSensitivity == '是' &&
               item.examineStatus == 2
             ) {
-              item.userType = "频繁停电/敏感用户";
+              item.userType = '频繁停电/敏感用户'
             } else if (
-              item.whetherSensitivity == "是" &&
+              item.whetherSensitivity == '是' &&
               item.examineStatus == 2
             ) {
-              item.userType = "敏感用户";
-            } else if (item.whetherOutage == "是") {
-              item.userType = "频繁停电";
+              item.userType = '敏感用户'
+            } else if (item.whetherOutage == '是') {
+              item.userType = '频繁停电'
             } else {
-              item.userType = "普通用户";
+              item.userType = '普通用户'
             }
             // 工单状态字段转换
-            dealWorkOrderStatus(item);
-          });
-          if (tempStatus && tempStatus.length > 0) {
-            this.data = this.data.filter((item) => {
-              return tempStatus.includes(item.workOrderStatus);
-            });
-          }
-          if (tempworkOrderCtime1 && tempworkOrderCtime1.length > 0) {
-            this.data = this.data.filter((item) => {
-              return (
-                moment(tempworkOrderCtime1[0]).format("x") <
-                  moment(item.workOrderCtime).format("x") &&
-                moment(tempworkOrderCtime1[1]).format("x") >
-                  moment(item.workOrderCtime).format("x")
-              );
-            });
-          }
-          if (tempuserType && tempuserType.length > 0) {
-            this.data = this.data.filter((item) => {
-              return item.userType.indexOf(tempuserType) !== -1;
-            });
-          }
+            dealWorkOrderStatus(item)
+          })
         })
         .finally(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
     changeSelectedRowKeys(e) {
-      this.selectedRowKeys = e;
+      this.selectedRowKeys = e
     },
     // 数据展示列表
     async clickRows(e) {
-      this.dictionary = serviceList;
-      this.NewModelData = e;
-      console.log("优质服务", e);
+      this.dictionary = serviceList
+      this.NewModelData = e
+      console.log('优质服务', e)
 
       // 开始处理进度条
-      if (e.workOrderStatus === "待处理") {
-        this.progress.progress = 0;
-      } else if (e.workOrderStatus === "处理中") {
-        this.progress.progress = 1;
-      } else if (e.workOrderStatus === "待归档") {
-        this.progress.progress = 2;
-      } else if (e.workOrderStatus === "已归档") {
-        this.progress.progress = 3;
+      if (e.workOrderStatus === '待处理') {
+        this.progress.progress = 0
+      } else if (e.workOrderStatus === '处理中') {
+        this.progress.progress = 1
+      } else if (e.workOrderStatus === '待归档') {
+        this.progress.progress = 2
+      } else if (e.workOrderStatus === '已归档') {
+        this.progress.progress = 3
       }
-      this.NewModalVisible = true;
-    },
-  },
-};
+      this.NewModalVisible = true
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -302,12 +266,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody > tr > td {
+/deep/ .ant-table-tbody>tr>td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead > tr > th {
+/deep/ .ant-table-thead>tr>th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

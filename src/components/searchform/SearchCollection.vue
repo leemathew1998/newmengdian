@@ -12,8 +12,7 @@
               ]"
               placeholder="工单编号"
               :style="{ width: '150px' }"
-              allowClear
-            >
+              allowClear>
             </a-input>
           </a-form-item>
           <!-- 台区编号 -->
@@ -25,8 +24,7 @@
               ]"
               placeholder="用户名称"
               :style="{ width: '150px' }"
-              allowClear
-            >
+              allowClear>
             </a-input>
           </a-form-item>
           <!-- 时间 -->
@@ -40,8 +38,7 @@
               ]"
               valueFormat="yyyy-MM-DD"
               :style="{ width: '150px' }"
-              placeholder="请选择日期"
-            />
+              placeholder="请选择日期" />
           </a-form-model-item>
           <!-- 工单状态 -->
           <a-form-item>
@@ -49,6 +46,7 @@
               v-decorator="[
                 'workOrderStatus',
                 {
+                  initialValue:['1','2','3'],
                   rules: [
                     {
                       type: 'array',
@@ -61,12 +59,11 @@
               placeholder="请选择工单状态"
               :style="{ minWidth: '150px' }"
               allowClear
-              mode="multiple"
-            >
-              <a-select-option value="待处理">待处理</a-select-option>
-              <a-select-option value="处理中">处理中</a-select-option>
-              <a-select-option value="待归档">待归档</a-select-option>
-              <a-select-option value="已归档">已归档</a-select-option>
+              mode="multiple">
+              <a-select-option value="1">待处理</a-select-option>
+              <a-select-option value="2">处理中</a-select-option>
+              <a-select-option value="3">待归档</a-select-option>
+              <a-select-option value="4">已归档</a-select-option>
             </a-select>
           </a-form-item>
           <!-- 工单编号 -->
@@ -93,9 +90,7 @@
             icon="search"
             html-type="submit"
             style="background-color: #28599d"
-            @click="handleSubmit"
-            >查询</a-button
-          >
+            @click="handleSubmit">查询</a-button>
         </a-form-item>
         <a-form-item>
           <a-button icon="reload" @click="handleReset"> 重置 </a-button>
@@ -114,37 +109,37 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this, {
-        name: "searchform",
-      }),
-    };
+        name: 'searchform'
+      })
+    }
   },
   mounted() {
     this.$nextTick(() => {
-      this.form.validateFields();
-    });
+      this.form.validateFields()
+      this.handleSubmit()
+    })
   },
   methods: {
     handleSubmit(e) {
-      e.preventDefault();
-
+      e && e.preventDefault()
       this.form.validateFields((err, values) => {
-        // console.log(values);
-        this.$emit("formData", values);
-        // if (!err) {
-        // 	console.log("Received values of form: ", values);
-        // }
-      });
+        values.workOrderStatus = values.workOrderStatus.join(',')
+        this.$emit('formData', values)
+        if (!err) {
+          console.log('Received values of form: ', values)
+        }
+      })
     },
     handleReset() {
-      this.form.resetFields();
-      this.$parent.initList();
+      this.form.resetFields()
+      this.handleSubmit()
     },
 
     onChange(date, dateString) {
-      console.log(date, dateString);
-    },
-  },
-};
+      console.log(date, dateString)
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

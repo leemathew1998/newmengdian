@@ -96,7 +96,7 @@
             icon="search"
             html-type="submit"
             @click="handleSubmit"
-            >查询</a-button
+          >查询</a-button
           >
         </a-form-item>
         <a-form-item>
@@ -130,8 +130,8 @@ export default {
   data () {
     return {
       form: this.$form.createForm(this, {
-        name: "searchform",
-      }),
+        name: 'searchform'
+      })
     }
   },
   mounted () {
@@ -143,10 +143,9 @@ export default {
   methods: {
     // 搜索传值
     handleSubmit (e) {
-
       e.preventDefault()
       this.form.validateFields((err, values) => {
-        this.$emit("formData", values)
+        this.$emit('formData', values)
         // this.$emit('input', values);
         // console.log(values,'asdd');
       })
@@ -167,24 +166,24 @@ export default {
       e.preventDefault()
 
       this.form.validateFields((err, values) => {
-        this.$emit("formData", values)
+        this.$emit('formData', values)
       })
     },
 
     onChange (date, dateString) {
       console.log(dateString)
-    },
+    }
     // ande: function(e){
     // 	console.log(e,'e')
     // },
-  },
+  }
   // watch:{
   // 	value:_.debounce( function(newvalue,oldvalue){
   // 		console.log(newvalue,'s');
 
   // 	})
   // },
-};
+}
 </script>
 
 <style lang="less" scoped>

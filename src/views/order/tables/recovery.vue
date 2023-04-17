@@ -7,6 +7,7 @@
     <!-- 表格 -->
     <Tables
       @changeSelectedRowKeys="changeSelectedRowKeys"
+      @tablePaginationChange="loadData"
       @clickRow="clickRows"
       :columns="columns"
       :data="data"
@@ -14,6 +15,7 @@
       xlsxName="电费回收"
       :exportUrl="exportUrl"
       :ids="ids"
+      ref="table"
     >
     </Tables>
     <!-- 弹窗 -->
@@ -32,85 +34,85 @@
 </template>
 
 <script>
-import Tables from "@/components/tables/Tables";
-import NewModel from "@/components/NewModel/index";
-import SearchForm from "@/components/searchform/SearchRecovery";
-import { getAction, recycleWorkOrder, postAction } from "@/api/manage";
-import { recoveryList } from "@/components/NewModel/constant.js";
-import { dealSituation } from "@/utils/util.js";
-import moment from "moment";
+import Tables from '@/components/tables/Tables'
+import NewModel from '@/components/NewModel/index'
+import SearchForm from '@/components/searchform/SearchRecovery'
+import { recycleWorkOrder, postAction } from '@/api/manage'
+import { recoveryList } from '@/components/NewModel/constant.js'
+import { dealSituation } from '@/utils/util.js'
+import moment from 'moment'
 
 const columns = [
   {
-    title: "工单编号",
-    dataIndex: "workOrderNo",
-    align: "center",
-    width: 120,
+    title: '工单编号',
+    dataIndex: 'workOrderNo',
+    align: 'center',
+    width: 120
   },
   {
-    title: "台区经理",
-    dataIndex: "tgManager",
-    align: "center",
-    width: 80,
+    title: '台区经理',
+    dataIndex: 'tgManager',
+    align: 'center',
+    width: 80
   },
   {
-    title: "台区编号",
-    dataIndex: "tgId",
-    align: "center",
-    width: 110,
+    title: '台区编号',
+    dataIndex: 'tgId',
+    align: 'center',
+    width: 110
   },
   {
-    title: "台区名称",
-    dataIndex: "tgName",
-    align: "center",
-    width: 130,
+    title: '台区名称',
+    dataIndex: 'tgName',
+    align: 'center',
+    width: 130
   },
   {
-    title: "供电单位",
-    dataIndex: "orgNo",
-    align: "center",
-    width: 130,
+    title: '供电单位',
+    dataIndex: 'orgNo',
+    align: 'center',
+    width: 130
   },
   {
-    title: "用户名称",
-    dataIndex: "consName",
-    align: "center",
-    width: 180,
+    title: '用户名称',
+    dataIndex: 'consName',
+    align: 'center',
+    width: 180
   },
   {
-    title: "用户地址",
-    dataIndex: "elecAddr",
-    align: "center",
-    width: 190,
+    title: '用户地址',
+    dataIndex: 'elecAddr',
+    align: 'center',
+    width: 190
   },
   {
-    title: "用户电话",
-    dataIndex: "mobile",
-    align: "center",
-    width: 120,
+    title: '用户电话',
+    dataIndex: 'mobile',
+    align: 'center',
+    width: 120
   },
   {
-    title: "用电类别",
-    dataIndex: "elecTypeCode",
+    title: '用电类别',
+    dataIndex: 'elecTypeCode',
     scopedSlots: {
-      customRender: "elecTypeCode",
+      customRender: 'elecTypeCode'
     },
-    align: "center",
-    width: 130,
+    align: 'center',
+    width: 130
   },
   {
-    title: "处理状态",
-    dataIndex: "workOrderStatus",
-    align: "center",
-    width: 120,
+    title: '处理状态',
+    dataIndex: 'workOrderStatus',
+    align: 'center',
+    width: 120
   },
   {
-    title: "电度电费",
-    dataIndex: "oweAmt",
-    align: "center",
-    width: 100,
-  },
-];
+    title: '电度电费',
+    dataIndex: 'oweAmt',
+    align: 'center',
+    width: 100
+  }
+]
 export default {
   data() {
     return {
@@ -128,135 +130,112 @@ export default {
       situation: [],
       dictionary: [],
       progress: {},
-      exportUrl: "recycleWorkOrder",
-      ids: "workOrderNo",
-    };
+      exportUrl: 'recycleWorkOrder',
+      ids: 'workOrderNo',
+      copyTheQueryParams: {}
+    }
   },
   components: {
     Tables,
     SearchForm,
-    NewModel,
-  },
-  created() {
-    this.loadData();
+    NewModel
   },
   methods: {
     // 接口，时间格式状态转换
     async loadData() {
-      this.loading = true;
-      const data = await postAction("recycleWorkOrder/selectAll");
-      this.data = data.data;
-      //张生要求，"采集你先把时间最近的放前面"
-      this.data.sort((a, b) => {
-        return (
-          moment(b.workOrderCtime).format("X") -
-          moment(a.workOrderCtime).format("X")
-        );
-      });
+      this.loading = true
+      const data = await recycleWorkOrder({
+        ...this.copyTheQueryParams,
+        ...this.$refs.table.pageParamsReturn()
+      })
+      this.data = data.data
       this.data.map((item) => {
         item.workorderTime = moment(item.workorderTime).format(
-          "YYYY-MM-DD HH:MM:SS"
-        );
+          'YYYY-MM-DD HH:MM:SS'
+        )
         item.processingTime = moment(item.processingTime).format(
-          "YYYY-MM-DD HH:MM:SS"
-        );
-        item.workOrderCycle = "连续 " + item.workOrderCycle + " 个月";
-        if (item.workOrderStatus == "1") {
-          item.workOrderStatus = "待处理";
-        } else if (item.workOrderStatus == "2") {
-          item.workOrderStatus = "处理中";
-        } else if (item.workOrderStatus == "3") {
-          item.workOrderStatus = "待归档";
+          'YYYY-MM-DD HH:MM:SS'
+        )
+        item.workOrderCycle = '连续 ' + item.workOrderCycle + ' 个月'
+        if (item.workOrderStatus == '1') {
+          item.workOrderStatus = '待处理'
+        } else if (item.workOrderStatus == '2') {
+          item.workOrderStatus = '处理中'
+        } else if (item.workOrderStatus == '3') {
+          item.workOrderStatus = '待归档'
         } else {
-          item.workOrderStatus = "已归档";
+          item.workOrderStatus = '已归档'
         }
-      });
-      this.loading = false;
+      })
+      this.loading = false
     },
     // 搜索数据处理
     solveformData(e) {
-      console.log("搜索", e);
-      this.loading = true;
-      let tempStatus = e.workOrderStatus;
-      let tempelecTypeCode = e.elecTypeCode;
-      delete e.workOrderStatus;
-      delete e.elecTypeCode;
-      recycleWorkOrder(e)
+      console.log('搜索', e)
+      this.loading = true
+      this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
+      recycleWorkOrder({
+        ...this.copyTheQueryParams,
+        ...this.$refs.table.pageParamsReturn()
+      })
         .then(({ data }) => {
-          console.log("搜索", data);
-          this.data = data;
-          //张生要求，"采集你先把时间最近的放前面"
-          this.data.sort((a, b) => {
-            return (
-              moment(b.workOrderCtime).format("X") -
-              moment(a.workOrderCtime).format("X")
-            );
-          });
+          console.log('搜索', data)
+          this.data = data
           this.data.map((item) => {
             item.workorderTime = moment(item.workorderTime).format(
-              "YYYY-MM-DD HH:MM:SS"
-            );
+              'YYYY-MM-DD HH:MM:SS'
+            )
             item.processingTime = moment(item.processingTime).format(
-              "YYYY-MM-DD HH:MM:SS"
-            );
-            item.workOrderCycle = "连续 " + item.workOrderCycle + " 个月";
-            if (item.workOrderStatus == "1") {
-              item.workOrderStatus = "待处理";
-            } else if (item.workOrderStatus == "2") {
-              item.workOrderStatus = "处理中";
-            } else if (item.workOrderStatus == "3") {
-              item.workOrderStatus = "待归档";
+              'YYYY-MM-DD HH:MM:SS'
+            )
+            item.workOrderCycle = '连续 ' + item.workOrderCycle + ' 个月'
+            if (item.workOrderStatus == '1') {
+              item.workOrderStatus = '待处理'
+            } else if (item.workOrderStatus == '2') {
+              item.workOrderStatus = '处理中'
+            } else if (item.workOrderStatus == '3') {
+              item.workOrderStatus = '待归档'
             } else {
-              item.workOrderStatus = "已归档";
+              item.workOrderStatus = '已归档'
             }
-          });
-          if (tempStatus && tempStatus.length > 0) {
-            this.data = this.data.filter((item) => {
-              return tempStatus.includes(item.workOrderStatus);
-            });
-          }
-          if (tempelecTypeCode && tempelecTypeCode.length > 0) {
-            this.data = this.data.filter((item) => {
-              return tempelecTypeCode.includes(item.elecTypeCode);
-            });
-          }
+          })
         })
         .finally(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
     changeSelectedRowKeys(e) {
-      this.selectedRowKeys = e;
+      this.selectedRowKeys = e
     },
     // 步骤进度条  弹框
     async clickRows(e) {
-      this.dictionary = recoveryList;
-      this.NewModelData = e;
-      if (e.workOrderStatus === "待处理") {
-        this.progress.progress = 0;
-      } else if (e.workOrderStatus === "处理中") {
-        this.progress.progress = 1;
-      } else if (e.workOrderStatus === "待归档") {
-        this.progress.progress = 2;
+      this.dictionary = recoveryList
+      this.NewModelData = e
+      if (e.workOrderStatus === '待处理') {
+        this.progress.progress = 0
+      } else if (e.workOrderStatus === '处理中') {
+        this.progress.progress = 1
+      } else if (e.workOrderStatus === '待归档') {
+        this.progress.progress = 2
       } else {
-        this.progress.progress = 3;
+        this.progress.progress = 3
       }
       // 现场处理
-      this.situation = [];
+      this.situation = []
       const { data } = await postAction(
-        "recycleWorkOrder/selectWordOrderId?workOrderId=" + e.workOrderNo
-      );
+        'recycleWorkOrder/selectWordOrderId?workOrderId=' + e.workOrderNo
+      )
       const res = await dealSituation(
         data,
-        "liveVideo",
-        "livePhotos",
-        "liveSituation"
-      );
-      this.situation.push(res);
-      this.NewModalVisible = true;
-    },
-  },
-};
+        'liveVideo',
+        'livePhotos',
+        'liveSituation'
+      )
+      this.situation.push(res)
+      this.NewModalVisible = true
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
