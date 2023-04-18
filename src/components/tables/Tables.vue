@@ -1,6 +1,6 @@
 <template>
   <!-- 表格、导入、导出数据 -->
-  <div class="warp">
+  <div class="warp-table">
     <!-- 表格部分 -->
     <a-table
       :row-selection="{
@@ -119,7 +119,7 @@ export default {
       exportvisible: false,
       pagination: {
         current: 1,
-        total: this.data.length,
+        total: 0,
         showSizeChanger: true,
         pageSizeOptions: ['10', '20', '40', '80', '100'],
         showTotal: (total) => `共 ${total} 条`,
@@ -230,21 +230,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.warp {
+.warp-table {
   width: 100%;
   height: 100%;
-
+  overflow: hidden;
   :hover {
     cursor: pointer;
   }
-
-  overflow: hidden;
-
-  .orderNumber {
-    text-align: right;
-    overflow: hidden;
-  }
-
   .bottom {
     z-index: 10;
     position: relative;

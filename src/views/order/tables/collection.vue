@@ -15,7 +15,8 @@
       :data="data"
       :loading="loading"
       :scroll="1500"
-      ref="table"></Tables>
+      ref="table"
+    ></Tables>
     <!-- 弹窗 -->
     <NewModel
       :visible="NewModalVisible"
@@ -24,7 +25,8 @@
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
-      name="采集运维"></NewModel>
+      name="采集运维"
+    ></NewModel>
   </div>
 </template>
 <script>
@@ -144,10 +146,13 @@ export default {
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
-      res.map((val) => {
+      let total = Object.keys(res.data)
+      this.$refs.table.pagination.total = Number(total)
+
+      res.data[total].map((val) => {
         this.convertFormat(val)
       })
-      this.data = res
+      this.data = res.data[total]
       this.loading = false
     },
     // 搜索
@@ -160,8 +165,13 @@ export default {
         ...this.$refs.table.pageParamsReturn()
       })
         .then((res) => {
-          res.map((item) => this.convertFormat(item))
-          this.data = res
+          let total = Object.keys(res.data)
+          this.$refs.table.pagination.total = Number(total)
+
+          res.data[total].map((val) => {
+            this.convertFormat(val)
+          })
+          this.data = res.data[total]
         })
         .finally(() => {
           this.loading = false
@@ -363,12 +373,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody>tr>td {
+/deep/ .ant-table-tbody > tr > td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead>tr>th {
+/deep/ .ant-table-thead > tr > th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

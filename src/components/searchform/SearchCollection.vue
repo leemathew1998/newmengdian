@@ -12,7 +12,8 @@
               ]"
               placeholder="工单编号"
               :style="{ width: '150px' }"
-              allowClear>
+              allowClear
+            >
             </a-input>
           </a-form-item>
           <!-- 台区编号 -->
@@ -24,7 +25,8 @@
               ]"
               placeholder="用户名称"
               :style="{ width: '150px' }"
-              allowClear>
+              allowClear
+            >
             </a-input>
           </a-form-item>
           <!-- 时间 -->
@@ -38,15 +40,16 @@
               ]"
               valueFormat="yyyy-MM-DD"
               :style="{ width: '150px' }"
-              placeholder="请选择日期" />
+              placeholder="请选择日期"
+            />
           </a-form-model-item>
           <!-- 工单状态 -->
           <a-form-item>
             <a-select
               v-decorator="[
-                'workOrderStatus',
+                'status',
                 {
-                  initialValue:['1','2','3'],
+                  initialValue: ['1', '2', '3'],
                   rules: [
                     {
                       type: 'array',
@@ -59,27 +62,28 @@
               placeholder="请选择工单状态"
               :style="{ minWidth: '150px' }"
               allowClear
-              mode="multiple">
+              mode="multiple"
+            >
               <a-select-option value="1">待处理</a-select-option>
               <a-select-option value="2">处理中</a-select-option>
               <a-select-option value="3">待归档</a-select-option>
               <a-select-option value="4">已归档</a-select-option>
             </a-select>
           </a-form-item>
-          <!-- 工单编号 -->
-          <!-- <a-form-item>
-						<a-input v-decorator="[
-                'workOrderNo',
-                { rules: [{ message: '请输入用户名称' }] },
-              ]" placeholder="请输入用户名称" :style="{ width: '150px' }" allowClear>
-						</a-input>
-					</a-form-item> -->
-          <!-- 开始时间 -->
-          <!-- <a-form-item>
-						<a-range-picker v-decorator="['synchro_time']" :style="{ width: '230px' }" @change="onChange"
-							allowClear />
-					</a-form-item> -->
-          <!-- 结束时间 -->
+          <a-form-item>
+            <a-cascader
+              v-decorator="[
+                'orgNo',
+                {
+                  rules: [{ required: false, message: '请选择台区' }],
+                },
+              ]"
+              :options="cascaderOptions"
+              :style="{ minWidth: '150px' }"
+              placeholder="请选择台区"
+              allowClear
+            />
+          </a-form-item>
         </div>
       </div>
 
@@ -90,7 +94,9 @@
             icon="search"
             html-type="submit"
             style="background-color: #28599d"
-            @click="handleSubmit">查询</a-button>
+            @click="handleSubmit"
+          >查询</a-button
+          >
         </a-form-item>
         <a-form-item>
           <a-button icon="reload" @click="handleReset"> 重置 </a-button>
@@ -105,15 +111,18 @@
 </template>
 
 <script>
+import { getAllStation } from '@/api/order.js'
 export default {
   data() {
     return {
       form: this.$form.createForm(this, {
         name: 'searchform'
-      })
+      }),
+      cascaderOptions: []
     }
   },
-  mounted() {
+  async mounted() {
+    this.cascaderOptions = await getAllStation()
     this.$nextTick(() => {
       this.form.validateFields()
       this.handleSubmit()
@@ -123,7 +132,8 @@ export default {
     handleSubmit(e) {
       e && e.preventDefault()
       this.form.validateFields((err, values) => {
-        values.workOrderStatus = values.workOrderStatus.join(',')
+        values.status = values.status.join(',')
+        values.orgNo = values.orgNo ? values.orgNo.slice(-1)[0] : values.orgNo
         this.$emit('formData', values)
         if (!err) {
           console.log('Received values of form: ', values)

@@ -70,58 +70,58 @@
 </template>
 
 <script>
-import Item from "./components/Item.vue";
-import LoginAccount from "./LoginAccount.vue";
-import { mapActions } from "vuex";
-import moment from "moment";
-import cookie from "@/utils/cookie.js";
-import { postAction } from "../../api/manage";
-let timer;
+import Item from './components/Item.vue'
+import LoginAccount from './LoginAccount.vue'
+import { mapActions } from 'vuex'
+import moment from 'moment'
+import cookie from '@/utils/cookie.js'
+import { postAction } from '../../api/manage'
+let timer
 export default {
   data() {
     return {
-      nowTime: "",
-      welcomeWord: "",
-      userName: "",
-    };
+      nowTime: '',
+      welcomeWord: '',
+      userName: ''
+    }
   },
   async created() {
     // 初始化时间
-    this.userName = this.$store.getters.username || "请登录";
+    this.userName = this.$store.getters.username || '请登录'
     this.welcomeWord =
       moment().hour() < 9
-        ? "早上好"
+        ? '早上好'
         : moment().hour() < 12
-        ? "中午好"
-        : "下午好";
-    this.nowTime = moment().format("YYYY-MM-DD HH:mm");
+        ? '中午好'
+        : '下午好'
+    this.nowTime = moment().format('YYYY-MM-DD HH:mm')
 
     timer = setInterval(() => {
       this.welcomeWord =
         moment().hour() < 9
-          ? "早上好"
+          ? '早上好'
           : moment().hour() < 12
-          ? "中午好"
-          : "下午好";
-      this.nowTime = moment().format("YYYY-MM-DD HH:mm");
-    }, 10000);
+          ? '中午好'
+          : '下午好'
+      this.nowTime = moment().format('YYYY-MM-DD HH:mm')
+    }, 10000)
     // 核查cookie
-    const ticket = cookie.getCookie("ticket");
-    console.log("ticket", ticket);
+    const ticket = cookie.getCookie('ticket')
+    console.log('ticket', ticket)
     if (!ticket) {
-      this.$notification["warning"]({
-        message: "请登录",
-      });
-      this.handleSubmit();
+      this.$notification['warning']({
+        message: '请登录'
+      })
+      this.handleSubmit()
     } else {
-      const res = await postAction("SysUser/getToken", {});
-      this.userName = cookie.getCookie("loName2");
-      this.$store.commit("setUserInfo", {
+      const res = await postAction('SysUser/getToken', {})
+      this.userName = cookie.getCookie('loName2')
+      this.$store.commit('setUserInfo', {
         username: this.userName,
-        role: "admin",
+        role: 'admin',
         token: res.token,
-        department: "哈克供电营业站",
-      });
+        department: '哈克供电营业站'
+      })
     }
 
     // 张升isc集成测试
@@ -135,58 +135,58 @@ export default {
     // this.handleSubmit()
   },
   beforeDestroy() {
-    clearInterval(timer);
+    clearInterval(timer)
   },
 
   methods: {
-    ...mapActions(["Login"]),
+    ...mapActions(['Login']),
     solveClick(name) {
-      const ticket = cookie.getCookie("ticket");
+      const ticket = cookie.getCookie('ticket')
       if (!ticket) {
-        return;
+        return
       }
-      if (name == "驾驶舱") {
+      if (name == '驾驶舱') {
         window.open(
           `http://10.173.172.9:18880/#/mdPowerGrid/powerCenter?fromOrigin=otherSystem&projectName=%E8%92%99%E4%B8%9C%E5%8F%B0%E5%8C%BA%E7%B2%BE%E7%BB%86%E5%8C%96&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
-          "_blank"
-        );
-      } else if (name == "三维模型管理") {
+          '_blank'
+        )
+      } else if (name == '三维模型管理') {
         window.open(
           `http://10.173.172.9:18880/#/modelCenter/index?fromOrigin=otherSystem&projectName=%E8%92%99%E4%B8%9C%E5%8F%B0%E5%8C%BA%E7%B2%BE%E7%BB%86%E5%8C%96&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
-          "_blank"
-        );
-      } else if (name == "业扩报装") {
+          '_blank'
+        )
+      } else if (name == '业扩报装') {
         window.open(
           `http://10.173.172.9:18880/#/mdPowerGrid/businessExpansionList?fromOrigin=otherSystem&projectName=%E8%92%99%E4%B8%9C%E5%8F%B0%E5%8C%BA%E7%B2%BE%E7%BB%86%E5%8C%96&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
-          "_blank"
-        );
+          '_blank'
+        )
       } else {
         let map = {
-          业务工单: "order",
-          绩效管理: "achievements",
-          反窃查询: "antitheft",
-        };
+          业务工单: 'order',
+          绩效管理: 'achievements',
+          反窃查询: 'antitheft'
+        }
         let routeData = this.$router.resolve({
-          name: map[name],
-        });
-        window.open(routeData.href, "_blank");
+          name: map[name]
+        })
+        window.open(routeData.href, '_blank')
       }
     },
 
     async logOut() {
-      this.$store.commit("clearUserInfo", []);
-      this.$notification["success"]({
-        message: "注销成功",
-        duration: 4,
-      });
-      cookie.clearCookie("ticket");
+      this.$store.commit('clearUserInfo', [])
+      this.$notification['success']({
+        message: '注销成功',
+        duration: 4
+      })
+      cookie.clearCookie('ticket')
       // this.$router.push("/user/login");
-      this.$router.push("/overView");
+      this.$router.push('/overView')
     },
     // 免登录获取token
     handleSubmit() {
-      console.log("1234");
-      window.open("http://25.73.1.171/api/SysUser/login1", "_self");
+      console.log('1234')
+      window.open('http://25.73.1.171/api/SysUser/login1', '_self')
       // await getAction(`http://25.73.1.171/api/SysUser/login1`)
       // this.userName = "？？？";
       // this.Login()
@@ -209,13 +209,13 @@ export default {
       //     // 	this.$emit('fail', err)
       //     // }
       //   });
-    },
+    }
   },
   components: {
     Item,
-    LoginAccount,
-  },
-};
+    LoginAccount
+  }
+}
 </script>
 
 <style lang="less" scoped>

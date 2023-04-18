@@ -52,7 +52,7 @@
           <a-form-item>
             <a-select
               v-decorator="[
-                'workOrderStatus',
+                'status',
                 {
                   initialValue: ['1', '2', '3'],
                   rules: [
@@ -132,7 +132,7 @@ export default {
       e && e.preventDefault()
 
       this.form.validateFields((err, values) => {
-        values.workOrderStatus = values.workOrderStatus.join(',')
+        values.status = values.status.join(',')
         this.$emit('formData', values)
         if (!err) {
           console.log('Received values of form: ', values)

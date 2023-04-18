@@ -62,7 +62,7 @@
         <a-form-item>
           <a-select
             v-decorator="[
-              'workOrderStatus',
+              'status',
               { rules: [{ message: '请选择工单状态' }] },
             ]"
             placeholder="请选择工单状态"

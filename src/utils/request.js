@@ -127,14 +127,11 @@ const err = (error) => {
 service.interceptors.request.use(
   (config) => {
     console.log('request config', config)
-    config.headers['Authorization'] = store.getters.token // 让每个请求携带自定义 token 请根据实际情况自行修改
-    if (config.method == 'get') {
-      if (config.url.indexOf('sys/dict/getDictItems') < 0) {
-        config.params = {
-          ...config.params
-        }
-      }
+    if (!config.params) {
+      config.params = {}
     }
+    config.params['loName2'] = store.getters.username
+    config.headers['Authorization'] = store.getters.token // 让每个请求携带自定义 token 请根据实际情况自行修改
     // if (config.url.indexOf("/file/upload") !== -1) {
     //   config.headers["Content-Type"] = "multipart/form-data";
     // }
