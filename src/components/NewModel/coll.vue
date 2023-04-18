@@ -21,7 +21,7 @@
                 color: #000;
                 line-height: 50px;
               "
-              >原始数据</span
+            >原始数据</span
             >
           </div>
           <!-- 原始数据展示 -->
@@ -51,7 +51,7 @@
                   slot="content"
                   v-if="
                     item.name == 'timeCalculation' ||
-                    item.name == 'phaseCalculation'
+                      item.name == 'phaseCalculation'
                   "
                 >
                   <a-table
@@ -79,7 +79,7 @@
               <div
                 v-if="
                   !needToFix.includes(item.name) &&
-                  !needToClick.includes(item.name)
+                    !needToClick.includes(item.name)
                 "
               >
                 <span class="key">{{ item.label }}：</span>
@@ -118,13 +118,13 @@
               <a-popover slot="progressDot" slot-scope="{ status, prefixCls }">
                 <template slot="content">
                   <span
-                    >状态:
+                  >状态:
                     {{
                       status == "finish"
                         ? "处理中"
                         : status == "wait"
-                        ? "已归档"
-                        : "待归档"
+                          ? "已归档"
+                          : "待归档"
                     }}</span
                   >
                 </template>
@@ -188,8 +188,10 @@
                     class="logo"
                     alt="logo"
                   />
-                  <a-button type="primary" @click="showModal2(photo)"
-                    >查看图片</a-button
+                  <a-button
+                    type="primary"
+                    @click="showModal2(photo)"
+                  >查看图片</a-button
                   >
                 </div>
                 <ImgModel
@@ -209,7 +211,7 @@
                   <a-button
                     type="primary"
                     @click="showModal2(item.liveVideo[0])"
-                    >查看视频</a-button
+                  >查看视频</a-button
                   >
                 </div>
                 <ImgModel
@@ -241,13 +243,13 @@ export default {
       type: Boolean,
       required: true
     },
-    NewModelData: Object,
+    newModelData: Object,
     // modalName: {
     // 	type: String,
     // 	default: ""
     // },
     situation: {
-      type: Array,
+      type: Array
       // required: true
       // default: [{ livePhotos: [] }]
     },
@@ -278,28 +280,27 @@ export default {
         title: null,
         value: {}
       },
-      // 分时 
+      // 分时
       popoverData1: {
         title: '分时计算',
         value: {
           columns: [],
-          data: [],
+          data: []
         }
       },
-      // 分相 
+      // 分相
       popoverData2: {
         title: '分相计算',
         value: {
           columns: [],
-          data: [],
+          data: []
         }
-      },
+      }
     }
   },
   watch: {
     // 弹窗现场情况
     visible (nval, oval) {
-      immediate: true
       this.modalVisible = nval
       console.log(nval, oval)
       // if (this.name === '优质服务') {
@@ -373,21 +374,21 @@ export default {
         title: '分时计算',
         value: {
           columns: [],
-          data: [],
+          data: []
         }
       }
       const res = await postAction('/lineloss/split?tgId=' + this.NewModelData.tgId)
       this.popoverData1.value.columns.push({
         dataIndex: 'index',
         key: '时间段',
-        title: '时间段',
+        title: '时间段'
       })
       console.log('split', res)
       for (let i = 0; i < 4; i++) {
         this.popoverData1.value.columns.push({
           dataIndex: `time${i + 1}`,
           key: res[i].timeSlot,
-          title: res[i].timeSlot,
+          title: res[i].timeSlot
         })
       }
       let data = [{
@@ -409,7 +410,7 @@ export default {
           'time1': res[0][data[i].value],
           'time2': res[1][data[i].value],
           'time3': res[2][data[i].value],
-          'time4': res[3][data[i].value],
+          'time4': res[3][data[i].value]
         })
       }
     },
@@ -418,7 +419,7 @@ export default {
         title: '分相计算',
         value: {
           columns: [],
-          data: [],
+          data: []
         }
       }
       const res = await postAction('/lineloss/split?tgId=' + this.NewModelData.tgId)
@@ -439,13 +440,13 @@ export default {
       this.popoverData2.value.columns.push({
         dataIndex: 'index',
         key: '相位',
-        title: '相位',
+        title: '相位'
       })
       for (let i = 0; i < data.length; i++) {
         this.popoverData2.value.columns.push({
           dataIndex: data[i].value,
           key: data[i].value,
-          title: data[i].name,
+          title: data[i].name
         })
       }
       for (let i = 4; i < 7; i++) {
@@ -454,7 +455,7 @@ export default {
           'ppq': res[i].ppq,
           'tgSpq': res[i].tgSpq,
           'lossPq': res[i].lossPq,
-          'linelossRate': res[i].linelossRate,
+          'linelossRate': res[i].linelossRate
         })
       }
     },
@@ -467,7 +468,7 @@ export default {
         this.phaseCalculation()
       }
     }
-  },
+  }
 }
 </script>
 <style lang="less" scoped>

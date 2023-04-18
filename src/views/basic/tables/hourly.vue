@@ -29,85 +29,85 @@
   </div>
 </template>
 <script>
-import Tables from "@/components/tables/baseTables"
-import NewModel from "@/components/NewModel/pubService"
-import SearchForm from "@/components/searchform/sensitiveHourly"
-import { FselectAll, getAction ,postAction } from "@/api/manage"
+import Tables from '@/components/tables/baseTables'
+import NewModel from '@/components/NewModel/pubService'
+import SearchForm from '@/components/searchform/sensitiveHourly'
+import { FselectAll, getAction, postAction } from '@/api/manage'
 import {
-  hourly,
-} from "@/components/NewModel/constant.js"
-import moment from "moment"
+  hourly
+} from '@/components/NewModel/constant.js'
+import moment from 'moment'
 const columns = [
   {
-    title: "用户编号",
-    dataIndex: "userId",
-    align: "center",
+    title: '用户编号',
+    dataIndex: 'userId',
+    align: 'center',
     ellipsis: true,
-    width: 80,
+    width: 80
   },
   {
-    title: "用户名称",
-    dataIndex: "userName",
-    align: "center",
+    title: '用户名称',
+    dataIndex: 'userName',
+    align: 'center',
     ellipsis: true,
-    width: 70,
+    width: 70
   },
   {
-    title: "用户电话",
-    dataIndex: "userPhone",
+    title: '用户电话',
+    dataIndex: 'userPhone',
     ellipsis: true,
-    align: "center",
-    width: 100,
+    align: 'center',
+    width: 100
   },
   {
-    title: "用户地址",
-    dataIndex: "userLocation",
+    title: '用户地址',
+    dataIndex: 'userLocation',
     ellipsis: true,
-    align: "center",
-    width: 200,
+    align: 'center',
+    width: 200
   },
   {
-    title: "台区编号",
-    dataIndex: "platformId",
-    align: "center",
+    title: '台区编号',
+    dataIndex: 'platformId',
+    align: 'center',
     ellipsis: true,
-    width: 100,
+    width: 100
   },
   {
-    title: "台区名称",
-    dataIndex: "platformName",
-    align: "center",
+    title: '台区名称',
+    dataIndex: 'platformName',
+    align: 'center',
     ellipsis: true,
-    width: 90,
+    width: 90
   },
   {
-    title: "供电单位",
-    dataIndex: "powerUnit",
-    align: "center",
+    title: '供电单位',
+    dataIndex: 'powerUnit',
+    align: 'center',
     ellipsis: true,
-    width: 135,
+    width: 135
   },
   {
-    title: "停电描述",
-    dataIndex: "description",
-    align: "center",
+    title: '停电描述',
+    dataIndex: 'description',
+    align: 'center',
     ellipsis: true,
-    width: 130,
+    width: 130
   },
   {
-    title: "停电时间",
-    dataIndex: "powerCutTime",
-    align: "center",
+    title: '停电时间',
+    dataIndex: 'powerCutTime',
+    align: 'center',
     ellipsis: true,
-    width: 100,
+    width: 100
   },
   {
-    title: "来电时间",
-    dataIndex: "incomingTelegramTime",
-    align: "center",
+    title: '来电时间',
+    dataIndex: 'incomingTelegramTime',
+    align: 'center',
     ellipsis: true,
-    width: 100,
-  },
+    width: 100
+  }
 ]
 export default {
   data () {
@@ -124,13 +124,13 @@ export default {
       situation: [],
       dictionary: [],
       progress: {},
-      imgdata: [],
+      imgdata: []
     }
   },
   components: {
     Tables,
     SearchForm,
-    NewModel,
+    NewModel
   },
   created () {
     this.initList()
@@ -139,7 +139,7 @@ export default {
     // 数据展示分装
     async initList () {
       // this.loading = true
-      const { data: { records } } = await postAction("superiorFrequentoutages/selectAll")
+      const { data: { records } } = await postAction('superiorFrequentoutages/selectAll')
       this.data = records
       records.map(item => {
         if (item.powerCutTime) {
@@ -213,9 +213,9 @@ export default {
       // 	this.progress.stepOne = e.workOrderCtime
       // }
       // this.NewModalVisible = true;
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

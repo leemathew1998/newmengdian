@@ -20,11 +20,11 @@ export default {
   props: {
     imgvisible: {
       type: Boolean,
-      required: true,
+      required: true
     },
     photos: {
       type: String
-    },
+    }
   },
   data () {
     return {
@@ -44,12 +44,11 @@ export default {
       }
     },
     photos (newVal, oldVal) {
-      immediate: true
       this.modalPhotos = newVal
-      const addIsAll = this.modalPhotos.includes('http://1.15.125.141:3007/downloadavatar?name=')
-      if (!addIsAll) {
-        this.modalPhotos = 'http://1.15.125.141:3007/downloadavatar?name=' + this.modalPhotos
-      }
+      // const addIsAll = this.modalPhotos.includes('http://1.15.125.141:3007/downloadavatar?name=')
+      // if (!addIsAll) {
+      //   this.modalPhotos = 'http://1.15.125.141:3007/downloadavatar?name=' + this.modalPhotos
+      // }
     }
   },
   methods: {
@@ -62,7 +61,7 @@ export default {
       this.imgmodalVisible = !this.imgmodalVisible
       this.$emit('changeimgModal', false)
     }
-  },
+  }
 }
 </script>
 

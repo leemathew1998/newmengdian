@@ -29,9 +29,9 @@
   </div>
 </template>
 <script>
-import Tables from "@/components/tables/baseTables"
-import NewModel from "@/components/NewModel/pubService"
-import SearchForm from "@/components/searchform/sensitiveSearch"
+import Tables from '@/components/tables/baseTables'
+import NewModel from '@/components/NewModel/pubService'
+import SearchForm from '@/components/searchform/sensitiveSearch'
 // import {
 // 	list
 // } from "@/api/collection";
@@ -39,79 +39,79 @@ import {
   getAction,
   postAction,
   selectAll
-} from "@/api/manage"
+} from '@/api/manage'
 // import axios from "axios";
 import {
-  sensitive,
-} from "@/components/NewModel/constant.js"
-import moment from "moment"
+  sensitive
+} from '@/components/NewModel/constant.js'
+import moment from 'moment'
 const columns = [{
-  title: "用户编号",
-  dataIndex: "consNo",
-  align: "center",
+  title: '用户编号',
+  dataIndex: 'consNo',
+  align: 'center',
   ellipsis: true,
   width: 80
 },
 {
-  title: "用户名称",
-  dataIndex: "consName",
-  align: "center",
+  title: '用户名称',
+  dataIndex: 'consName',
+  align: 'center',
   ellipsis: true,
   width: 70
 },
 {
-  title: "用户电话",
-  dataIndex: "mobile",
+  title: '用户电话',
+  dataIndex: 'mobile',
   ellipsis: true,
-  align: "center",
+  align: 'center',
   width: 100
 },
 {
-  title: "用户地址",
-  dataIndex: "elecAddr",
+  title: '用户地址',
+  dataIndex: 'elecAddr',
   ellipsis: true,
-  align: "center",
+  align: 'center',
   width: 200
 },
 {
-  title: "台区编号",
-  dataIndex: "tgId",
-  align: "center",
+  title: '台区编号',
+  dataIndex: 'tgId',
+  align: 'center',
   ellipsis: true,
   width: 100
 },
 {
-  title: "台区名称",
-  dataIndex: "tgName",
-  align: "center",
+  title: '台区名称',
+  dataIndex: 'tgName',
+  align: 'center',
   ellipsis: true,
   width: 90
 },
 {
-  title: "供电单位",
-  dataIndex: "orgNo",
-  align: "center",
+  title: '供电单位',
+  dataIndex: 'orgNo',
+  align: 'center',
   ellipsis: true,
   width: 135
 },
 {
-  title: "标记时间",
-  dataIndex: "labelTime",
-  align: "center",
+  title: '标记时间',
+  dataIndex: 'labelTime',
+  align: 'center',
   ellipsis: true,
   width: 130
 },
 {
-  title: "标记原因",
-  dataIndex: "labelCause",
-  align: "center",
+  title: '标记原因',
+  dataIndex: 'labelCause',
+  align: 'center',
   ellipsis: true,
   width: 80
 },
 {
-  title: "标记人",
-  dataIndex: "labelName",
-  align: "center",
+  title: '标记人',
+  dataIndex: 'labelName',
+  align: 'center',
   ellipsis: true,
   width: 80
 }
@@ -137,7 +137,7 @@ export default {
   components: {
     Tables,
     SearchForm,
-    NewModel,
+    NewModel
   },
   created () {
     this.initList()
@@ -165,9 +165,9 @@ export default {
       this.NewModelData = e
       this.progress.progress = 2
       this.NewModalVisible = true
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
