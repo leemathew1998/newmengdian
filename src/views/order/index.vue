@@ -12,7 +12,7 @@
               font-size: 18px;
               padding-left: 8px;
             "
-            >工单类型</span
+          >工单类型</span
           >
         </th>
         <th
@@ -99,60 +99,60 @@ export default {
   data() {
     return {
       selectItem: [
-        "collection",
-        "metering",
-        "lineloss",
-        "charge",
-        "recovery",
-        "copy",
-        "service",
-        "activeMetering",
-        "activeRepair",
-      ],
-    };
+        'collection',
+        'metering',
+        'lineloss',
+        'charge',
+        'recovery',
+        'copy',
+        'service',
+        'activeMetering',
+        'activeRepair'
+      ]
+    }
   },
   mounted() {
-    this.$refs[this.$route.name].children[0].style.backgroundColor = "#28599d";
-    this.$refs[this.$route.name].children[0].style.borderTopLeftRadius = "5px";
-    this.$refs[this.$route.name].children[0].style.borderTopRightRadius = "5px";
-    this.$refs[this.$route.name].children[1].style.borderTopLeftRadius = "5px";
-    this.$refs[this.$route.name].children[1].style.borderTopRightRadius = "5px";
-    this.$refs[this.$route.name].children[1].style.lineHeight = "50px";
-    this.$refs[this.$route.name].children[1].style.background = "#28599d";
+    this.$refs[this.$route.name].children[0].style.backgroundColor = '#28599d'
+    this.$refs[this.$route.name].children[0].style.borderTopLeftRadius = '5px'
+    this.$refs[this.$route.name].children[0].style.borderTopRightRadius = '5px'
+    this.$refs[this.$route.name].children[1].style.borderTopLeftRadius = '5px'
+    this.$refs[this.$route.name].children[1].style.borderTopRightRadius = '5px'
+    this.$refs[this.$route.name].children[1].style.lineHeight = '50px'
+    this.$refs[this.$route.name].children[1].style.background = '#28599d'
   },
   methods: {
     changePages(path) {
       // console.log(path.split('/')[2],this.$refs['collection'],this.$refs)
       for (let item = 0; item < this.selectItem.length; item++) {
         this.$refs[this.selectItem[item]].children[0].style.backgroundColor =
-          "#f3f3f3";
+          '#f3f3f3'
         this.$refs[
           this.selectItem[item]
-        ].children[0].style.borderTopLeftRadius = "0";
+        ].children[0].style.borderTopLeftRadius = '0'
         this.$refs[
           this.selectItem[item]
-        ].children[0].style.borderTopRightRadius = "0";
+        ].children[0].style.borderTopRightRadius = '0'
         this.$refs[
           this.selectItem[item]
-        ].children[1].style.borderTopLeftRadius = "0";
+        ].children[1].style.borderTopLeftRadius = '0'
         this.$refs[
           this.selectItem[item]
-        ].children[1].style.borderTopRightRadius = "0";
-        this.$refs[this.selectItem[item]].children[1].style.lineHeight = "25px";
+        ].children[1].style.borderTopRightRadius = '0'
+        this.$refs[this.selectItem[item]].children[1].style.lineHeight = '25px'
         this.$refs[this.selectItem[item]].children[1].style.background =
-          "#aaaaaa";
+          '#aaaaaa'
       }
-      this.$refs[path.split("/")[2]].children[0].style.height = "0px";
-      this.$refs[path.split("/")[2]].children[1].style.borderTopLeftRadius =
-        "5px";
-      this.$refs[path.split("/")[2]].children[1].style.borderTopRightRadius =
-        "5px";
-      this.$refs[path.split("/")[2]].children[1].style.lineHeight = "50px";
-      this.$refs[path.split("/")[2]].children[1].style.background = "#28599d";
-      this.$router.push(path);
-    },
-  },
-};
+      this.$refs[path.split('/')[2]].children[0].style.height = '0px'
+      this.$refs[path.split('/')[2]].children[1].style.borderTopLeftRadius =
+        '5px'
+      this.$refs[path.split('/')[2]].children[1].style.borderTopRightRadius =
+        '5px'
+      this.$refs[path.split('/')[2]].children[1].style.lineHeight = '50px'
+      this.$refs[path.split('/')[2]].children[1].style.background = '#28599d'
+      this.$router.push(path)
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

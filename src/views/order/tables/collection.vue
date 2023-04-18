@@ -8,14 +8,14 @@
 
     <!-- 表格 -->
     <Tables
-      style="height: calc(100% - 100px)"
       @changeSelectedRowKeys="changeSelectedRowKeys"
+      @tablePaginationChange="initList"
       @clickRow="clickRows"
       :columns="columns"
       :data="data"
       :loading="loading"
       :scroll="1500"
-    ></Tables>
+      ref="table"></Tables>
     <!-- 弹窗 -->
     <NewModel
       :visible="NewModalVisible"
@@ -24,18 +24,14 @@
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
-      name="采集运维"
-    ></NewModel>
+      name="采集运维"></NewModel>
   </div>
 </template>
 <script>
 import Tables from '@/components/tables/Tables'
 import NewModel from '@/components/NewModel/coll'
 import SearchForm from '@/components/searchform/SearchCollection'
-import storage from './userInfo'
-import { list } from '@/api/collection'
-import { getAction, coll } from '@/api/manage'
-import axios from 'axios'
+import { coll } from '@/api/manage'
 import {
   failList,
   unUsualList,
@@ -131,10 +127,8 @@ export default {
       dictionary: [],
       progress: {},
       userInfo: {},
-      username: null
-      // solveformData:{
-      //   aaa:''
-      // },
+      username: null,
+      copyTheQueryParams: {}
     }
   },
   components: {
@@ -142,20 +136,13 @@ export default {
     SearchForm,
     NewModel
   },
-  mounted() {
-    this.initList()
-  },
   methods: {
     // 数据展示分装
     async initList() {
       this.loading = true
-      let res = await coll()
-      // 张生要求，"采集你先把时间最近的放前面"
-      res.sort((a, b) => {
-        return (
-          moment(b.workOrderCtime).format('X') -
-          moment(a.workOrderCtime).format('X')
-        )
+      let res = await coll({
+        ...this.copyTheQueryParams,
+        ...this.$refs.table.pageParamsReturn()
       })
       res.map((val) => {
         this.convertFormat(val)
@@ -166,25 +153,14 @@ export default {
     // 搜索
     solveformData(e) {
       console.log('solveformData', e)
-      let tempStatus = e.workOrderStatus
-      delete e.workOrderStatus
+      this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
       this.loading = true
-      coll(e)
+      coll({
+        ...this.copyTheQueryParams,
+        ...this.$refs.table.pageParamsReturn()
+      })
         .then((res) => {
-          // 张生要求，"采集你先把时间最近的放前面"
-          res.sort((a, b) => {
-            return (
-              moment(b.workOrderCtime).format('X') -
-              moment(a.workOrderCtime).format('X')
-            )
-          })
           res.map((item) => this.convertFormat(item))
-          if (tempStatus && tempStatus.length > 0) {
-            res = res.filter((item) => {
-              return tempStatus.includes(item.workOrderStatus)
-            })
-          }
-          console.log('after search data', res)
           this.data = res
         })
         .finally(() => {
@@ -370,6 +346,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+
   // justify-content: center;
   // align-items: center;
   .form {
@@ -386,12 +363,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody > tr > td {
+/deep/ .ant-table-tbody>tr>td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead > tr > th {
+/deep/ .ant-table-thead>tr>th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

@@ -64,53 +64,53 @@
 </template>
 
 <script>
-import UploadModal from "@/components/modal/UploadModal";
-import ExportModal from "@/components/modal/ExportModal";
+import UploadModal from '@/components/modal/UploadModal'
+import ExportModal from '@/components/modal/ExportModal'
 export default {
   // inject:['reload'],
-  name: "Tables",
+  name: 'Tables',
   props: {
     columns: {
       type: Array,
-      required: true,
+      required: true
     },
     scroll: {
       type: Number,
-      default: 1500,
+      default: 1500
     },
     data: {
       type: Array,
-      required: true,
+      required: true
     },
     operationName: {
       type: String,
-      default: "",
+      default: ''
     },
     loading: {
-      type: Boolean,
+      type: Boolean
     },
     pageConfig: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     xlsxName: {
       type: String,
-      require: true,
+      require: true
     },
     // 导出接口地址
     exportUrl: {
       type: String,
-      require: true,
+      require: true
     },
     // 导出的索引名
     ids: {
       type: String,
-      require: true,
-    },
+      require: true
+    }
   },
   components: {
     UploadModal,
-    ExportModal,
+    ExportModal
   },
   data() {
     return {
@@ -121,103 +121,112 @@ export default {
         current: 1,
         total: this.data.length,
         showSizeChanger: true,
-        pageSizeOptions: ["10", "20", "40", "80", "100"],
+        pageSizeOptions: ['10', '20', '40', '80', '100'],
         showTotal: (total) => `共 ${total} 条`,
-        pageSize: 10,
-      },
-    };
+        pageSize: 10
+      }
+    }
   },
   created() {
     if (
-      this.operationName !== "" &&
-      this.columns[this.columns.length - 1].dataIndex !== "operation"
+      this.operationName !== '' &&
+      this.columns[this.columns.length - 1].dataIndex !== 'operation'
     ) {
       this.columns.push({
-        title: "操作",
-        dataIndex: "operation",
-        align: "center",
+        title: '操作',
+        dataIndex: 'operation',
+        align: 'center',
         // width: 80,
         scopedSlots: {
-          customRender: "operation",
-        },
-      });
+          customRender: 'operation'
+        }
+      })
     }
   },
   watch: {
     pageConfig: {
       handler: function (newVal) {
         if (Object.keys(newVal).length) {
-          this.pagination.current = newVal.current;
-          this.pagination.pageSize = newVal.pageSize;
-          this.pagination.total = newVal.total;
+          this.pagination.current = newVal.current
+          this.pagination.pageSize = newVal.pageSize
+          this.pagination.total = newVal.total
 
-          this.pageConfig.current = newVal.current;
-          this.pageConfig.pageSize = newVal.pageSize;
-          this.pageConfig.total = newVal.total;
+          this.pageConfig.current = newVal.current
+          this.pageConfig.pageSize = newVal.pageSize
+          this.pageConfig.total = newVal.total
         }
       },
-      deep: true,
+      deep: true
     },
     pagination: {
       handler: function (newVal) {
         if (Object.keys(this.pageConfig).length) {
-          this.pageConfig.current = newVal.current;
-          this.pageConfig.pageSize = newVal.pageSize;
-          this.pageConfig.total = newVal.total;
+          this.pageConfig.current = newVal.current
+          this.pageConfig.pageSize = newVal.pageSize
+          this.pageConfig.total = newVal.total
         }
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   methods: {
+    // 返回给父组件方便查询
+    pageParamsReturn() {
+      return {
+        pageNo: this.pagination.current,
+        pageSize: this.pagination.pageSize
+      }
+    },
     onShowSizeChange(current, pageSize) {
-      console.log(current, pageSize);
+      console.log(current, pageSize)
     },
     // 选择更改
     onSelectChange(selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys;
-      this.$emit("changeSelectedRowKeys", this.selectedRowKeys);
+      this.selectedRowKeys = selectedRowKeys
+      this.$emit('changeSelectedRowKeys', this.selectedRowKeys)
     },
     // 选择全部
     selectAll() {
-      this.selectedRowKeys = [];
+      this.selectedRowKeys = []
       for (let i = 0; i < this.data.length; i++) {
-        this.selectedRowKeys.push(i);
+        this.selectedRowKeys.push(i)
       }
-      this.$emit("changeSelectedRowKeys", this.selectedRowKeys);
+      this.$emit('changeSelectedRowKeys', this.selectedRowKeys)
     },
     // 重置
     toggle() {
-      const tem = [];
+      const tem = []
       for (let i = 0; i < this.data.length; i++) {
         if (!this.selectedRowKeys.includes(i)) {
-          tem.push(i);
+          tem.push(i)
         }
       }
-      this.selectedRowKeys = tem;
-      this.$emit("changeSelectedRowKeys", this.selectedRowKeys);
+      this.selectedRowKeys = tem
+      this.$emit('changeSelectedRowKeys', this.selectedRowKeys)
     },
     tablePaginationChange(pagination) {
-      this.pagination.current = pagination.current; // 重新设置当前页
-      this.pagination.pageSize = pagination.pageSize;
-      this.pageConfig.current = pagination.current;
+      console.log('tablePaginationChange', pagination)
+      this.pagination.current = pagination.current // 重新设置当前页
+      this.pagination.pageSize = pagination.pageSize
+      this.pageConfig.current = pagination.current
+      this.$emit('tablePaginationChange')
     },
     // 单击跳出选择框
     handleClickRow(record, index) {
       return {
         on: {
           click: () => {
-            this.$emit("clickRow", record);
-          },
-        },
-      };
-    },
+            this.$emit('clickRow', record)
+          }
+        }
+      }
+    }
     // 局部刷新
     // newpay(){
     //   this.reload
     // }
-  },
-};
+  }
+}
 </script>
 
 <style lang="less" scoped>
