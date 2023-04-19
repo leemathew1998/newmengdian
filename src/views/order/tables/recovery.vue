@@ -144,11 +144,13 @@ export default {
     // 接口，时间格式状态转换
     async loadData() {
       this.loading = true
-      const data = await recycleWorkOrder({
+      const res = await recycleWorkOrder({
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
-      this.data = data.data
+      let total = Object.keys(res.data)[0]
+      this.$refs.table.pagination.total = Number(total)
+      this.data = res.data[total]
       this.data.map((item) => {
         item.workorderTime = moment(item.workorderTime).format(
           'YYYY-MM-DD HH:MM:SS'
@@ -178,9 +180,10 @@ export default {
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
-        .then(({ data }) => {
-          console.log('搜索', data)
-          this.data = data
+        .then((res) => {
+          let total = Object.keys(res.data)[0]
+          this.$refs.table.pagination.total = Number(total)
+          this.data = res.data[total]
           this.data.map((item) => {
             item.workorderTime = moment(item.workorderTime).format(
               'YYYY-MM-DD HH:MM:SS'

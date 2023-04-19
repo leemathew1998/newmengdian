@@ -146,7 +146,7 @@ export default {
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
-      let total = Object.keys(res.data)
+      let total = Object.keys(res.data)[0]
       this.$refs.table.pagination.total = Number(total)
 
       res.data[total].map((val) => {
@@ -165,7 +165,7 @@ export default {
         ...this.$refs.table.pageParamsReturn()
       })
         .then((res) => {
-          let total = Object.keys(res.data)
+          let total = Object.keys(res.data)[0]
           this.$refs.table.pagination.total = Number(total)
 
           res.data[total].map((val) => {

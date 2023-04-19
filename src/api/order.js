@@ -7,7 +7,7 @@ export function upload(parameter) {
     data: parameter
   })
 }
-function getAllStationForCorg() {
+export function getAllStationForCorg() {
   return axios({
     url: 'coll/getCorg',
     method: 'post'
@@ -35,7 +35,6 @@ export const getAllStation = async () => {
     })
     batchList.push(getAllStationByCorg(item.orgNo))
   })
-  console.warn('getAllStationForCorg', res)
   const allSorg = await Promise.all(batchList)
   allSorg.forEach((station, index) => {
     station.forEach(item => {
@@ -45,6 +44,5 @@ export const getAllStation = async () => {
       })
     })
   })
-  console.warn('returnList', returnList)
   return returnList
 }

@@ -135,12 +135,12 @@ export default {
     // 接口
     async loadData() {
       this.loading = true
-      const data = await runWorkOrder({
+      const res = await runWorkOrder({
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
-      console.log(data)
-      this.data = data.data.records
+      this.data = res.data.records
+      this.$refs.table.pagination.total = res.data.total
       for (var i = 0; i < this.data.length; i++) {
         if (this.data[i].workOrderStatus1 == '1') {
           this.data[i].workOrderStatus = '待处理'
@@ -176,7 +176,8 @@ export default {
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
-        .then(({ data: { records } }) => {
+        .then(({ data: { records, total } }) => {
+          this.$refs.table.pagination.total = total
           records.map((item, i) => {
             if (item.workOrderStatus1 == '1') {
               item.workOrderStatus = '待处理'

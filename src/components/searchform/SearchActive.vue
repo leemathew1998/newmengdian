@@ -56,6 +56,20 @@
               <a-select-option value="4">已归档</a-select-option>
             </a-select>
           </a-form-item>
+          <a-form-item>
+            <a-cascader
+              v-decorator="[
+                'orgNo',
+                {
+                  rules: [{ required: false, message: '请选择供电单位' }],
+                },
+              ]"
+              :options="cascaderOptions"
+              :style="{ minWidth: '150px' }"
+              placeholder="请选择供电单位"
+              allowClear
+            />
+          </a-form-item>
           <!-- 工单编号 -->
           <!-- <a-form-item>
 						<a-input v-decorator="[
@@ -95,15 +109,20 @@
 </template>
 
 <script>
+import { getAllStation } from '@/api/order.js'
 export default {
   data() {
     return {
       form: this.$form.createForm(this, {
         name: 'searchform'
-      })
+      }),
+      cascaderOptions: []
     }
   },
   mounted() {
+    getAllStation().then(res => {
+      this.cascaderOptions = res
+    })
     this.$nextTick(() => {
       this.form.validateFields()
       this.handleSubmit()
@@ -114,6 +133,7 @@ export default {
       e && e.preventDefault()
       this.form.validateFields((err, values) => {
         values.status = values.status.join(',')
+        values.orgNo = values.orgNo ? values.orgNo.slice(-1)[0] : values.orgNo
         this.$emit('formData', values)
         if (!err) {
           console.log('Received values of form: ', values)

@@ -295,7 +295,7 @@ export const feecontrolWorkOrder = (params) => {
 }
 export const linelosses = (params) => {
   return axios({
-    url: 'lineloss/list',
+    url: 'lineloss/list1',
     method: 'post',
     params: params
   })

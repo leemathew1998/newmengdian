@@ -130,7 +130,10 @@ export default {
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
-      this.data = res
+      console.log('---->', res)
+      let total = Object.keys(res.data)[0]
+      this.$refs.table.pagination.total = Number(total)
+      this.data = res.data[total]
       for (var i = 0; i < this.data.length; i++) {
         if (this.data[i].workOrderCycle == '1') {
           this.data[i].workOrderCycle = '连续1天工单'
@@ -216,7 +219,10 @@ export default {
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       }).then((res) => {
-        res.forEach((item, i) => {
+        console.log('---->', res)
+        let total = Object.keys(res.data)[0]
+        this.$refs.table.pagination.total = Number(total)
+        res[total].forEach((item, i) => {
           item.key = i
           item.workOrderCtime = moment(item.workOrderCtime).format(
             'YYYY-MM-DD HH:MM:SS'
@@ -241,7 +247,7 @@ export default {
             item.workOrderStatus = '已归档'
           }
         })
-        this.data = res
+        this.data = res[total]
       })
     }
   }

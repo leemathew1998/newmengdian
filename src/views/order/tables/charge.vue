@@ -135,11 +135,13 @@ export default {
     // 接口、时间状态转换
     async loadData() {
       this.loading = true
-      const data = await feecontrolWorkOrder({
+      const res = await feecontrolWorkOrder({
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
-      this.data = data.data
+      let total = Object.keys(res.data)[0]
+      this.$refs.table.pagination.total = Number(total)
+      this.data = res.data[total]
       for (var i = 0; i < this.data.length; i++) {
         this.data[i].key = i
         this.data[i].failTime = moment(this.data[i].failTime).format(
@@ -179,7 +181,9 @@ export default {
         ...this.$refs.table.pageParamsReturn()
       })
         .then((res) => {
-          this.data = res.data
+          let total = Object.keys(res.data)[0]
+          this.$refs.table.pagination.total = Number(total)
+          this.data = res.data[total]
           // 张生要求，"采集你先把时间最近的放前面"
           for (var i = 0; i < this.data.length; i++) {
             this.data[i].key = i

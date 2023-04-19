@@ -22,7 +22,8 @@
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
-      name="计量运维"></NewModel>
+      name="计量运维"
+    ></NewModel>
   </div>
 </template>
 
@@ -140,6 +141,7 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+      this.$refs.table.pagination.total = res.data.total
       res.data.records = res.data.records.map((item) => {
         item.workOrderStime = moment(item.workOrderStime).format(
           'YYYY-MM-DD HH:mm:ss'
@@ -227,8 +229,9 @@ export default {
             })
             this.NewModelData[ListOfReason[i].englishName] = `${moment()
               .subtract(1, 'day')
-              .format('MM月DD日')}${reason[ListOfReason[i].englishName].split('时')[0]
-              }分`
+              .format('MM月DD日')}${
+              reason[ListOfReason[i].englishName].split('时')[0]
+            }分`
             // this.reasonList.push({
             // 	chineseName: '时间',
             // 	value: `${moment().subtract(1, 'day').format('MM月DD日')}${reason[ListOfReason[i].englishName].split('时')[0]}分`,
@@ -242,24 +245,27 @@ export default {
               reason[ListOfReason[i].englishName]
           } else if (ListOfReason[i].englishName == 'oneReverseActive') {
             this.dictionary.push({
-              label: `${moment().subtract(1, 'day').format('MM月DD日')}${ListOfReason[i].chineseName
-                }`,
+              label: `${moment().subtract(1, 'day').format('MM月DD日')}${
+                ListOfReason[i].chineseName
+              }`,
               name: ListOfReason[i].englishName
             })
             this.NewModelData[ListOfReason[i].englishName] =
               reason[ListOfReason[i].englishName]
           } else if (ListOfReason[i].englishName == 'twoReverseActive') {
             this.dictionary.push({
-              label: `${moment().subtract(2, 'day').format('MM月DD日')}${ListOfReason[i].chineseName
-                }`,
+              label: `${moment().subtract(2, 'day').format('MM月DD日')}${
+                ListOfReason[i].chineseName
+              }`,
               name: ListOfReason[i].englishName
             })
             this.NewModelData[ListOfReason[i].englishName] =
               reason[ListOfReason[i].englishName]
           } else if (ListOfReason[i].englishName == 'threeReverseActive') {
             this.dictionary.push({
-              label: `${moment().subtract(3, 'day').format('MM月DD日')}${ListOfReason[i].chineseName
-                }`,
+              label: `${moment().subtract(3, 'day').format('MM月DD日')}${
+                ListOfReason[i].chineseName
+              }`,
               name: ListOfReason[i].englishName
             })
             this.NewModelData[ListOfReason[i].englishName] =
@@ -271,8 +277,9 @@ export default {
             ListOfReason[i].englishName == 'nowavgCurrentC'
           ) {
             this.dictionary.push({
-              label: `${moment().subtract(1, 'day').format('MM月DD日')}${ListOfReason[i].chineseName
-                }`,
+              label: `${moment().subtract(1, 'day').format('MM月DD日')}${
+                ListOfReason[i].chineseName
+              }`,
               name: ListOfReason[i].englishName
             })
             this.NewModelData[ListOfReason[i].englishName] =
@@ -284,8 +291,9 @@ export default {
             ListOfReason[i].englishName == 'beforeavgCurrentC'
           ) {
             this.dictionary.push({
-              label: `${moment().subtract(2, 'day').format('MM月DD日')}${ListOfReason[i].chineseName
-                }`,
+              label: `${moment().subtract(2, 'day').format('MM月DD日')}${
+                ListOfReason[i].chineseName
+              }`,
               name: ListOfReason[i].englishName
             })
             this.NewModelData[ListOfReason[i].englishName] =
@@ -318,7 +326,8 @@ export default {
         ...this.$refs.table.pageParamsReturn()
       })
         .then((res) => {
-          res.data.records = res.data.records.map((item) => {
+          this.$refs.table.pagination.total = res.data.total
+          res.data.records.map((item) => {
             item.workOrderStime = moment(item.workOrderStime).format(
               'YYYY-MM-DD HH:mm:ss'
             )
@@ -345,7 +354,6 @@ export default {
 
 <style lang="less" scoped>
 .warp {
-
   // display: flex;
   // flex-direction: column;
   // justify-content: center;
@@ -364,12 +372,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody>tr>td {
+/deep/ .ant-table-tbody > tr > td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead>tr>th {
+/deep/ .ant-table-thead > tr > th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

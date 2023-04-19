@@ -41,16 +41,20 @@
             />
           </a-form-model-item>
           <!-- 台区名称 -->
-          <!-- <a-form-item>
-						<a-select v-decorator="[
-                'powerSupplyUnit',
-                { rules: [{ message: '请选择供电单位' }] },
-              ]" placeholder="请选择供电单位" :style="{ width: '150px' }" allowClear>
-							<a-select-option value="哈克供电营业站"> 哈克供电营业站 </a-select-option>
-							<a-select-option value="园丁供电营业站"> 园丁供电营业站 </a-select-option>
-							<a-select-option value="光明供电营业站"> 光明供电营业站 </a-select-option>
-						</a-select>
-					</a-form-item> -->
+          <a-form-item>
+            <a-cascader
+              v-decorator="[
+                'orgNo',
+                {
+                  rules: [{ required: false, message: '请选择供电单位' }],
+                },
+              ]"
+              :options="cascaderOptions"
+              :style="{ minWidth: '150px' }"
+              placeholder="请选择供电单位"
+              allowClear
+            />
+          </a-form-item>
           <!-- 工单状态 -->
           <a-form-item>
             <a-select
@@ -91,7 +95,7 @@
             html-type="submit"
             style="background-color: #28599d"
             @click="handleSubmit"
-            >查询</a-button
+          >查询</a-button
           >
         </a-form-item>
         <a-form-item>
@@ -107,40 +111,45 @@
 </template>
 
 <script>
+import { getAllStation } from '@/api/order.js'
 export default {
   data() {
     return {
       form: this.$form.createForm(this, {
-        name: "searchform",
+        name: 'searchform'
       }),
-    };
+      cascaderOptions: []
+    }
   },
   mounted() {
+    getAllStation().then(res => {
+      this.cascaderOptions = res
+    })
     this.$nextTick(() => {
-      this.form.validateFields();
-    });
+      this.form.validateFields()
+    })
   },
   methods: {
     handleSubmit(e) {
-      e.preventDefault();
+      e.preventDefault()
 
       this.form.validateFields((err, values) => {
-        this.$emit("formData", values);
+        this.$emit('formData', values)
         // if (!err) {
         // 	console.log("Received values of form: ", values);
         // }
-      });
+      })
     },
     handleReset() {
-      this.form.resetFields();
-      this.$parent.loadData();
+      this.form.resetFields()
+      this.$parent.loadData()
     },
 
     onChange(date, dateString) {
-      console.log(date, dateString);
-    },
-  },
-};
+      console.log(date, dateString)
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

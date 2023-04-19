@@ -14,7 +14,8 @@
       xlsxName="优质服务"
       :exportUrl="exportUrl"
       :ids="ids"
-      ref="table">
+      ref="table"
+    >
     </Tables>
     <NewModel
       :visible="NewModalVisible"
@@ -27,7 +28,8 @@
       :isSensitivity="isSensitivity"
       :isOutage="isOutage"
       name="优质服务"
-      :loading="loading"></NewModel>
+      :loading="loading"
+    ></NewModel>
   </div>
 </template>
 
@@ -126,13 +128,19 @@ export default {
   methods: {
     async loadData() {
       this.loading = true
-      const { data } = await superiorWorkOrder({
+      const res = await superiorWorkOrder({
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
-      this.data = data
+      let total = Object.keys(res.data)[0]
+      this.$refs.table.pagination.total = Number(total)
+
+      res.data[total].map((val) => {
+        this.convertFormat(val)
+      })
+      this.data = res.data[total]
       // 时间格式、状态转换
-      data.map((item) => {
+      this.data.map((item) => {
         if (item.workOrderStatus == '1') {
           item.workOrderStatus = '待处理'
         } else if (item.workOrderStatus == '2') {
@@ -181,7 +189,9 @@ export default {
         ...this.$refs.table.pageParamsReturn()
       })
         .then(({ data }) => {
-          this.data = data
+          let total = Object.keys(data)[0]
+          this.$refs.table.pagination.total = Number(total)
+          this.data = data[total]
           this.data.map((item) => {
             item.handleTime = moment(item.handleTime).format('MM-DD HH:MM:SS')
             item.workOrderCtime = moment(item.workOrderCtime).format(
@@ -266,12 +276,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody>tr>td {
+/deep/ .ant-table-tbody > tr > td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead>tr>th {
+/deep/ .ant-table-thead > tr > th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

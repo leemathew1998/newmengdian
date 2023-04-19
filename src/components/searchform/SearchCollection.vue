@@ -75,14 +75,14 @@
               v-decorator="[
                 'orgNo',
                 {
-                  rules: [{ required: false, message: '请选择台区' }],
+                  rules: [{ required: false, message: '请选择供电单位' }],
                 },
               ]"
               :options="cascaderOptions"
               :style="{ minWidth: '150px' }"
-              placeholder="请选择台区"
+              placeholder="请选择供电单位"
               allowClear
-            />
+            ></a-cascader>
           </a-form-item>
         </div>
       </div>
@@ -121,8 +121,10 @@ export default {
       cascaderOptions: []
     }
   },
-  async mounted() {
-    this.cascaderOptions = await getAllStation()
+  mounted() {
+    getAllStation().then((res) => {
+      this.cascaderOptions = res
+    })
     this.$nextTick(() => {
       this.form.validateFields()
       this.handleSubmit()
