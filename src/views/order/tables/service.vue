@@ -15,6 +15,7 @@
       :exportUrl="exportUrl"
       :ids="ids"
       ref="table"
+      :copyTheQueryParams="copyTheQueryParams"
     >
     </Tables>
     <NewModel
@@ -40,7 +41,6 @@ import NewModel from '@/components/NewModel/serve.vue'
 import SearchForm from '@/components/searchform/SearchService'
 import { getAction, postAction, superiorWorkOrder } from '@/api/manage'
 import { serviceList } from '@/components/NewModel/constant.js'
-import { dealWorkOrderStatus } from '@/utils/util.js'
 const columns = [
   {
     title: '工单编号',
@@ -127,17 +127,13 @@ export default {
   // 接口
   methods: {
     async loadData() {
-      this.loading = true
+      // this.loading = true
       const res = await superiorWorkOrder({
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
       let total = Object.keys(res.data)[0]
       this.$refs.table.pagination.total = Number(total)
-
-      res.data[total].map((val) => {
-        this.convertFormat(val)
-      })
       this.data = res.data[total]
       // 时间格式、状态转换
       this.data.map((item) => {
@@ -174,8 +170,6 @@ export default {
           'MM-DD HH:MM:SS'
         )
         item.acceptedTime = moment(item.acceptedTime).format('MM-DD HH:MM:SS')
-        // 工单状态字段转换
-        dealWorkOrderStatus(item)
       })
       this.loading = false
     },
@@ -222,8 +216,6 @@ export default {
             } else {
               item.userType = '普通用户'
             }
-            // 工单状态字段转换
-            dealWorkOrderStatus(item)
           })
         })
         .finally(() => {

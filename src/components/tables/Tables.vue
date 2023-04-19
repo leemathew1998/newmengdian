@@ -14,25 +14,25 @@
       :loading="loading"
       :pagination="pagination"
       :scroll="{ x: scroll, y: 500 }"
-      rowKey="key"
+      rowKey="id"
     ></a-table>
     <!-- 下方（反向）选择、导入（出）出按钮 -->
     <div class="bottom">
       <div class="left">
-        <a-button @click="selectAll" style="margin-right: 10px">
+        <!-- <a-button @click="selectAll" style="margin-right: 10px">
           选择全部
-        </a-button>
-        <a-button @click="toggle" style="margin-right: 40px">
+        </a-button> -->
+        <!-- <a-button @click="toggle" style="margin-right: 40px">
           反向选择
-        </a-button>
-        <!-- <a-button
+        </a-button> -->
+        <a-button
           type="primary"
           icon="download"
           style="margin-right: 10px; background-color: #28599d"
           @click="() => (exportvisible = !exportvisible)"
         >
           导出工单
-        </a-button> -->
+        </a-button>
         <!-- <a-upload name="file" :custom-request="fileHandleChange"> -->
         <!-- <a-button
           type="primary"
@@ -46,10 +46,10 @@
       </div>
     </div>
     <!-- 导入模式 -->
-    <upload-modal
+    <!-- <upload-modal
       :visible="uploadvisible"
       @changeModal="() => (uploadvisible = !uploadvisible)"
-    />
+    /> -->
     <!-- 导出模式 -->
     <export-modal
       :visible="exportvisible"
@@ -59,6 +59,7 @@
       :xlsxName="xlsxName"
       :exportUrl="exportUrl"
       :ids="ids"
+      v-bind="$attrs"
     />
   </div>
 </template>

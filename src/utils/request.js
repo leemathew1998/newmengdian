@@ -130,7 +130,7 @@ service.interceptors.request.use(
     if (!config.params) {
       config.params = {}
     }
-    config.params['loName2'] = store.getters.username
+    config.params['loName2'] = store.getters.username || 'nihao'
     config.headers['Authorization'] = store.getters.token // 让每个请求携带自定义 token 请根据实际情况自行修改
     // if (config.url.indexOf("/file/upload") !== -1) {
     //   config.headers["Content-Type"] = "multipart/form-data";

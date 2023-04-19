@@ -134,13 +134,22 @@ export default {
       let total = Object.keys(res.data)[0]
       this.$refs.table.pagination.total = Number(total)
       this.data = res.data[total]
-      for (var i = 0; i < this.data.length; i++) {
+      for (let i = 0; i < this.data.length; i++) {
         if (this.data[i].workOrderCycle == '1') {
           this.data[i].workOrderCycle = '连续1天工单'
         } else if (this.data[i].workOrderCycle >= '2') {
           this.data[i].workOrderCycle = '连续2天工单'
         } else if (this.data[i].workOrderCycle == '0') {
           this.data[i].workOrderCycle = '连续0天工单'
+        }
+        if (this.data[i].workOrderStatus == '1') {
+          this.data[i].workOrderStatus = '待处理'
+        } else if (this.data[i].workOrderStatus == '2') {
+          this.data[i].workOrderStatus = '处理中'
+        } else if (this.data[i].workOrderStatus == '3') {
+          this.data[i].workOrderStatus = '待归档'
+        } else {
+          this.data[i].workOrderStatus = '已归档'
         }
         this.data[i].value = i
         this.data[i].workOrderCtime = moment(
@@ -212,43 +221,44 @@ export default {
       // }
     },
     // 这个是处理搜索数据的
-    solveformData(e) {
+    async solveformData(e) {
       console.log('solveformData', e)
       this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
-      linelosses({
+      this.loading = true
+      const res = await linelosses({
         ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
-      }).then((res) => {
-        console.log('---->', res)
-        let total = Object.keys(res.data)[0]
-        this.$refs.table.pagination.total = Number(total)
-        res[total].forEach((item, i) => {
-          item.key = i
-          item.workOrderCtime = moment(item.workOrderCtime).format(
-            'YYYY-MM-DD HH:MM:SS'
-          )
-          item.linelossDate = moment(item.linelossDate).format(
-            'YYYY-MM-DD HH:MM:SS'
-          )
-          if (item.workOrderCycle == '1') {
-            item.workOrderCycle = '连续1天工单'
-          } else if (+item.workOrderCycle >= 2) {
-            item.workOrderCycle = '连续2天工单'
-          } else if (item.workOrderCycle == '0') {
-            item.workOrderCycle = '连续0天工单'
-          }
-          if (item.workOrderStatus == '1') {
-            item.workOrderStatus = '待处理'
-          } else if (item.workOrderStatus == '2') {
-            item.workOrderStatus = '处理中'
-          } else if (item.workOrderStatus == '3') {
-            item.workOrderStatus = '待归档'
-          } else {
-            item.workOrderStatus = '已归档'
-          }
-        })
-        this.data = res[total]
       })
+      console.log('---->', res)
+      let total = Object.keys(res.data)[0]
+      this.$refs.table.pagination.total = Number(total)
+      this.data = res.data[total]
+      for (let i = 0; i < this.data.length; i++) {
+        if (this.data[i].workOrderCycle == '1') {
+          this.data[i].workOrderCycle = '连续1天工单'
+        } else if (this.data[i].workOrderCycle >= '2') {
+          this.data[i].workOrderCycle = '连续2天工单'
+        } else if (this.data[i].workOrderCycle == '0') {
+          this.data[i].workOrderCycle = '连续0天工单'
+        }
+        if (this.data[i].workOrderStatus == '1') {
+          this.data[i].workOrderStatus = '待处理'
+        } else if (this.data[i].workOrderStatus == '2') {
+          this.data[i].workOrderStatus = '处理中'
+        } else if (this.data[i].workOrderStatus == '3') {
+          this.data[i].workOrderStatus = '待归档'
+        } else {
+          this.data[i].workOrderStatus = '已归档'
+        }
+        this.data[i].value = i
+        this.data[i].workOrderCtime = moment(
+          this.data[i].workOrderCtime
+        ).format('YYYY-MM-DD HH:MM:SS')
+        this.data[i].linelossDate = moment(this.data[i].linelossDate).format(
+          'YYYY-MM-DD HH:MM:SS'
+        )
+      }
+      this.loading = false
     }
   }
 }

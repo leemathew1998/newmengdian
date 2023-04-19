@@ -22,8 +22,9 @@
         :percent="progressPercent"
         :showInfo="false"
       />
-      <span v-show="!finsh"
-        >批量导出{{ selectedRowKeys.length }}条数据，正在在生成导出文件</span
+      <span
+        v-show="!finsh"
+      >批量导出{{ selectedRowKeys.length }}条数据，正在在生成导出文件</span
       >
       <a-button type="primary" v-show="finsh" @click="exportExcel" size="large">
         下载导出文件
@@ -32,9 +33,7 @@
   </a-modal>
 </template>
 <script>
-import {
-  downFile
-} from '@/api/manage.js'
+import { downFile } from '@/api/manage.js'
 import { layer } from '@fortawesome/fontawesome-svg-core'
 import { message } from 'ant-design-vue'
 import NProgress from 'nprogress'
@@ -47,11 +46,11 @@ export default {
     },
     data: {
       type: Array,
-      required: true,
+      required: true
     },
     selectedRowKeys: {
       type: Array,
-      required: true,
+      required: true
     },
     xlsxName: {
       type: String,
@@ -66,22 +65,25 @@ export default {
     ids: {
       type: String,
       require: true
+    },
+    copyTheQueryParams: {
+      type: Object
     }
   },
-  created () {
+  created() {
     NProgress.configure({
       showSpinner: false
     })
   },
-  data () {
+  data() {
     return {
       modalVisible: false,
       progressPercent: 0,
       finsh: false,
       tableData: [
-        ["表", "头", "数", "据"],
+        ['表', '头', '数', '据'],
         [1, 2, 3, 4],
-        [1, 2, 3, 4],
+        [1, 2, 3, 4]
       ],
       tableDataThree: [],
       link: null,
@@ -91,37 +93,32 @@ export default {
   },
 
   watch: {
-    visible (newVal, oldVal) {
+    visible(newVal, oldVal) {
       // console.log('newVal', newVal, 'oldVal', oldVal)
-      if (this.selectedRowKeys.length > 0) {
-        this.modalVisible = newVal
-        if (newVal) {
-          this.preDownLoad()
-        }
-      } else {
-        this.$message.warning('请先勾选需要导出的工单')
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.warning('正在批量导出中...')
+      }
+      this.modalVisible = newVal
+      if (newVal) {
+        this.preDownLoad()
       }
     }
   },
   methods: {
-    handleCancel () {
+    handleCancel() {
       this.progressPercent = 0
       this.finsh = false
       this.modalVisible = !this.modalVisible
-      this.$emit("changeModal", false)
+      this.$emit('changeModal', false)
     },
-    async preDownLoad () {
+    async preDownLoad() {
       console.log('导出', this.exportUrl)
       NProgress.start()
-      let ids = ''
-      for (let i = 0; i < this.selectedRowKeys.length; i++) {
-        ids += String(this.data[this.selectedRowKeys[i]][this.ids])
-        ids += ','
-      }
-      console.log('ids', ids)
-      ids = ids.slice(0, -1)
-      const res = await downFile(`${this.exportUrl}/export?ids=${ids}`)
-      this.success = res.success
+      let ids = this.selectedRowKeys.join(',')
+      const res = await downFile(`${this.exportUrl}/${this.selectedRowKeys.length > 0 ? 'export' : 'exportAll'}`, {
+        ids,
+        ...this.copyTheQueryParams
+      })
       this.url = window.URL.createObjectURL(new Blob([res]))
       this.link = document.createElement('a')
       this.link.style.display = 'none'
@@ -132,23 +129,20 @@ export default {
       NProgress.done()
     },
 
-    async exportExcel () {
-      if (!this.success) {
-        this.$message.error("导出失败")
-      } else {
-        this.link.click()
-        document.body.removeChild(this.link) // 下载完成移除元素
-        window.URL.revokeObjectURL(this.url) // 释放掉blob对象
-      }
-      this.success = null
+    async exportExcel() {
+      this.link.click()
+      document.body.removeChild(this.link) // 下载完成移除元素
+      window.URL.revokeObjectURL(this.url) // 释放掉blob对象
     },
 
-    handleOk (e) {
-      this.progressPercent = 0
-      this.finsh = false
+    handleOk(e) {
       this.modalVisible = !this.modalVisible
-      this.$emit("changeModal", false)
-    },
-  },
-};
+      this.$nextTick(() => {
+        this.$emit('changeModal', false)
+        this.progressPercent = 0
+        this.finsh = false
+      })
+    }
+  }
+}
 </script>
