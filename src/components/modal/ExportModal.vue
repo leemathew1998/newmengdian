@@ -24,7 +24,9 @@
       />
       <span
         v-show="!finsh"
-      >批量导出{{ selectedRowKeys.length }}条数据，正在在生成导出文件</span
+      >批量导出{{
+        selectedRowKeys.length === 0 ? "" : `${selectedRowKeys.length}条`
+      }}数据，正在在生成导出文件</span
       >
       <a-button type="primary" v-show="finsh" @click="exportExcel" size="large">
         下载导出文件
@@ -115,10 +117,15 @@ export default {
       console.log('导出', this.exportUrl)
       NProgress.start()
       let ids = this.selectedRowKeys.join(',')
-      const res = await downFile(`${this.exportUrl}/${this.selectedRowKeys.length > 0 ? 'export' : 'exportAll'}`, {
-        ids,
-        ...this.copyTheQueryParams
-      })
+      const res = await downFile(
+        `${this.exportUrl}/${
+          this.selectedRowKeys.length > 0 ? 'export' : 'exportAll'
+        }`,
+        {
+          ids,
+          ...this.copyTheQueryParams
+        }
+      )
       this.url = window.URL.createObjectURL(new Blob([res]))
       this.link = document.createElement('a')
       this.link.style.display = 'none'
