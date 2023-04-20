@@ -13,6 +13,8 @@
       :data="data"
       :loading="loading"
       ref="table"
+      exportUrl="mwo"
+      :copyTheQueryParams="copyTheQueryParams"
     ></Tables>
     <!-- 弹窗 -->
     <NewModel

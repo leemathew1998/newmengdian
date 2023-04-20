@@ -13,9 +13,9 @@
       :data="data"
       :loading="loading"
       xlsxName="电费补抄"
-      :exportUrl="exportUrl"
-      :ids="ids"
+      exportUrl="runWorkOrder"
       ref="table"
+      :copyTheQueryParams="copyTheQueryParams"
     ></Tables>
     <!-- 弹窗 -->
     <NewModel
@@ -155,7 +155,6 @@ export default {
         this.data[i].meterGenerationTime = moment(
           this.data[i].meterGenerationTime
         ).format('MM-DD HH:MM:SS')
-        this.data[i].key = i
         if (this.data[i].warningStatus == '0') {
           this.data[i].warningStatus = '正常工单'
         } else {
@@ -188,7 +187,6 @@ export default {
             } else {
               item.workOrderStatus = '已归档'
             }
-            item.key = i
             item.meterGenerationTime = moment(item.meterGenerationTime).format(
               'MM-DD HH:MM:SS'
             )

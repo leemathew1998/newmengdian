@@ -13,9 +13,9 @@
       :data="data"
       :loading="loading"
       xlsxName="电费回收"
-      :exportUrl="exportUrl"
-      :ids="ids"
+      exportUrl="recycleWorkOrder"
       ref="table"
+      :copyTheQueryParams="copyTheQueryParams"
     >
     </Tables>
     <!-- 弹窗 -->

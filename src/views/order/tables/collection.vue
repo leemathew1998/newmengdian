@@ -16,6 +16,8 @@
       :loading="loading"
       :scroll="1500"
       ref="table"
+      exportUrl="coll"
+      :copyTheQueryParams="copyTheQueryParams"
     ></Tables>
     <!-- 弹窗 -->
     <NewModel

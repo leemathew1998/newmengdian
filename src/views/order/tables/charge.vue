@@ -13,9 +13,10 @@
       :data="data"
       :loading="loading"
       xlsxName="费控负电"
-      :exportUrl="exportUrl"
       :ids="ids"
       ref="table"
+      exportUrl="feecontrolWorkOrder"
+      :copyTheQueryParams="copyTheQueryParams"
     ></Tables>
     <!-- 弹窗 -->
     <NewModel

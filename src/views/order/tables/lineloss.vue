@@ -14,6 +14,8 @@
       :loading="loading"
       :scroll="1000"
       ref="table"
+      exportUrl="lineloss"
+      :copyTheQueryParams="copyTheQueryParams"
     ></Tables>
     <!-- 弹窗 -->
     <NewModel
