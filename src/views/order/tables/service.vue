@@ -46,6 +46,7 @@ const columns = [
     title: '工单编号',
     dataIndex: 'appNo',
     align: 'center',
+    ellipsis: true,
     width: 150,
     scopedSlots: {
       customRender: 'appNo'
@@ -55,42 +56,49 @@ const columns = [
     title: '工单来源',
     dataIndex: 'workOrderSource',
     align: 'center',
+    ellipsis: true,
     width: 80
   },
   {
     title: '业务类型',
     dataIndex: 'busiTypeCode',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '业务子类型',
     dataIndex: 'busiSubType',
     align: 'center',
+    ellipsis: true,
     width: 120
   },
   {
     title: '受理时间',
     dataIndex: 'handleTime',
     align: 'center',
+    ellipsis: true,
     width: 120
   },
   {
     title: '处理状态',
     dataIndex: 'workOrderStatus',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '台区经理',
     dataIndex: 'tgManager',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '工单日期',
     dataIndex: 'workOrderCtime',
     align: 'center',
+    ellipsis: true,
     width: 120
   }
 ]

@@ -49,38 +49,41 @@ const columns = [
     title: '工单编号',
     dataIndex: 'workOrderNo',
     align: 'center',
+    ellipsis: true,
     width: 130
   },
   {
     title: '电能表资产号',
     dataIndex: 'meterAssetNo',
     align: 'center',
+    ellipsis: true,
     width: 130
   },
   {
     title: '台区名称',
     dataIndex: 'tgName',
     align: 'center',
+    ellipsis: true,
     width: 150
   },
   {
     title: '台区经理',
     dataIndex: 'tgManager',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center',
     width: 70
   },
   {
     title: '用户名称',
     dataIndex: 'consName',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center',
     width: 100
   },
   {
     title: '用户编号',
     dataIndex: 'consNo',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center',
     width: 100
   },
@@ -88,30 +91,35 @@ const columns = [
     title: '用户地址',
     dataIndex: 'elecAddr',
     align: 'center',
+    ellipsis: true,
     width: 160
   },
   {
     title: '事件类型',
     dataIndex: 'eventType',
     align: 'center',
+    ellipsis: true,
     width: 90
   },
   {
     title: '原因研判',
     dataIndex: 'eventReason',
     align: 'center',
+    ellipsis: true,
     width: 135
   },
   {
     title: '工单状态',
     dataIndex: 'workOrderStatus',
     align: 'center',
+    ellipsis: true,
     width: 70
   },
   {
     title: '工单创建时间',
     dataIndex: 'workOrderCtime',
     align: 'center',
+    ellipsis: true,
     width: 110
   }
 ]

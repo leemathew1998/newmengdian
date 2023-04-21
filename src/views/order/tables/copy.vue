@@ -44,60 +44,70 @@ const columns = [
     title: '预警状态',
     dataIndex: 'warningStatus',
     align: 'center',
+    ellipsis: true,
     width: 90
   },
   {
     title: '工单用户户号',
     dataIndex: 'consNo',
     align: 'center',
+    ellipsis: true,
     width: 90
   },
   {
     title: '工单用户户名',
     dataIndex: 'consName',
     align: 'center',
+    ellipsis: true,
     width: 160
   },
   {
     title: '工单用户地址',
     dataIndex: 'elecAddr',
     align: 'center',
+    ellipsis: true,
     width: 190
   },
   {
     title: '台区经理',
     dataIndex: 'arcEmpName',
     align: 'center',
+    ellipsis: true,
     width: 80
   },
   {
     title: '工单编号',
     dataIndex: 'appNo',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '工单电压等级',
     dataIndex: 'voltCode',
     align: 'center',
+    ellipsis: true,
     width: 80
   },
   {
     title: '工单用电类别',
     dataIndex: 'elecTypeCode',
     align: 'center',
+    ellipsis: true,
     width: 80
   },
   {
     title: '工单状态',
     dataIndex: 'workOrderStatus',
     align: 'center',
+    ellipsis: true,
     width: 80
   },
   {
     title: '供电单位',
     dataIndex: 'orgName',
     align: 'center',
+    ellipsis: true,
     width: 120
   }
 ]

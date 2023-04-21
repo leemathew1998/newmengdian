@@ -42,7 +42,7 @@ const columns = [
   {
     title: '工单编号',
     dataIndex: 'workOrderNo',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   // {
@@ -54,37 +54,37 @@ const columns = [
   {
     title: '台区编号',
     dataIndex: 'tgId',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '台区名称',
     dataIndex: 'tgName',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '供电单位',
     dataIndex: 'orgName',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '用户名称',
     dataIndex: 'consName',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '用户编码',
     dataIndex: 'consNo',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '用户地址',
     dataIndex: 'consAddr',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
     // width: "12.5%",
     // width:60,
@@ -92,18 +92,20 @@ const columns = [
   {
     title: '计量事件类型',
     dataIndex: 'eventType',
+    ellipsis: true,
     align: 'center'
+
   },
   {
     title: '工单状态',
     dataIndex: 'workOrderStatus',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '工单创建时间',
-    dataIndex: 'workOrderStime'
-    // ellipsis: true,
+    dataIndex: 'workOrderStime',
+    ellipsis: true
     // align: "center",
   }
 ]

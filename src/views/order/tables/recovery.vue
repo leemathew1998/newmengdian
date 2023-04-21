@@ -47,53 +47,62 @@ const columns = [
     title: '工单编号',
     dataIndex: 'workOrderNo',
     align: 'center',
+    ellipsis: true,
     width: 120
   },
   {
     title: '台区经理',
     dataIndex: 'tgManager',
     align: 'center',
+    ellipsis: true,
     width: 80
   },
   {
     title: '台区编号',
     dataIndex: 'tgId',
     align: 'center',
+    ellipsis: true,
     width: 110
   },
   {
     title: '台区名称',
     dataIndex: 'tgName',
     align: 'center',
+    ellipsis: true,
     width: 130
   },
   {
     title: '供电单位',
     dataIndex: 'orgNo',
     align: 'center',
+    ellipsis: true,
     width: 130
   },
   {
     title: '用户名称',
     dataIndex: 'consName',
     align: 'center',
+    ellipsis: true,
     width: 180
   },
   {
     title: '用户地址',
     dataIndex: 'elecAddr',
     align: 'center',
+    ellipsis: true,
     width: 190
   },
   {
     title: '用户电话',
     dataIndex: 'mobile',
     align: 'center',
+    ellipsis: true,
     width: 120
   },
   {
     title: '用电类别',
     dataIndex: 'elecTypeCode',
+    ellipsis: true,
     scopedSlots: {
       customRender: 'elecTypeCode'
     },
@@ -103,12 +112,14 @@ const columns = [
   {
     title: '处理状态',
     dataIndex: 'workOrderStatus',
+    ellipsis: true,
     align: 'center',
     width: 120
   },
   {
     title: '电度电费',
     dataIndex: 'oweAmt',
+    ellipsis: true,
     align: 'center',
     width: 100
   }

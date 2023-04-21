@@ -43,37 +43,37 @@ const columns = [
   {
     title: '工单编号',
     dataIndex: 'workOrderNo',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '台区编号',
     dataIndex: 'tgId',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '台区名称',
     dataIndex: 'tgName',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '台区经理',
     dataIndex: 'tgManager',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '台区容量',
     dataIndex: 'tgSpq',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '线损率',
     dataIndex: 'linelossRate',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   // {
@@ -85,19 +85,19 @@ const columns = [
   {
     title: '工单周期',
     dataIndex: 'workOrderCycle',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '工单状态',
     dataIndex: 'workOrderStatus',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '工单时间',
     dataIndex: 'workOrderCtime',
-    // ellipsis: true,
+    ellipsis: true,
     align: 'center'
   }
 ]

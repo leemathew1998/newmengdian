@@ -44,66 +44,77 @@ const columns = [
     title: '工单编号',
     dataIndex: 'workOrderNo',
     align: 'center',
+    ellipsis: true,
     width: 130
   },
   {
     title: '工单生成时间',
     dataIndex: 'workOrderCtime',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '工单下发时间',
     dataIndex: 'remoteDate',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '台区经理',
     dataIndex: 'tgManager',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '台区编号',
     dataIndex: 'tgId',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '台区名称',
     dataIndex: 'tgName',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '供电单位',
     dataIndex: 'orgNo',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '用户名称',
     dataIndex: 'consName',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '用户编号',
     dataIndex: 'consNo',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '工单处理状态',
     dataIndex: 'workOrderStatus',
     align: 'center',
+    ellipsis: true,
     width: 100
   },
   {
     title: '用户地址',
     dataIndex: 'elecAddr',
     align: 'center',
+    ellipsis: true,
     width: 200
   }
 ]
@@ -132,6 +143,14 @@ export default {
     SearchForm,
     NewModel
   },
+  // mounted() {
+  //   for (let i = 0; i < 100; i++) {
+  //     this.data.push({
+  //       elecAddr:
+  //         '1234567890-==-09876543w23e4567890-09834567890-==-09876543w23e4567890-09865434565434567890--098'
+  //     })
+  //   }
+  // },
   methods: {
     // 接口、时间状态转换
     async loadData() {
