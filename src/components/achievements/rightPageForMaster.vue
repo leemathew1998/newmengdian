@@ -72,7 +72,7 @@ export default {
     },
     async solveData () {
       this.seriesData = []
-      const res = await postAction("/ach/acStationSp?id=1")
+      const res = await postAction('/ach/acStationSp?id=1')
       this.legend.map(item => {
         let tem = []
         res.data[item].map(item_ => {
@@ -90,22 +90,22 @@ export default {
       this.solveData()
     },
     latelyOneWeek () {
-      this.defaultValue = [moment(moment().add(-6, 'days').format('YYYY/MM/DD'), "YYYY/MM/DD"), moment(moment()
+      this.defaultValue = [moment(moment().add(-6, 'days').format('YYYY/MM/DD'), 'YYYY/MM/DD'), moment(moment()
         .format(
-          'YYYY/MM/DD'), "YYYY/MM/DD")]
+          'YYYY/MM/DD'), 'YYYY/MM/DD')]
       // 横坐标
       this.xAxis = this.eachOfWeek()
       this.solveData()
     },
     thismonth () {
-      this.defaultValue = [moment(moment().startOf('month').format('YYYY/MM/DD'), "YYYY/MM/DD"), moment(moment()
-        .format('YYYY/MM/DD'), "YYYY/MM/DD")]
+      this.defaultValue = [moment(moment().startOf('month').format('YYYY/MM/DD'), 'YYYY/MM/DD'), moment(moment()
+        .format('YYYY/MM/DD'), 'YYYY/MM/DD')]
       this.xAxis = this.eachOfMonth()
       this.solveData()
     },
     thisyear () {
-      this.defaultValue = [moment(moment().startOf('year').format('YYYY/MM/DD'), "YYYY/MM/DD"), moment(moment()
-        .format('YYYY/MM/DD'), "YYYY/MM/DD")]
+      this.defaultValue = [moment(moment().startOf('year').format('YYYY/MM/DD'), 'YYYY/MM/DD'), moment(moment()
+        .format('YYYY/MM/DD'), 'YYYY/MM/DD')]
       this.xAxis = this.eachOfYear()
       this.solveData()
     },
@@ -140,21 +140,24 @@ export default {
       return {
         on: {
           click: (event) => {
+            console.warn(record)
             this.$router.push({
-              name: "achievements/site",
+              name: 'achievements/site',
               params: {
-                name: record.stationName
+                name: record.stationName,
+                orgNo: record.orgNo,
+                ymd: record.ymd
               }
             })
-            localStorage.setItem("PLACE_ID", record.id)
-          },
+            localStorage.setItem('PLACE_ID', record.id)
+          }
         }
       }
-    },
+    }
   },
   props: ['rightInitPageColumns', 'rightInitPageData', 'rightPageLoading'],
   components: {
-    Charts,
+    Charts
   },
   data () {
     return {

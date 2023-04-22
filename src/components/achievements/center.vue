@@ -1,22 +1,25 @@
 <template>
-	<div class="box">
-		<div class="head">
-			<span class="title">当日总积分：{{ allNumber }}分</span>
-			<!-- <span class="ranking">日环比+3</span> -->
-		</div>
-		<Tables :data="centerData" :tableLoading="tableLoading">
-			<template v-slot="slotProps">
-				<a-button style="display: flex; justify-content: center" size="small" type="primary"
-					@click.stop="operations(slotProps.table_key)">
-					查看详情
-				</a-button>
-			</template>
-		</Tables>
-	</div>
+  <div class="box">
+    <div class="head">
+      <span class="title">当日总积分：{{ allNumber }}分</span>
+      <!-- <span class="ranking">日环比+3</span> -->
+    </div>
+    <Tables :data="centerData" :tableLoading="tableLoading">
+      <template v-slot="slotProps">
+        <a-button
+          style="display: flex; justify-content: center"
+          size="small"
+          type="primary"
+          @click.stop="operations(slotProps.table_key)">
+          查看详情
+        </a-button>
+      </template>
+    </Tables>
+  </div>
 </template>
 
 <script>
-	import Tables from "@/components/tables/Tabless";
+	import Tables from '@/components/tables/Tabless'
 	export default {
 		created() {
 			console.log(this.centerData)
@@ -40,21 +43,21 @@
 						index: i
 					})
 				}
-			},
+			}
 		},
 		props: ['centerData', 'tableLoading', 'rightInitPage', 'rightInitPageData', 'rightPageData'],
 		computed: {
 			allNumber: function() {
-				let all = 0;
+				let all = 0
 				this.centerData.map(item => {
 					all += item.integral
 				})
-				return all;
-			},
+				return all
+			}
 		},
 		components: {
 			Tables
-		},
+		}
 
 	}
 </script>

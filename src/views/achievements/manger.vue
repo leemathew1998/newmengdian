@@ -2,7 +2,7 @@
   <div class="warp">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop :name="$route.params.name"></leftTop>
+        <leftTop :name="$route.params.name" :dateTime.sync="dateTime"></leftTop>
       </div>
       <div class="left-bottom">
         <div class="box">
@@ -10,7 +10,7 @@
             :leftBottomColumns="leftBottomColumns"
             :leftBottomData="leftBottomData"
             :leftBottomLoading="leftBottomLoading"
-          ></leftBottom>
+            @clickRow="leftBottomClickRow"></leftBottom>
         </div>
       </div>
     </div>
@@ -20,8 +20,7 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"
-      ></center>
+        :rightPageData.sync="rightPageData"></center>
     </div>
     <div class="wrap-right animated fadeInRight">
       <div ref="rightInitPage" class="box">
@@ -40,76 +39,112 @@
 import leftTop from '@/components/achievements/leftTop'
 import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
-import manger from "@/components/achievements/manger"
-import rightPageForManger from "@/components/achievements/rightPageForManger"
+import manger from '@/components/achievements/manger'
+import rightPageForManger from '@/components/achievements/rightPageForManger'
 import {
-  getAction,
   postAction
-} from "@/api/manage"
+} from '@/api/manage'
 import {
   indexCenter16List,
   leftBottomColumns,
-  rightInitPageColumns,
+  rightInitPageColumns
 } from './const.js'
 import {
   sortRanking
 } from './utils.js'
+import moment from 'moment'
 export default {
-  mounted () {
-    this.init()
+  mounted() {
+    // this.init()
+    this.init2()
   },
   watch: {
     rightInitPage: {
       handler: function (newVal) {
         if (newVal) {
-          this.$refs["rightInitPage"].className = "box animated fadeOutRight"
+          this.$refs['rightInitPage'].className = 'box animated fadeOutRight'
           setTimeout(() => {
-            this.$refs["rightInitPage"].style.display = 'none'
-            this.$refs["rightMainPage"].style.display = 'block'
-            this.$refs["rightMainPage"].className = "box animated fadeInRight"
+            this.$refs['rightInitPage'].style.display = 'none'
+            this.$refs['rightMainPage'].style.display = 'block'
+            this.$refs['rightMainPage'].className = 'box animated fadeInRight'
           }, 400)
         }
       }
     }
   },
   methods: {
-    async init () {
+    async init2() {
+      this.leftBottomLoading = true
+      const res = await postAction(`ach/selectStaByman?ymd=${this.dateTime}&orgNo=${this.$route.params.orgNo}`)
+      console.log(res)
+      res.data.forEach(i => {
+        i.countyName = i.tgManager
+      })
+      this.leftBottomData = sortRanking(res.data)
+      this.leftBottomLoading = false
+    },
+    async leftBottomClickRow(record) {
+      console.warn('record', record)
+      this.tableLoading = true
+      this.rightPageLoading = true
+      const res = await Promise.all([
+        postAction(`ach/selectStaByman?ymd=${this.dateTime}&id=${record.id}`)
+        // postAction(`ach/selectStaByman?ymd=${this.dateTime}&orgNo=${record.orgNo}`)
+      ])
+      console.log(res)
+      // 处理中间数据
       let temp = []
-      let temp_center = []
-      this.$route.params.name = this.$route.params.name ? this.$route.params.name : '刘月焱'
-      const res = await postAction("/ach/selectStaByman?id=1")
-      const res2 = await postAction("/ach/dayPoint?id=1")
       for (const key in indexCenter16List) {
-        temp_center.push({
+        let originalValue = res[0].data[0][indexCenter16List[key].rate]
+        originalValue = originalValue ? `${originalValue}%` : '-'
+        temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,
-          originalValue: res2.data[indexCenter16List[key].rate] + "%",
-          integral: res2.data[indexCenter16List[key].point],
+          originalValue: originalValue,
+          integral: res[0].data[0][indexCenter16List[key].point]
         })
       }
-      res.data.map((item) => {
-        if (this.$route.params.name == item.tgManager) {
-          // for (const key in indexCenter16List) {
-          //   temp_center.push({
-          //     id: key,
-          //     indexItems: indexCenter16List[key].name,
-          //     originalValue: item[indexCenter16List[key].rate] + "%",
-          //     integral: item[indexCenter16List[key].point],
-          //   })
-          // }
-        }
-        temp.push({
-          countyName: item.tgManager,
-          toPoint: item.totalScore,
-        })
-      })
-      this.centerData = temp_center
+      this.centerData = temp
       this.tableLoading = false
-      this.leftBottomData = sortRanking(temp)
-      this.leftBottomLoading = false
+      // 处理右面数据
 
-
-    },
+      this.rightPageLoading = false
+    }
+    // async init () {
+    //   let temp = []
+    //   let temp_center = []
+    //   this.$route.params.name = this.$route.params.name ? this.$route.params.name : '刘月焱'
+    //   const res = await postAction('/ach/selectStaByman?id=1')
+    //   const res2 = await postAction('/ach/dayPoint?id=1')
+    //   for (const key in indexCenter16List) {
+    //     temp_center.push({
+    //       id: key,
+    //       indexItems: indexCenter16List[key].name,
+    //       originalValue: res2.data[indexCenter16List[key].rate] + '%',
+    //       integral: res2.data[indexCenter16List[key].point]
+    //     })
+    //   }
+    //   res.data.map((item) => {
+    //     if (this.$route.params.name == item.tgManager) {
+    //       // for (const key in indexCenter16List) {
+    //       //   temp_center.push({
+    //       //     id: key,
+    //       //     indexItems: indexCenter16List[key].name,
+    //       //     originalValue: item[indexCenter16List[key].rate] + "%",
+    //       //     integral: item[indexCenter16List[key].point],
+    //       //   })
+    //       // }
+    //     }
+    //     temp.push({
+    //       countyName: item.tgManager,
+    //       toPoint: item.totalScore
+    //     })
+    //   })
+    //   this.centerData = temp_center
+    //   this.tableLoading = false
+    //   this.leftBottomData = sortRanking(temp)
+    //   this.leftBottomLoading = false
+    // }
 
   },
   components: {
@@ -120,7 +155,7 @@ export default {
     rightPageForManger
   },
 
-  data () {
+  data() {
     return {
       // 新数据开始
       centerData: [],
@@ -133,13 +168,14 @@ export default {
         name: null,
         data: []
       },
-      leftBottomLoading: true,
-      tableLoading: true,
-      rightPageLoading: true
+      leftBottomLoading: false,
+      tableLoading: false,
+      rightPageLoading: false,
       // 结束
+      dateTime: this.$route.params.dateTime || moment().format('yyyy-MM-DD')// .add(-1, 'days')
     }
-  },
-};
+  }
+}
 </script>
 
 <style lang="less" scoped>

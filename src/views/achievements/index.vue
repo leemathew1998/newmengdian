@@ -2,14 +2,14 @@
   <div class="warp">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop name="河东供电服务中心"></leftTop>
+        <leftTop name="呼伦贝尔供电公司" :dateTime.sync="dateTime"></leftTop>
       </div>
       <div class="left-bottom">
         <leftBottom
           :leftBottomColumns="leftBottomColumns"
           :leftBottomData="leftBottomData"
           :leftBottomLoading="leftBottomLoading"
-        ></leftBottom>
+          @clickRow="leftBottomClickRow"></leftBottom>
       </div>
     </div>
     <div class="wrap-center animated fadeInUp">
@@ -18,16 +18,14 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"
-      ></center>
+        :rightPageData.sync="rightPageData"></center>
     </div>
     <div class="wrap-right animated fadeInRight">
       <div ref="rightInitPage" class="box" style="height: 100%">
         <rightPageForMaster
           :rightInitPageColumns="rightInitPageColumns"
           :rightInitPageData="rightInitPageData"
-          :rightPageLoading="rightPageLoading"
-        ></rightPageForMaster>
+          :rightPageLoading="rightPageLoading"></rightPageForMaster>
       </div>
       <div ref="rightMainPage" class="box" style="display: none">
         <div class="head">
@@ -56,9 +54,11 @@ import {
 import {
   sortRanking
 } from './utils.js'
+import moment from 'moment'
 export default {
-  created () {
-    this.init()
+  created() {
+    // this.init()
+    this.init2()
   },
   watch: {
     rightInitPage: {
@@ -75,7 +75,43 @@ export default {
     }
   },
   methods: {
-    async init () {
+    async init2() {
+      this.leftBottomLoading = true
+      const resRightBottom = await postAction(`ach/countyList?ymd=${this.dateTime}`)
+      this.leftBottomData = sortRanking(resRightBottom.data)
+      this.leftBottomLoading = false
+    },
+    async leftBottomClickRow(record) {
+      this.tableLoading = true
+      this.rightPageLoading = true
+      const res = await Promise.all([
+        postAction(`ach/countyList?ymd=${this.dateTime}&id=${record.id}`),
+        postAction(`ach/stationList?ymd=${this.dateTime}&orgNo=${record.orgNo}`)
+      ])
+      // 处理中间数据
+      let temp = []
+      for (const key in indexCenter16List) {
+        let originalValue = res[0].data[0][indexCenter16List[key].rate]
+        originalValue = originalValue ? `${originalValue}%` : '-'
+        temp.push({
+          id: key,
+          indexItems: indexCenter16List[key].name,
+          originalValue: originalValue,
+          integral: res[0].data[0][indexCenter16List[key].point]
+        })
+      }
+      this.centerData = temp
+      this.tableLoading = false
+      // 处理右面数据
+      let resRight = res[1].data
+      for (let i = 0; i < resRight.length; i++) {
+        resRight[i].ymd = this.dateTime
+        resRight[i].orgNo = record.orgNo
+      }
+      this.rightInitPageData = sortRanking(resRight)
+      this.rightPageLoading = false
+    },
+    async init() {
       let temp = []
 
       // let dataAll = await Promise.all([
@@ -136,7 +172,7 @@ export default {
     center,
     rightPageForMaster
   },
-  data () {
+  data() {
     return {
       // 新数据开始
       centerData: [],
@@ -149,10 +185,11 @@ export default {
         name: null,
         data: []
       },
-      leftBottomLoading: true,
-      tableLoading: true,
-      rightPageLoading: true
+      leftBottomLoading: false,
+      tableLoading: false,
+      rightPageLoading: false,
       // 结束
+      dateTime: moment().format('yyyy-MM-DD')// .add(-1, 'days')
     }
   }
 }

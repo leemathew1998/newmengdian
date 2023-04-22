@@ -37,7 +37,7 @@ import moment from 'moment'
 import Charts from '@/components/charts/Charts'
 import {
   postAction
-} from "@/api/manage"
+} from '@/api/manage'
 export default {
   props: ['rightInitPageColumns', 'rightInitPageData', 'rightPageLoading'],
   data () {
@@ -58,7 +58,7 @@ export default {
       antherHeight += this.$refs.wrapBox.children[i].clientHeight
     }
     this.$refs.wrapBox.children[4].children[0].style.height = `${allHeight - antherHeight}px`
-    this.id = localStorage.getItem("PLACE_ID")
+    this.id = localStorage.getItem('PLACE_ID')
   },
   watch: {
     rightPageLoading: {
@@ -108,15 +108,17 @@ export default {
         on: {
           click: () => {
             this.$router.push({
-              name: "achievements/manger",
+              name: 'achievements/manger',
               params: {
-                name: record.stationName
+                name: record.stationName,
+                orgNo: record.orgNo,
+                ymd: record.ymd
               }
             })
           }
         }
       }
-    },
+    }
   },
   components: {
     Charts

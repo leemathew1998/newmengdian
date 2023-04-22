@@ -1,16 +1,30 @@
 <template>
-	<div class="box">
-		<a-input-search placeholder="请输入供电服务中心名称" style="width: 100%" @search="onSearch" />
-		<a-table :columns="leftBottomColumns" :data-source="leftBottomData" size="small" :loading="leftBottomLoading">
-		</a-table>
-	</div>
+  <div class="box">
+    <!-- <a-input-search placeholder="请输入供电服务中心名称" style="width: 100%" @search="onSearch" /> -->
+    <a-table
+      rowKey="id"
+      :customRow="handleClickRow"
+      :columns="leftBottomColumns"
+      :data-source="leftBottomData"
+      size="small"
+      :loading="leftBottomLoading">
+    </a-table>
+  </div>
 </template>
 
 <script>
 	export default {
 		props: ['leftBottomColumns', 'leftBottomData', 'leftBottomLoading'],
 		methods: {
-			onSearch() {}
+			handleClickRow (record, index) {
+      return {
+        on: {
+          click: () => {
+            this.$emit('clickRow', record)
+          }
+        }
+      }
+    }
 		}
 	}
 </script>

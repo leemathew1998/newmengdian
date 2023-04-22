@@ -1,6 +1,6 @@
 export const sortRanking = (data) => {
 	data.sort((prev, next) => {
-		prev.toPoint - next.toPoint
+		return Number(next.toPoint) - Number(prev.toPoint)
 	})
 	data.map((item, index) => {
 		item['ranking'] = index + 1

@@ -2,7 +2,7 @@ import moment from 'moment'
 import {
 	getAction,
 	postAction
-} from "@/api/manage"
+} from '@/api/manage'
 
 export const caiji = async () => {
 	let tem = await postAction('/acStation/selectBusiness?business=0')
