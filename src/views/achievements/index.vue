@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import views from "@/components/achievements/views"
+import views from '@/components/achievements/views'
 import leftTop from '@/components/achievements/leftTop'
 import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
@@ -47,11 +47,11 @@ import rightPageForMaster from '@/components/achievements/rightPageForMaster'
 import {
   getAction,
   postAction
-} from "@/api/manage"
+} from '@/api/manage'
 import {
   indexCenter16List,
   leftBottomColumns,
-  rightInitPageColumns,
+  rightInitPageColumns
 } from './const.js'
 import {
   sortRanking
@@ -64,11 +64,11 @@ export default {
     rightInitPage: {
       handler: function (newVal) {
         if (newVal) {
-          this.$refs["rightInitPage"].className = "box animated fadeOutRight"
+          this.$refs['rightInitPage'].className = 'box animated fadeOutRight'
           setTimeout(() => {
-            this.$refs["rightInitPage"].style.display = 'none'
-            this.$refs["rightMainPage"].style.display = 'block'
-            this.$refs["rightMainPage"].className = "box animated fadeInRight"
+            this.$refs['rightInitPage'].style.display = 'none'
+            this.$refs['rightMainPage'].style.display = 'block'
+            this.$refs['rightMainPage'].className = 'box animated fadeInRight'
           }, 400)
         }
       }
@@ -84,9 +84,9 @@ export default {
       //   postAction("acStation/selectAll")
       // ])
       let dataAll = await Promise.all([
-        postAction("/ach/dayPoint?id=1"),
-        postAction("/ach/countyList"),
-        postAction("/ach/stationList"),
+        postAction('/ach/dayPoint?id=1'),
+        postAction('/ach/countyList'),
+        postAction('/ach/stationList')
       ])
       // console.log(dataAll, '12312321')
       let res1 = dataAll[0].data
@@ -95,8 +95,8 @@ export default {
         temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,
-          originalValue: res1[indexCenter16List[key].rate] + "%",
-          integral: res1[indexCenter16List[key].point],
+          originalValue: res1[indexCenter16List[key].rate] + '%',
+          integral: res1[indexCenter16List[key].point]
         })
       }
       this.centerData = temp
@@ -126,7 +126,7 @@ export default {
       }
       this.rightInitPageData = sortRanking(temp)
       this.rightPageLoading = false
-    },
+    }
 
   },
   components: {
@@ -154,8 +154,8 @@ export default {
       rightPageLoading: true
       // 结束
     }
-  },
-};
+  }
+}
 </script>
 
 <style lang="less" scoped>

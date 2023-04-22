@@ -82,7 +82,8 @@ export default {
     return {
       nowTime: '',
       welcomeWord: '',
-      userName: ''
+      userName: '',
+      devModel: true
     }
   },
   async created() {
@@ -112,7 +113,7 @@ export default {
       this.$notification['warning']({
         message: '请登录'
       })
-      this.handleSubmit()
+      !this.devModel && this.handleSubmit()
     } else {
       const res = await postAction('SysUser/getToken', {})
       this.userName = cookie.getCookie('loName2')
@@ -142,7 +143,7 @@ export default {
     ...mapActions(['Login']),
     solveClick(name) {
       const ticket = cookie.getCookie('ticket')
-      if (!ticket) {
+      if (!ticket && !this.devModel) {
         return
       }
       if (name == '驾驶舱') {
