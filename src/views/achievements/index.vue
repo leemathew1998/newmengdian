@@ -189,7 +189,7 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: moment().format('yyyy-MM-DD')// .add(-1, 'days')
+      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD')//
     }
   }
 }

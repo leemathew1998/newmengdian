@@ -7,10 +7,12 @@
 
       <a-layout-content
         :style="{
-          padding: '120px 20px 0 20px',
+          padding: '100px 20px 0 20px',
           background: '#fff',
           minHeight: '280px',
           overflow: 'initial',
+          'overflow-y': 'hidden',
+          height:'calc(100% - 100px)'
         }"
       >
         <router-view />
@@ -46,17 +48,17 @@
     </a-layout> -->
 </template>
 <script>
-import DfztSider from "@/components/layouts/DfztSider";
-import DfztHeader from "@/components/layouts/DfztHeader";
+import DfztSider from '@/components/layouts/DfztSider'
+import DfztHeader from '@/components/layouts/DfztHeader'
 export default {
   data() {
-    return {};
+    return {}
   },
   components: {
     DfztSider,
-    DfztHeader,
-  },
-};
+    DfztHeader
+  }
+}
 </script>
 <style lang="less" scoped>
 #components-layout-demo-fixed-sider {

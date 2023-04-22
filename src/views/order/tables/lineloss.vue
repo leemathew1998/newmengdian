@@ -267,10 +267,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .warp {
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   .form {
     // width: 100%;
     margin: 10px 0;

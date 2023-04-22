@@ -83,7 +83,7 @@ export default {
       nowTime: '',
       welcomeWord: '',
       userName: '',
-      devModel: true
+      devModel: false
     }
   },
   async created() {

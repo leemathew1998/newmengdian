@@ -13,9 +13,10 @@
       :customRow="handleClickRow"
       :loading="loading"
       :pagination="pagination"
-      :scroll="{ x: scroll, y: 500 }"
-      rowKey="id"
-    ></a-table>
+      :scroll="{ x: scroll, y: caclHeight }"
+      rowKey="id"></a-table>
+    <!--        -->
+    <!-- :style="{ height: `${caclHeight+64}px` }" -->
     <!-- 下方（反向）选择、导入（出）出按钮 -->
     <div class="bottom">
       <div class="left">
@@ -29,8 +30,7 @@
           type="primary"
           icon="download"
           style="margin-right: 10px; background-color: #28599d"
-          @click="() => (exportvisible = !exportvisible)"
-        >
+          @click="() => (exportvisible = !exportvisible)">
           导出工单
         </a-button>
         <!-- <a-upload name="file" :custom-request="fileHandleChange"> -->
@@ -59,8 +59,7 @@
       :xlsxName="xlsxName"
       :exportUrl="exportUrl"
       :ids="ids"
-      v-bind="$attrs"
-    />
+      v-bind="$attrs" />
   </div>
 </template>
 
@@ -125,7 +124,8 @@ export default {
         pageSizeOptions: ['10', '20', '40', '80', '100'],
         showTotal: (total) => `共 ${total} 条`,
         pageSize: 10
-      }
+      },
+      caclHeight: 100
     }
   },
   created() {
@@ -143,6 +143,11 @@ export default {
         }
       })
     }
+  },
+  mounted() {
+    const el = document.querySelector('.warp-table')
+    this.caclHeight = el.clientHeight - 120
+    console.dir(el.clientHeight)
   },
   watch: {
     pageConfig: {
@@ -232,12 +237,43 @@ export default {
 
 <style lang="less" scoped>
 .warp-table {
+  // flex:1;
   width: 100%;
   height: 100%;
+  // height: 300px;
   overflow: hidden;
+
+  /deep/.ant-table-wrapper {
+    height: 100%;
+    .ant-spin-nested-loading{
+      height: 100%;
+    }
+    .ant-spin-container{
+      height: 100%;
+    }
+  }
+
+  /deep/.ant-table {
+    height: calc(100% - 64px);
+
+    .ant-table-content {
+      height: 100%;
+
+      .ant-table-scroll {
+        overflow-y: hidden;
+        height: 100%;
+
+        .ant-table-body {
+          height: 100%;
+        }
+      }
+    }
+  }
+
   :hover {
     cursor: pointer;
   }
+
   .bottom {
     z-index: 10;
     position: relative;
@@ -266,5 +302,9 @@ export default {
 
 /deep/.ant-table-tbody tr:nth-child(2n) {
   background-color: #fafafa;
+}
+
+/deep/.ant-table td {
+  white-space: nowrap;
 }
 </style>

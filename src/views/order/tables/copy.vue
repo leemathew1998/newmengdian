@@ -15,8 +15,7 @@
       xlsxName="电费补抄"
       exportUrl="runWorkOrder"
       ref="table"
-      :copyTheQueryParams="copyTheQueryParams"
-    ></Tables>
+      :copyTheQueryParams="copyTheQueryParams"></Tables>
     <!-- 弹窗 -->
     <NewModel
       :visible="NewModalVisible"
@@ -27,8 +26,7 @@
       :dictionary="dictionary"
       :progress="progress"
       :imgdata="imgdata"
-      name="电费补抄"
-    ></NewModel>
+      name="电费补抄"></NewModel>
   </div>
 </template>
 <script>
@@ -260,10 +258,9 @@ export default {
 
 <style lang="less" scoped>
 .warp {
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   .form {
     // width: 100%;
     margin: 10px 0;
@@ -278,12 +275,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody > tr > td {
+/deep/ .ant-table-tbody>tr>td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead > tr > th {
+/deep/ .ant-table-thead>tr>th {
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -294,12 +291,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody > tr > td {
+/deep/ .ant-table-tbody>tr>td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead > tr > th {
+/deep/ .ant-table-thead>tr>th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

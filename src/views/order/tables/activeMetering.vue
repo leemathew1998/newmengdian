@@ -32,7 +32,7 @@ import Tables from '@/components/tables/Tables'
 import NewModel from '@/components/NewModel/operation.vue'
 import SearchForm from '@/components/searchform/SearchActive'
 import {
-  achtiveMeteringList,
+  achtiveMeteringList
 } from '@/components/NewModel/constant.js'
 import {
   getAction,
@@ -99,7 +99,7 @@ const columns = [{
   dataIndex: 'analysisResult',
   align: 'center',
   width: 100
-},
+}
 
 ]
 
@@ -124,11 +124,11 @@ export default {
         caption: [],
         pin: [],
         print: [],
-        photoprint: [],
+        photoprint: []
       },
       dictionary: [],
       exportUrl: 'activeOperation',
-      ids: 'workOrderNo',
+      ids: 'workOrderNo'
     }
   },
   components: {
@@ -146,8 +146,8 @@ export default {
       const { data } = await postAction('activeOperation/list1')
       this.data = data
       data.map(item => {
-        if(item.excpDate){
-          item.excpDate = moment(item.excpDate).format("YYYY-MM-DD")
+        if (item.excpDate) {
+          item.excpDate = moment(item.excpDate).format('YYYY-MM-DD')
         }
       })
     },
@@ -159,14 +159,14 @@ export default {
       this.dictionary = achtiveMeteringList
       // this.clickRow = e
       const res1 = await getAction('activeOperation/load?workOrderNo=' + e.workOrderNo)
-      console.log("res1", res1)
+      console.log('res1', res1)
       if (e.workOrderStatus == '待处理') {
         this.progress.progress = 0
       } else if (e.workOrderStatus == '处理中') {
         this.progress.progress = 1
       } else if (e.workOrderStatus == '待归档') {
         this.progress.progress = 2
-      } else if (e.workOrderStatus == '已归档'){
+      } else if (e.workOrderStatus == '已归档') {
         this.progress.progress = 3
       }
       // 现场处理
@@ -177,7 +177,7 @@ export default {
         caption: [],
         pin: [],
         print: [],
-        photoprint: [],
+        photoprint: []
       }
       const temp = await getAction(
         'activeOperation/selHandle?workOrderNo=' + e.workOrderNo
@@ -272,10 +272,9 @@ export default {
 
 <style lang="less" scoped>
 .warp {
-  //   display: flex;
-  //   flex-direction: column;
-  //   justify-content: center;
-  //   align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   .form {
     // width: 100%;
     margin: 10px 0;

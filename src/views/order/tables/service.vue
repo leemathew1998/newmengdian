@@ -15,8 +15,7 @@
       :exportUrl="exportUrl"
       :ids="ids"
       ref="table"
-      :copyTheQueryParams="copyTheQueryParams"
-    >
+      :copyTheQueryParams="copyTheQueryParams">
     </Tables>
     <NewModel
       :visible="NewModalVisible"
@@ -29,8 +28,7 @@
       :isSensitivity="isSensitivity"
       :isOutage="isOutage"
       name="优质服务"
-      :loading="loading"
-    ></NewModel>
+      :loading="loading"></NewModel>
   </div>
 </template>
 
@@ -257,10 +255,9 @@ export default {
 
 <style lang="less" scoped>
 .warp {
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   .form {
     // width: 100%;
@@ -276,12 +273,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody > tr > td {
+/deep/ .ant-table-tbody>tr>td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead > tr > th {
+/deep/ .ant-table-thead>tr>th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

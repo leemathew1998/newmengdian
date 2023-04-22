@@ -1,5 +1,5 @@
 <template>
-  <div class="warp">
+  <div class="orders-warp">
     <table id="table">
       <tr id="table_tr">
         <th style="background-color: #f2f2f2" class="table_first leftRadius">
@@ -7,90 +7,53 @@
           <span
             class="title"
             style="
-              color: #999;
-              font-weight: 900;
-              font-size: 18px;
-              padding-left: 8px;
-            "
-          >工单类型</span
-          >
+                  color: #999;
+                  font-weight: 900;
+                  font-size: 18px;
+                  padding-left: 8px;
+                ">工单类型</span>
         </th>
-        <th
-          class="table_th collection"
-          @click="changePages('/order/collection')"
-          ref="collection"
-        >
+        <th class="table_th collection" @click="changePages('/order/collection')" ref="collection">
           <div class="topColor"></div>
           <div class="mainTitle">采集运维</div>
         </th>
-        <th
-          class="table_th metering"
-          @click="changePages('/order/metering')"
-          ref="metering"
-        >
+        <th class="table_th metering" @click="changePages('/order/metering')" ref="metering">
           <div class="topColor"></div>
           <div class="mainTitle">计量运维</div>
         </th>
-        <th
-          class="table_th lineloss"
-          @click="changePages('/order/lineloss')"
-          ref="lineloss"
-        >
+        <th class="table_th lineloss" @click="changePages('/order/lineloss')" ref="lineloss">
           <div class="topColor"></div>
           <div class="mainTitle">线损治理</div>
         </th>
-        <th
-          class="table_th charge"
-          @click="changePages('/order/charge')"
-          ref="charge"
-        >
+        <th class="table_th charge" @click="changePages('/order/charge')" ref="charge">
           <div class="topColor"></div>
           <div class="mainTitle">费控复电</div>
         </th>
-        <th
-          class="table_th recovery"
-          @click="changePages('/order/recovery')"
-          ref="recovery"
-        >
+        <th class="table_th recovery" @click="changePages('/order/recovery')" ref="recovery">
           <div class="topColor"></div>
           <div class="mainTitle">电费回收</div>
         </th>
-        <th
-          class="table_th copy"
-          @click="changePages('/order/copy')"
-          ref="copy"
-        >
+        <th class="table_th copy" @click="changePages('/order/copy')" ref="copy">
           <div class="topColor"></div>
           <div class="mainTitle">电费补抄</div>
         </th>
-        <th
-          class="table_th service"
-          @click="changePages('/order/service')"
-          ref="service"
-        >
+        <th class="table_th service" @click="changePages('/order/service')" ref="service">
           <div class="topColor"></div>
           <div class="mainTitle">优质服务</div>
         </th>
-        <th
-          class="table_th activeMetering"
-          @click="changePages('/order/activeMetering')"
-          ref="activeMetering"
-        >
+        <th class="table_th activeMetering" @click="changePages('/order/activeMetering')" ref="activeMetering">
           <div class="topColor"></div>
           <div class="mainTitle">主动运维</div>
         </th>
-        <th
-          class="table_th activeRepair"
-          @click="changePages('/order/activeRepair')"
-          ref="activeRepair"
-        >
+        <th class="table_th activeRepair" @click="changePages('/order/activeRepair')" ref="activeRepair">
           <div class="topColor rightRadius"></div>
           <div class="mainTitle">主动抢修</div>
         </th>
       </tr>
     </table>
-
-    <router-view></router-view>
+    <div class="orders-container-new">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -156,10 +119,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.warp {
+.orders-warp {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 20px);
+  height: 100%;
+
   #table_tr {
     display: flex;
     align-items: center;
@@ -214,35 +178,11 @@ export default {
         justify-content: center;
         align-items: center;
       }
-
-      // background-color: #f3f3f3;
-      // color: #fff;
     }
   }
 
-  // .header {
-  // 	display: flex;
-  // 	justify-content: space-around;
-  // 	align-items: center;
-
-  // 	.title {
-  // 		font-weight: 700;
-  // 	}
-
-  // 	#table {
-  // 		width: 80%;
-  // 	}
-
-  // }
+  .orders-container-new {
+    height: calc(100% - 50px);
+  }
 }
-
-// table,
-// th {
-
-// 	width: 137px;
-// 	height: 40px;
-// 	text-align: center;
-// 	vertical-align: middle;
-
-// }
 </style>
