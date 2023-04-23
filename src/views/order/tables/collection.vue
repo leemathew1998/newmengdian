@@ -21,10 +21,9 @@
     ></Tables>
     <!-- 弹窗 -->
     <NewModel
-      v-if="NewModalVisible"
       :visible="NewModalVisible"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
+      :newModelData="NewModelData"
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
@@ -253,8 +252,6 @@ export default {
       }
 
       this.situation = []
-
-      console.log(data)
       const item = await dealSituation(
         data,
         'liveVideo',
@@ -263,7 +260,6 @@ export default {
         'pTime'
       )
       this.situation.push(item)
-      console.log(item)
       // // 开始处理进度条,接着跟上时间
       if (e.workOrderStatus === '待处理') {
         this.progress.progress = 0

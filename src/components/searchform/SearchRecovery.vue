@@ -208,14 +208,7 @@ const treeData = [
   {
     title: '大用户直购电',
     value: '大用户直购电',
-    key: '大用户直购电',
-    children: [
-      {
-        title: '大用户直购电',
-        value: '大用户直购电',
-        key: '大用户直购电'
-      }
-    ]
+    key: '大用户直购电'
   },
   {
     title: '其它用电',

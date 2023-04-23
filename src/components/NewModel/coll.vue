@@ -8,8 +8,7 @@
       :width="1100"
       :title="name"
       :okText="name"
-      :footer="null"
-    >
+      :footer="null">
       <!-- 详情 -->
       <div class="details">
         <div class="top">
@@ -20,9 +19,7 @@
                 font-weight: 600;
                 color: #000;
                 line-height: 50px;
-              "
-            >原始数据</span
-            >
+              ">原始数据</span>
           </div>
           <!-- 原始数据展示 -->
           <div class="center">
@@ -32,15 +29,13 @@
               :key="key"
               :style="{
                 display: needToFix.includes(item.name) ? 'none' : 'block',
-              }"
-            >
+              }">
               <a-popover
                 :title="popoverData.title"
                 @click="clickTheList"
                 v-if="needToClick.includes(item.name)"
                 trigger="click"
-                placement="bottom"
-              >
+                placement="bottom">
                 <template slot="content" v-if="item.name == 'pilsonFormula'">
                   <div v-for="(value, key) in popoverData.value" :key="value">
                     <span class="key">{{ key }}：</span>
@@ -49,42 +44,35 @@
                 </template>
                 <template
                   slot="content"
-                  v-if="
-                    item.name == 'timeCalculation' ||
-                      item.name == 'phaseCalculation'
-                  "
-                >
+                  v-if="item.name == 'timeCalculation' ||
+                    item.name == 'phaseCalculation'
+                  ">
                   <a-table
-                    :columns="
-                      item.name == 'timeCalculation'
-                        ? popoverData1.value.columns
-                        : popoverData2.value.columns
+                    :columns="item.name == 'timeCalculation'
+                      ? popoverData1.value.columns
+                      : popoverData2.value.columns
                     "
-                    :data-source="
-                      item.name == 'timeCalculation'
-                        ? popoverData1.value.data
-                        : popoverData2.value.data
+                    :data-source="item.name == 'timeCalculation'
+                      ? popoverData1.value.data
+                      : popoverData2.value.data
                     "
-                    :pagination="false"
-                  >
+                    :pagination="false">
                   </a-table>
                 </template>
                 <div v-if="!needToFix.includes(item.name)">
                   <span class="key">{{ item.label }}：</span>
                   <span :class="['value', item.name]">{{
-                    NewModelData[item.name]
+                    newModelData[item.name]
                   }}</span>
                 </div>
               </a-popover>
               <div
-                v-if="
-                  !needToFix.includes(item.name) &&
-                    !needToClick.includes(item.name)
-                "
-              >
+                v-if="!needToFix.includes(item.name) &&
+                  !needToClick.includes(item.name)
+                ">
                 <span class="key">{{ item.label }}：</span>
                 <span :class="['value', item.name]">{{
-                  NewModelData[item.name]
+                  newModelData[item.name]
                 }}</span>
               </div>
             </div>
@@ -95,12 +83,11 @@
               :key="'abc' + key"
               :style="{
                 display: needToFix.includes(item.name) ? 'block' : 'none',
-              }"
-            >
+              }">
               <div v-if="needToFix.includes(item.name)">
                 <span class="key">{{ item.label }}：</span>
                 <span :class="['value', item.name]">{{
-                  NewModelData[item.name]
+                  newModelData[item.name]
                 }}</span>
               </div>
             </div>
@@ -117,16 +104,14 @@
             <a-steps :current="progress.progress">
               <a-popover slot="progressDot" slot-scope="{ status, prefixCls }">
                 <template slot="content">
-                  <span
-                  >状态:
+                  <span>状态:
                     {{
                       status == "finish"
                         ? "处理中"
                         : status == "wait"
                           ? "已归档"
                           : "待归档"
-                    }}</span
-                  >
+                    }}</span>
                 </template>
                 <span :class="`${prefixCls}-icon-dot`" />
                 <!-- 工单状态步骤条 -->
@@ -146,21 +131,13 @@
             <span>现场记录</span>
           </div>
           <div class="middle">
-            <div
-              class="header"
-              v-for="(item, key) in situation"
-              :key="key + '1'"
-            >
+            <div class="header" v-for="(item, key) in situation" :key="key + '1'">
               <div class="blue"></div>
               <span>{{ item.pStatus }}</span>
               <span>{{ item.pTime }}</span>
             </div>
           </div>
-          <div
-            class="last"
-            v-for="(item, index) in situation"
-            :key="`situation-${index}`"
-          >
+          <div class="last" v-for="(item, index) in situation" :key="`situation-${index}`">
             <div class="left">
               <div class="world">
                 <span>现场情况说明： </span>
@@ -179,46 +156,24 @@
                 <div
                   style="padding-top: 20px; margin-left: 10px"
                   v-for="(photo, index) in item.livePhotos"
-                  :key="`livePhotos-${index}`"
-                >
-                  <img
-                    :src="photo"
-                    width="100px"
-                    height="100px"
-                    class="logo"
-                    alt="logo"
-                  />
-                  <a-button
-                    type="primary"
-                    @click="showModal2(photo)"
-                  >查看图片</a-button
-                  >
+                  :key="`livePhotos-${index}`">
+                  <img :src="photo" width="100px" height="100px" class="logo" alt="logo" />
+                  <a-button type="primary" @click="showModal2(photo)">查看图片</a-button>
                 </div>
                 <ImgModel
                   :imgvisible="ImgModalVisible"
                   @changeimgModal="ImgModalVisible = !ImgModalVisible"
-                  :photos="photos"
-                ></ImgModel>
+                  :photos="photos"></ImgModel>
               </div>
               <div v-else-if="item.liveVideo.length" class="imageList">
                 <div style="padding-top: 20px; margin-left: 10px">
-                  <video
-                    :src="item.liveVideo[0]"
-                    width="100px"
-                    height="100px"
-                    class="logo"
-                  ></video>
-                  <a-button
-                    type="primary"
-                    @click="showModal2(item.liveVideo[0])"
-                  >查看视频</a-button
-                  >
+                  <video :src="item.liveVideo[0]" width="100px" height="100px" class="logo"></video>
+                  <a-button type="primary" @click="showModal2(item.liveVideo[0])">查看视频</a-button>
                 </div>
                 <ImgModel
                   :imgvisible="ImgModalVisible"
                   @changeimgModal="ImgModalVisible = !ImgModalVisible"
-                  :photos="photos"
-                ></ImgModel>
+                  :photos="photos"></ImgModel>
               </div>
               <div v-else>
                 <a-empty />
@@ -269,7 +224,7 @@ export default {
   components: {
     ImgModel
   },
-  data () {
+  data() {
     return {
       modalVisible: false,
       ImgModalVisible: false,
@@ -300,7 +255,7 @@ export default {
   },
   watch: {
     // 弹窗现场情况
-    visible (nval, oval) {
+    visible(nval, oval) {
       this.modalVisible = nval
       console.log(nval, oval)
       // if (this.name === '优质服务') {
@@ -316,9 +271,9 @@ export default {
       //     'userName', 'terminalFactory', 'elecmeterFactory'
       //   ]
       // } else if (this.name === '采集运维') {
-        this.needToFix = ['meterAssetNo', 'tgName', 'terminalFactory', 'terAssetNo',
-          'elecmeterFactory', 'consName', 'elecAddr'
-        ]
+      this.needToFix = ['meterAssetNo', 'tgName', 'terminalFactory', 'terAssetNo',
+        'elecmeterFactory', 'consName', 'elecAddr'
+      ]
       // } else if (this.name === '费控复电') {
       //   this.needToFix = ['elecmeterAssetNum', 'terminalLocation', 'userLocation']
       // } else if (this.name === '线损治理') {
@@ -329,7 +284,7 @@ export default {
     }
   },
   methods: {
-    loaMore (name) {
+    loaMore(name) {
       // 此处写下拉展示函数
       for (let i = 0; i < this.needToFix.length; i++) {
         if (this.needToFix[i] === name) {
@@ -337,31 +292,31 @@ export default {
         }
       }
     },
-    showModal () {
+    showModal() {
       this.modalVisible = true
     },
     // 点击
-    handleOk (e) {
+    handleOk(e) {
       this.modalVisible = false
     },
     // 点击取消
-    handleCancel () {
+    handleCancel() {
       // this.modalVisible = !this.modalVisible
       this.modalVisible = false
       this.$emit('changeModal', false)
     },
     // 点击按钮放大图片
-    showModal2 (e) {
+    showModal2(e) {
       this.photos = e
       this.ImgModalVisible = true
     },
     // 为线损中皮尔逊公式适配
-    async pilsonFormula () {
+    async pilsonFormula() {
       this.popoverData = {
         title: null,
         value: {}
       }
-      const res1 = await postAction('/lineloss/pearson?tgId=' + this.NewModelData.tgId)
+      const res1 = await postAction('/lineloss/pearson?tgId=' + this.newModelData.tgId)
       console.log('pearson', res1)
 
       for (let key in res1) {
@@ -369,7 +324,7 @@ export default {
       }
       this.popoverData.title = '皮尔逊公式'
     },
-    async timeCalculation () {
+    async timeCalculation() {
       this.popoverData1 = {
         title: '分时计算',
         value: {
@@ -377,7 +332,7 @@ export default {
           data: []
         }
       }
-      const res = await postAction('/lineloss/split?tgId=' + this.NewModelData.tgId)
+      const res = await postAction('/lineloss/split?tgId=' + this.newModelData.tgId)
       this.popoverData1.value.columns.push({
         dataIndex: 'index',
         key: '时间段',
@@ -414,7 +369,7 @@ export default {
         })
       }
     },
-    async phaseCalculation () {
+    async phaseCalculation() {
       this.popoverData2 = {
         title: '分相计算',
         value: {
@@ -422,7 +377,7 @@ export default {
           data: []
         }
       }
-      const res = await postAction('/lineloss/split?tgId=' + this.NewModelData.tgId)
+      const res = await postAction('/lineloss/split?tgId=' + this.newModelData.tgId)
       console.log('split', res)
       let data = [{
         name: '供电量',
@@ -459,7 +414,7 @@ export default {
         })
       }
     },
-    clickTheList (e) {
+    clickTheList(e) {
       if (e.target.classList[1] == 'pilsonFormula') {
         this.pilsonFormula()
       } else if (e.target.classList[1] == 'timeCalculation') {
