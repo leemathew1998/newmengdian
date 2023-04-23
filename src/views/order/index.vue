@@ -11,7 +11,7 @@
                   font-weight: 900;
                   font-size: 18px;
                   padding-left: 8px;
-                ">工单类型</span>
+                ">工单类型测试</span>
         </th>
         <th class="table_th collection" @click="changePages('/order/collection')" ref="collection">
           <div class="topColor"></div>

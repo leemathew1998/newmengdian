@@ -733,7 +733,7 @@ export async function dealSituation(
       // });
     }
     item.pStatus = ''
-    item.pTime = moment(data[liveTime]).format('YYYY-MM-DD HH:MM:SS')
+    item.pTime = moment(data[liveTime]).format('YYYY-MM-DD HH:mm:ss')
     item.liveSituation = data[liveSituation]
     return item
   }

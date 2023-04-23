@@ -193,7 +193,8 @@ export default {
         temp,
         'liveVideo',
         'livePhotos',
-        'liveSituation'
+        'liveSituation',
+        'pTime'
       )
       this.situation.push(res)
 

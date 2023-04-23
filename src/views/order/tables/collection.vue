@@ -21,6 +21,7 @@
     ></Tables>
     <!-- 弹窗 -->
     <NewModel
+      v-if="NewModalVisible"
       :visible="NewModalVisible"
       @changeModal="NewModalVisible = !NewModalVisible"
       :NewModelData="NewModelData"
@@ -194,63 +195,75 @@ export default {
     async clickRows(e) {
       this.clickRow = e
       const res = await postAction(`coll/rawdata?id=${e.id}`)
+      const data = await postAction(`coll/load?workOrderNo=${e.workOrderNo}`)
       console.log('rawdata', res)
-      this.NewModelData = res
-      this.NewModelData.workOrderCtime = moment(
-        this.NewModelData.workOrderCtime
-      ).format('YYYY-MM-DD hh:mm:ss')
-      // console.log( this.NewModelData,'aaa');
       if (this.clickRow['eventType'] === '采集失败') {
         this.dictionary = failList
-        if (this.NewModelData.synchroTime) {
-          this.NewModelData.synchroTime = moment(
-            this.NewModelData.synchroTime
-          ).format('YYYY-MM-DD HH:MM:SS')
-        }
       } else if (this.clickRow['eventType'] === '采集未接入') {
         this.dictionary = unConnectList
-        if (this.NewModelData.synchroTime) {
-          this.NewModelData.synchroTime = moment(
-            this.NewModelData.synchroTime
-          ).format('YYYY-MM-DD HH:MM:SS')
-        }
-        if (this.NewModelData.expoUserTime) {
-          this.NewModelData.expoUserTime = moment(
-            this.NewModelData.expoUserTime
-          ).format('YYYY-MM-DD HH:MM:SS')
-        }
       } else {
-        if (this.NewModelData.terMeterReadtime) {
-          this.NewModelData.terMeterReadtime = moment(
-            this.NewModelData.terMeterReadtime
-          ).format('YYYY-MM-DD HH:MM:SS')
-        }
-        if (this.NewModelData.sendTime) {
+        this.dictionary = unUsualList
+      }
+      if (res) {
+        this.NewModelData = res
+        this.NewModelData.workOrderCtime = moment(
+          this.NewModelData.workOrderCtime
+        ).format('YYYY-MM-DD hh:mm:ss')
+        // console.log( this.NewModelData,'aaa');
+        if (this.clickRow['eventType'] === '采集失败') {
+          this.dictionary = failList
+          if (this.NewModelData.synchroTime) {
+            this.NewModelData.synchroTime = moment(
+              this.NewModelData.synchroTime
+            ).format('YYYY-MM-DD HH:MM:SS')
+          }
+        } else if (this.clickRow['eventType'] === '采集未接入') {
+          this.dictionary = unConnectList
+          if (this.NewModelData.synchroTime) {
+            this.NewModelData.synchroTime = moment(
+              this.NewModelData.synchroTime
+            ).format('YYYY-MM-DD HH:MM:SS')
+          }
+          if (this.NewModelData.expoUserTime) {
+            this.NewModelData.expoUserTime = moment(
+              this.NewModelData.expoUserTime
+            ).format('YYYY-MM-DD HH:MM:SS')
+          }
+        } else {
+          if (this.NewModelData.terMeterReadtime) {
+            this.NewModelData.terMeterReadtime = moment(
+              this.NewModelData.terMeterReadtime
+            ).format('YYYY-MM-DD HH:MM:SS')
+          }
+          if (this.NewModelData.sendTime) {
+            this.NewModelData.sendTime = moment(
+              this.NewModelData.sendTime
+            ).format('YYYY-MM-DD HH:MM:SS')
+          }
           this.NewModelData.sendTime = moment(
             this.NewModelData.sendTime
           ).format('YYYY-MM-DD HH:MM:SS')
+          if (this.NewModelData.synchroTime) {
+            this.NewModelData.synchroTime = moment(
+              this.NewModelData.synchroTime
+            ).format('YYYY-MM-DD HH:MM:SS')
+          }
+          this.dictionary = unUsualList
         }
-        this.NewModelData.sendTime = moment(this.NewModelData.sendTime).format(
-          'YYYY-MM-DD HH:MM:SS'
-        )
-        if (this.NewModelData.synchroTime) {
-          this.NewModelData.synchroTime = moment(
-            this.NewModelData.synchroTime
-          ).format('YYYY-MM-DD HH:MM:SS')
-        }
-        this.dictionary = unUsualList
       }
+
       this.situation = []
-      const data = await postAction(`coll/load?workOrderNo=${e.workOrderNo}`)
+
       console.log(data)
       const item = await dealSituation(
         data,
         'liveVideo',
         'livePhotos',
-        'liveSituation'
+        'liveSituation',
+        'pTime'
       )
       this.situation.push(item)
-
+      console.log(item)
       // // 开始处理进度条,接着跟上时间
       if (e.workOrderStatus === '待处理') {
         this.progress.progress = 0

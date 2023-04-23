@@ -247,7 +247,8 @@ export default {
         data,
         'liveVideo',
         'livePhotos',
-        'liveSituation'
+        'liveSituation',
+        'workOrderCtime'
       )
       this.situation.push(res)
 

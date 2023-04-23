@@ -193,7 +193,8 @@ export default {
         data,
         'liveVideo',
         'livePhotos',
-        'liveSituation'
+        'liveSituation',
+        'pTime'
       )
       this.situation.push(res)
       // 处理进度条

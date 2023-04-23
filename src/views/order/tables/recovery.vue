@@ -243,7 +243,8 @@ export default {
         data,
         'liveVideo',
         'livePhotos',
-        'liveSituation'
+        'liveSituation',
+        'workOrder5time'
       )
       this.situation.push(res)
       this.NewModalVisible = true

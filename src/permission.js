@@ -2,8 +2,6 @@ import Vue from 'vue'
 import router from './router'
 import store from './store'
 import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
-import { constantRouterMap, roleOne } from '@/config/router.config'
 NProgress.configure({
   showSpinner: false
 })
@@ -19,16 +17,17 @@ router.beforeEach((to, from, next) => {
       if (to.meta.roles.includes(store.getters.role)) {
         next()
       } else {
+        next()
         // 此处证明他为台区经理，跳转到他台区经理绩效界面
-        if (to.path == '/achievements') {
-          next({
-            path: '/achievements/manger'
-          })
-        } else {
-          next({
-            path: '/404'
-          })
-        }
+        // if (to.path == '/achievements') {
+        //   next({
+        //     path: '/achievements/manger'
+        //   })
+        // } else {
+        //   next({
+        //     path: '/404'
+        //   })
+        // }
       }
     } else if (to.query && to.query.forcedRouting) {
       next()
