@@ -43,27 +43,28 @@ import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
 import rightPageForMaster from '@/components/achievements/rightPageForMaster'
 import {
-  getAction,
   postAction
 } from '@/api/manage'
 import {
   indexCenter16List,
   leftBottomColumns,
   rightInitPageColumns
+
 } from './const.js'
 import {
-  sortRanking
+  sortRanking,
+  MAP_NAME_TO_FUNC
 } from './utils.js'
 import moment from 'moment'
 export default {
   created() {
-    // this.init()
     this.init2()
   },
   watch: {
     rightInitPage: {
-      handler: function (newVal) {
+      handler: async function (newVal) {
         if (newVal) {
+          await this.loadRightMathPage()
           this.$refs['rightInitPage'].className = 'box animated fadeOutRight'
           setTimeout(() => {
             this.$refs['rightInitPage'].style.display = 'none'
@@ -97,7 +98,9 @@ export default {
           id: key,
           indexItems: indexCenter16List[key].name,
           originalValue: originalValue,
-          integral: res[0].data[0][indexCenter16List[key].point]
+          integral: res[0].data[0][indexCenter16List[key].point],
+          orgNo: res[0].data[0].orgNo,
+          ymd: this.dateTime
         })
       }
       this.centerData = temp
@@ -111,59 +114,22 @@ export default {
       this.rightInitPageData = sortRanking(resRight)
       this.rightPageLoading = false
     },
-    async init() {
-      let temp = []
-
-      // let dataAll = await Promise.all([
-      //   postAction("ach/selectAcCounty?id=1"),
-      //   postAction("ach/selectAcCounty"),
-      //   postAction("acStation/selectAll")
-      // ])
-      let dataAll = await Promise.all([
-        postAction('/ach/dayPoint?id=1'),
-        postAction('/ach/countyList'),
-        postAction('/ach/stationList')
-      ])
-      // console.log(dataAll, '12312321')
-      let res1 = dataAll[0].data
-      // 处理中心位置
-      for (const key in indexCenter16List) {
-        temp.push({
-          id: key,
-          indexItems: indexCenter16List[key].name,
-          originalValue: res1[indexCenter16List[key].rate] + '%',
-          integral: res1[indexCenter16List[key].point]
+    async loadRightMathPage() {
+      let res = await MAP_NAME_TO_FUNC[this.rightPageData.name](`ach/getCouDetails?orgNo=${this.rightPageData.params.orgNo}&ymd=${this.rightPageData.params.ymd}`)
+      console.log(res)
+			res && res.forEach((item, i) => {
+        this.rightPageData.params.successALL += Number(item.collSuccNum)
+        this.rightPageData.params.failALL += Number(item.collFailNum)
+        this.rightPageData.params.total += Number(item.co11AllNum)
+        this.rightPageData.data.push({
+          name: item.orgName,
+          success: item.collSuccNum,
+          fail: item.collFailNum,
+          total: item.co11AllNum,
+          index: i
         })
-      }
-      this.centerData = temp
-      this.tableLoading = false
-
-      // 处理左下角
-      let res2 = dataAll[1].data
-      temp = []
-      for (let i = 0; i < res2.length; i++) {
-        temp.push({
-          countyName: res2[i].countyName,
-          toPoint: res2[i].toPoint
-        })
-      }
-      this.leftBottomData = sortRanking(temp)
-      this.leftBottomLoading = false
-
-      // 处理首页右侧加载
-      let res3 = dataAll[2].data
-      temp = []
-      for (let i = 0; i < res3.length; i++) {
-        temp.push({
-          stationName: res3[i].stationName,
-          toPoint: res3[i].toPoint,
-          id: res3[i].id
-        })
-      }
-      this.rightInitPageData = sortRanking(temp)
-      this.rightPageLoading = false
+			})
     }
-
   },
   components: {
     views,
@@ -183,13 +149,18 @@ export default {
       rightInitPageColumns,
       rightPageData: {
         name: null,
+        params: {
+          successALL: 0,
+          failALL: 0,
+          total: 0
+        },
         data: []
       },
       leftBottomLoading: false,
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: moment().add(-2, 'days').format('yyyy-MM-DD')//
+      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD')//
     }
   }
 }

@@ -21,9 +21,9 @@
       <a-table :columns="columns" :data-source="data.data" :customRow="rowClick" bordered :loading="loading">
         <template slot="title">
           <div class="three-title">
-            <span class="dingbu">采集成功：3205</span>
-            <span class="dingbu">采集失败： 35</span>
-            <span class="dingbu">采集总数：3240</span>
+            <span class="dingbu">采集成功：{{ data.params.successALL }}</span>
+            <span class="dingbu">采集失败： {{ data.params.failALL }}</span>
+            <span class="dingbu">采集总数：{{ data.params.total }}</span>
           </div>
         </template>
         <a slot="name" slot-scope="text">{{ text }}</a>

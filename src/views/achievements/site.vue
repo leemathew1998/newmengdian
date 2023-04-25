@@ -194,7 +194,7 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: this.$route.params.ymd || moment().format('yyyy-MM-DD')// .add(-1, 'days')
+      dateTime: this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')// .add(-1, 'days')
     }
   }
 }
