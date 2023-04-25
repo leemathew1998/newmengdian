@@ -56,8 +56,10 @@ import moment from 'moment'
 export default {
   created() {
     this.init2()
-    // Array.from({ length: 10 }, (_, i) => i).forEach(i => {
-    //   this.centerData.push({
+  },
+  mounted(){
+    //     Array.from({ length: 10 }, (_, i) => i).forEach(i => {
+    //   this.rightInitPageData.push({
     //     ranking: i,
     //     id: Math.random()
     //   })
@@ -194,6 +196,7 @@ export default {
 
 .warp-achievements {
   display: flex;
+  height: 100%;
 
   .wrap-left {
     flex: 2;
@@ -206,7 +209,7 @@ export default {
     }
 
     .left-bottom {
-      flex: 6;
+      flex: 4;
     }
   }
 

@@ -61,8 +61,13 @@ export default {
   border: 1px #f5f5f5 solid;
   border-radius: 5px;
   padding: 2px;
+  height:100%;
 
   .left-top-head {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     .Ranking {
       display: flex;
       flex-direction: column;

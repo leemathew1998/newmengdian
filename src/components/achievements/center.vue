@@ -22,14 +22,6 @@
 <script>
 import Tables from '@/components/tables/Tabless'
 export default {
-  created() {
-    console.log(this.centerData)
-  },
-  mounted() {
-    const el = document.querySelector('.center-table')
-    // el.style.height = `${el.clientHeight}px`
-    console.dir(el.clientHeight)
-  },
   methods: {
     // 查看右侧详情
     operations: function (payload) {
@@ -100,6 +92,23 @@ export default {
   }
   .center-table{
     height: calc(100% - 40px);
+    /deep/.ant-spin-nested-loading{
+      height: 100%;
+      overflow-y: scroll;
+      .ant-table-content{
+        height: 100%;
+        .ant-table-placeholder{
+          height: calc(100% - 43px);
+        }
+      }
+      .ant-spin-container{
+        height: 100%;
+      }
+      .ant-table{
+        height: 100%;
+      }
+
+    }
   }
 }
 

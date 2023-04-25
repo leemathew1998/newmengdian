@@ -34,7 +34,9 @@
 		},
 		mounted() {
 			// console.log('mount', this.legendData, this.seriesData)
-			this.initChart()
+			this.$nextTick(()=>{
+				this.initChart()
+			})
 		},
 		updated() {
 			// console.log('update', this.legendData, this.seriesData)

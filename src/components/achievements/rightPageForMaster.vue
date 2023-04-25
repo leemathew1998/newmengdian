@@ -3,28 +3,13 @@
     <div class="head">
       <span class="title">各所站积分</span>
     </div>
-    <a-input-search
-      placeholder="请输入供电所名称"
-      style="width: 100%"
-      @search="onSearch"
-    />
-    <a-table
-      :columns="rightInitPageColumns"
-      :data-source="rightInitPageData"
-      size="small"
-      :loading="rightPageLoading"
-      :customRow="handleClickRow"
-    >
+    <a-input-search placeholder="请输入供电所名称" style="width: 100%" @search="onSearch" />
+    <a-table class="box-table" :columns="rightInitPageColumns" :data-source="rightInitPageData" size="small"
+      :loading="rightPageLoading" :customRow="handleClickRow" :pagination="false">
     </a-table>
-    <a-divider style="margin-top: 0; margin-bottom: 10px" />
-    <Charts
-      :legendData="legend"
-      :xAxisData="xAxis"
-      :yAxismin="0"
-      :yAxismax="100"
-      :seriesData="seriesData"
-      id="chart"
-    >
+    <a-divider style="margin:0px" />
+    <Charts ref="chartRef" :legendData="legend" :xAxisData="xAxis" :yAxismin="0" :yAxismax="100" :seriesData="seriesData"
+      :id="`chart`" class="chart-class">
       <template>
         <div id="chart"></div>
       </template>
@@ -35,18 +20,17 @@
 <script>
 import moment from 'moment'
 import Charts from '@/components/charts/Charts'
-import { postAction } from '../../api/manage'
+import { postAction } from '@/api/manage'
 export default {
-  mounted () {
+  mounted() {
     // this.xAxis = this.eachOfMonth()
     this.xAxis = this.walk(moment().format('MM-DD'), moment().format('MM-DD'))
     // 开始计算剩余高度给echart
-    let antherHeight = 0
-    let allHeight = this.$refs.wrapBox.clientHeight
-    for (let i = 0; i < 4; i++) {
-      antherHeight += this.$refs.wrapBox.children[i].clientHeight
-    }
-    this.$refs.wrapBox.children[4].children[0].style.height = `${allHeight - antherHeight}px`
+    const el = document.querySelector('.chart-class')
+    el.style.height = `${el.clientHeight}px`
+    const table = document.querySelector('.box-table')
+    table.style.height = `${table.clientHeight}px`
+    console.dir(el.clientHeight)
   },
   watch: {
     rightPageLoading: {
@@ -58,7 +42,7 @@ export default {
     }
   },
   methods: {
-    walk (from, to) {
+    walk(from, to) {
       // let start = moment(from).startOf('month')
       let start = moment().startOf('month')
       let end = moment()
@@ -70,7 +54,7 @@ export default {
       res.push(`${moment().format('M月D日')}`)
       return res
     },
-    async solveData () {
+    async solveData() {
       this.seriesData = []
       const res = await postAction('/ach/acStationSp?id=1')
       this.legend.map(item => {
@@ -81,7 +65,7 @@ export default {
         this.seriesData.push(tem)
       })
     },
-    legendChange (e) {
+    legendChange(e) {
       this.rightInitPageData.map(item => {
         if (!this.legend.includes(item.stationName)) {
           this.legend.push(item.stationName)
@@ -89,7 +73,7 @@ export default {
       })
       this.solveData()
     },
-    latelyOneWeek () {
+    latelyOneWeek() {
       this.defaultValue = [moment(moment().add(-6, 'days').format('YYYY/MM/DD'), 'YYYY/MM/DD'), moment(moment()
         .format(
           'YYYY/MM/DD'), 'YYYY/MM/DD')]
@@ -97,22 +81,22 @@ export default {
       this.xAxis = this.eachOfWeek()
       this.solveData()
     },
-    thismonth () {
+    thismonth() {
       this.defaultValue = [moment(moment().startOf('month').format('YYYY/MM/DD'), 'YYYY/MM/DD'), moment(moment()
         .format('YYYY/MM/DD'), 'YYYY/MM/DD')]
       this.xAxis = this.eachOfMonth()
       this.solveData()
     },
-    thisyear () {
+    thisyear() {
       this.defaultValue = [moment(moment().startOf('year').format('YYYY/MM/DD'), 'YYYY/MM/DD'), moment(moment()
         .format('YYYY/MM/DD'), 'YYYY/MM/DD')]
       this.xAxis = this.eachOfYear()
       this.solveData()
     },
-    eachOfYear () {
+    eachOfYear() {
       return [2019, 2020, 2021, 2022]
     },
-    eachOfMonth () {
+    eachOfMonth() {
       // 从今年开始的每个月
       let start = moment().startOf('year')
       const res = []
@@ -123,7 +107,7 @@ export default {
       res.push(moment().format('M') + '月')
       return res
     },
-    eachOfWeek () {
+    eachOfWeek() {
       // 从本月开始的每个周
       let start = moment().startOf('month')
       let end
@@ -135,8 +119,8 @@ export default {
       }
       return res
     },
-    onSearch () { },
-    handleClickRow (record, index) {
+    onSearch() { },
+    handleClickRow(record, index) {
       return {
         on: {
           click: (event) => {
@@ -159,7 +143,7 @@ export default {
   components: {
     Charts
   },
-  data () {
+  data() {
     return {
       legend: [],
       xAxis: [],
@@ -170,28 +154,20 @@ export default {
 </script>
 
 <style scoped lang="less">
-.greenTitle {
-  background-color: #f2f2f2;
-  line-height: 40px;
-  font-size: 20px;
-  color: #009688;
-  margin: 0;
-  text-align: center;
-}
-
 /deep/ tr {
   cursor: pointer;
 }
 
-#chart {
-  width: 100%;
-  height: 500px;
-}
+
+
 
 .box {
   border: 1px #f5f5f5 solid;
   border-radius: 5px;
   padding: 2px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
   .head {
     background-color: #f2f2f2;
@@ -207,9 +183,41 @@ export default {
       font-size: 18px;
       font-weight: 600;
     }
+  }
 
-    .ranking {
-      font-size: 10px;
+  .box-table {
+    flex: 1;
+
+    /deep/.ant-spin-nested-loading {
+      height: 100%;
+
+      .ant-table-content {
+        height: 100%;
+
+        .ant-table-placeholder {
+          height: calc(100% - 43px);
+        }
+      }
+
+      .ant-spin-container {
+        height: 100%;
+      }
+
+      .ant-table {
+        height: 100%;
+        overflow-y: scroll;
+      }
+
+    }
+  }
+
+  .chart-class {
+    flex: 1;
+    width: 100%;
+
+    #chart {
+      width: 100%;
+      height: 100%;
     }
   }
 }

@@ -35,7 +35,7 @@
 		border-radius: 5px;
 		padding: 2px;
     /deep/.ant-spin-nested-loading{
-      height: 100%;
+      height: calc(100% - 56px);
       .ant-table-content{
         height: 100%;
       }
