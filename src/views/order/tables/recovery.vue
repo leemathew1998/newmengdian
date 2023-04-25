@@ -243,8 +243,8 @@ export default {
         data,
         'liveVideo',
         'livePhotos',
-        'liveSituation',
-        'workOrder5time'
+        'workOrderDes',
+        'workOrderStime'
       )
       this.situation.push(res)
       console.log(this.situation)

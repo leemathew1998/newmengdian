@@ -1,10 +1,10 @@
 <template>
-  <div class="box">
+  <div class="center-container">
     <div class="head">
       <span class="title">当日总积分：{{ allNumber }}分</span>
       <!-- <span class="ranking">日环比+3</span> -->
     </div>
-    <Tables :data="centerData" :tableLoading="tableLoading">
+    <Tables class="center-table" :data="centerData" :tableLoading="tableLoading">
       <template v-slot="slotProps">
         <a-button
           style="display: flex; justify-content: center"
@@ -24,6 +24,11 @@ import Tables from '@/components/tables/Tabless'
 export default {
   created() {
     console.log(this.centerData)
+  },
+  mounted() {
+    const el = document.querySelector('.center-table')
+    // el.style.height = `${el.clientHeight}px`
+    console.dir(el.clientHeight)
   },
   methods: {
     // 查看右侧详情
@@ -68,10 +73,11 @@ export default {
   text-align: center;
 }
 
-.box {
+.center-container {
   border: 1px #f5f5f5 solid;
   border-radius: 5px;
   padding: 2px;
+  height: 100%;
 
   .head {
     background-color: #f2f2f2;
@@ -91,6 +97,9 @@ export default {
     .ranking {
       font-size: 10px;
     }
+  }
+  .center-table{
+    height: calc(100% - 40px);
   }
 }
 

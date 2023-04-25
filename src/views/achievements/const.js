@@ -61,6 +61,11 @@ export const indexCenter16List = [{
 	point: 'colSuccPoint'
 },
 {
+	name: '采集消缺及时率',
+	rate: 'colFailRate',
+	point: 'colFailPoint'
+},
+{
 	name: '费控停电成功率',
 	rate: 'costconStopRate',
 	point: 'costconStopPoint'
@@ -105,11 +110,7 @@ export const indexCenter16List = [{
 	rate: 'exceptTgNum',
 	point: 'exceptTgPoint'
 },
-{
-	name: '采集消缺及时率',
-	rate: 'colFailRate',
-	point: 'colFailPoint'
-},
+
 {
 	name: '现场复电及时率',
 	rate: 'powerbackHandleRate',

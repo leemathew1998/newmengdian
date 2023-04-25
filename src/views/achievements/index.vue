@@ -1,5 +1,5 @@
 <template>
-  <div class="warp">
+  <div class="warp-achievements">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
         <leftTop name="呼伦贝尔供电公司" :dateTime.sync="dateTime"></leftTop>
@@ -9,7 +9,8 @@
           :leftBottomColumns="leftBottomColumns"
           :leftBottomData="leftBottomData"
           :leftBottomLoading="leftBottomLoading"
-          @clickRow="leftBottomClickRow"></leftBottom>
+          @clickRow="leftBottomClickRow"
+        ></leftBottom>
       </div>
     </div>
     <div class="wrap-center animated fadeInUp">
@@ -18,14 +19,16 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"></center>
+        :rightPageData.sync="rightPageData"
+      ></center>
     </div>
     <div class="wrap-right animated fadeInRight">
       <div ref="rightInitPage" class="box" style="height: 100%">
         <rightPageForMaster
           :rightInitPageColumns="rightInitPageColumns"
           :rightInitPageData="rightInitPageData"
-          :rightPageLoading="rightPageLoading"></rightPageForMaster>
+          :rightPageLoading="rightPageLoading"
+        ></rightPageForMaster>
       </div>
       <div ref="rightMainPage" class="box" style="display: none">
         <div class="head">
@@ -42,23 +45,23 @@ import leftTop from '@/components/achievements/leftTop'
 import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
 import rightPageForMaster from '@/components/achievements/rightPageForMaster'
-import {
-  postAction
-} from '@/api/manage'
+import { postAction } from '@/api/manage'
 import {
   indexCenter16List,
   leftBottomColumns,
   rightInitPageColumns
-
 } from './const.js'
-import {
-  sortRanking,
-  MAP_NAME_TO_FUNC
-} from './utils.js'
+import { sortRanking, MAP_NAME_TO_FUNC } from './utils.js'
 import moment from 'moment'
 export default {
   created() {
     this.init2()
+    // Array.from({ length: 10 }, (_, i) => i).forEach(i => {
+    //   this.centerData.push({
+    //     ranking: i,
+    //     id: Math.random()
+    //   })
+    // })
   },
   watch: {
     rightInitPage: {
@@ -70,19 +73,34 @@ export default {
             this.$refs['rightMainPage'].style.display = 'block'
             this.$refs['rightMainPage'].className = 'box animated fadeInRight'
           }, 400)
+        } else {
+          this.$refs['rightMainPage'].className = 'box animated fadeOutRight'
+          setTimeout(() => {
+            this.$refs['rightMainPage'].style.display = 'none'
+            this.$refs['rightInitPage'].style.display = 'block'
+            this.$refs['rightInitPage'].className = 'box animated fadeInRight'
+          }, 400)
         }
       }
     },
     'rightPageData.name': {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.loadRightMathPage()
       }
+    },
+    dateTime() {
+      this.centerData = []
+      this.rightInitPageData = []
+      this.rightInitPage = false
+      this.init2()
     }
   },
   methods: {
     async init2() {
       this.leftBottomLoading = true
-      const resRightBottom = await postAction(`ach/countyList?ymd=${this.dateTime}`)
+      const resRightBottom = await postAction(
+        `ach/countyList?ymd=${this.dateTime}`
+      )
       this.leftBottomData = sortRanking(resRightBottom.data)
       this.leftBottomLoading = false
     },
@@ -91,17 +109,19 @@ export default {
       this.rightPageLoading = true
       const res = await Promise.all([
         postAction(`ach/countyList?ymd=${this.dateTime}&id=${record.id}`),
-        postAction(`ach/stationList?ymd=${this.dateTime}&orgNo=${record.orgNo}`)
+        postAction(
+          `ach/stationList?ymd=${this.dateTime}&orgNo=${record.orgNo}`
+        )
       ])
       // 处理中间数据
       let temp = []
       for (const key in indexCenter16List) {
-        let originalValue = res[0].data[0][indexCenter16List[key].rate]
-        originalValue = originalValue ? `${originalValue}%` : '-'
+        // let originalValue = res[0].data[0][indexCenter16List[key].rate]
+        // originalValue = originalValue ? `${originalValue}%` : '-'
         temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,
-          originalValue: originalValue,
+          originalValue: `${res[0].data[0][indexCenter16List[key].rate]}%`,
           integral: res[0].data[0][indexCenter16List[key].point],
           orgNo: res[0].data[0].orgNo,
           ymd: this.dateTime
@@ -119,21 +139,19 @@ export default {
       this.rightPageLoading = false
     },
     async loadRightMathPage() {
-      let res = await MAP_NAME_TO_FUNC[this.rightPageData.name](`ach/getCouDetails?orgNo=${this.rightPageData.params.orgNo}&ymd=${this.rightPageData.params.ymd}`)
-      console.log(res)
-			res && res.forEach((item, i) => {
-        this.rightPageData.params.successALL += Number(item.collSuccNum)
-        this.rightPageData.params.failALL += Number(item.collFailNum)
-        this.rightPageData.params.total += Number(item.co11AllNum)
-        this.rightPageData.data.push({
-          name: item.orgName,
-          success: item.collSuccNum,
-          fail: item.collFailNum,
-          total: item.co11AllNum,
-          index: i
+      this.rightPageData.data = []
+      let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
+        orgNo: this.rightPageData.params.orgNo,
+        ymd: this.rightPageData.params.ymd
+      })
+      if (res && Array.isArray(res)) {
+        res.forEach((item, i) => {
+          this.rightPageData.data.push(item)
         })
-			})
-      console.log(this.rightPageData)
+      } else if (res && res.constructor === Object) {
+        this.rightPageData.data.push(res)
+      }
+      console.log(this.rightPageData.data)
     }
   },
   components: {
@@ -165,7 +183,7 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: moment().add(-4, 'days').format('yyyy-MM-DD')//
+      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
     }
   }
 }
@@ -174,20 +192,21 @@ export default {
 <style lang="less" scoped>
 @import url("../../assets/less/animate.css");
 
-.warp {
+.warp-achievements {
   display: flex;
 
   .wrap-left {
     flex: 2;
     display: flex;
     flex-direction: column;
+    // height: 100% !important;
 
     .left-top {
-      // flex: 4;
+      flex: 4;
     }
 
     .left-bottom {
-      // flex: 6;
+      flex: 6;
     }
   }
 
