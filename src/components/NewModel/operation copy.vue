@@ -21,7 +21,7 @@
                 color: #000;
                 line-height: 50px;
               "
-              >原始数据</span
+            >原始数据</span
             >
           </div>
           <!-- 原始数据展示 -->
@@ -36,7 +36,7 @@
             >
               <div v-if="!needToFix.includes(item.name)">
                 <span class="key">{{ item.label }}：</span>
-                <span class="value">{{ NewModelData[item.name] }}</span>
+                <span class="value">{{ newModelData[item.name] }}</span>
               </div>
             </div>
             <div
@@ -49,7 +49,7 @@
             >
               <div v-if="needToFix.includes(item.name)">
                 <span class="key">{{ item.label }}：</span>
-                <span class="value">{{ NewModelData[item.name] }}</span>
+                <span class="value">{{ newModelData[item.name] }}</span>
               </div>
             </div>
           </div>
@@ -66,13 +66,13 @@
               <a-popover slot="progressDot" slot-scope="{ status, prefixCls }">
                 <template slot="content">
                   <span
-                    >状态:
+                  >状态:
                     {{
                       status == "finish"
                         ? "处理中"
                         : status == "wait"
-                        ? "已归档"
-                        : "待归档"
+                          ? "已归档"
+                          : "待归档"
                     }}</span
                   >
                 </template>
@@ -115,8 +115,9 @@
                         class="logo"
                         alt="logo"
                       />
-                      <a-button @click="showModal2(situation[0].livePhotos)"
-                        >查看图片</a-button
+                      <a-button
+                        @click="showModal2(situation[0].livePhotos)"
+                      >查看图片</a-button
                       >
                     </div>
                     <ImgModel
@@ -146,8 +147,9 @@
                         class="logo"
                         alt="logo"
                       />
-                      <a-button @click="showModal2(situation[0].picture)"
-                        >查看图片</a-button
+                      <a-button
+                        @click="showModal2(situation[0].picture)"
+                      >查看图片</a-button
                       >
                     </div>
                     <ImgModel
@@ -177,8 +179,9 @@
                         class="logo"
                         alt="logo"
                       />
-                      <a-button @click="showModal2(situation[0].photograph)"
-                        >查看图片</a-button
+                      <a-button
+                        @click="showModal2(situation[0].photograph)"
+                      >查看图片</a-button
                       >
                     </div>
                     <ImgModel
@@ -208,8 +211,9 @@
                         class="logo"
                         alt="logo"
                       />
-                      <a-button @click="showModal2(situation[0].caption)"
-                        >查看图片</a-button
+                      <a-button
+                        @click="showModal2(situation[0].caption)"
+                      >查看图片</a-button
                       >
                     </div>
                     <ImgModel
@@ -247,7 +251,7 @@
                       <a-button
                         type="primary"
                         @click="showModal2(situation[0].pin)"
-                        >查看图片
+                      >查看图片
                       </a-button>
                     </div>
                     <ImgModel
@@ -278,7 +282,7 @@
                       <a-button
                         type="primary"
                         @click="showModal2(situation[0].print)"
-                        >查看图片
+                      >查看图片
                       </a-button>
                     </div>
                     <ImgModel
@@ -311,7 +315,7 @@
                       <a-button
                         type="primary"
                         @click="showModal2(situation[0].photoprint)"
-                        >查看图片
+                      >查看图片
                       </a-button>
                     </div>
                     <ImgModel
@@ -365,15 +369,15 @@
   </div>
 </template>
 <script>
-import ImgModel from "@/components/ImgModel/index"
+import ImgModel from '@/components/ImgModel/index'
 export default {
-  name: "NewModel",
+  name: 'NewModel',
   props: {
     visible: {
       type: Boolean,
-      required: true,
+      required: true
     },
-    NewModelData: Object,
+    newModelData: Object,
     // modalName: {
     // 	type: String,
     // 	default: ""
@@ -381,27 +385,27 @@ export default {
     situation: {
       type: Array,
       //   type: Object,
-      required: true,
+      required: true
       // default: [{ livePhotos: [] }]
     },
     dictionary: {
       required: true,
-      type: Array,
+      type: Array
     },
     imgdata: {
-      type: Array,
+      type: Array
     },
     progress: {
       type: Object,
-      required: true,
+      required: true
     },
     name: {
       required: true,
-      type: String,
-    },
+      type: String
+    }
   },
   components: {
-    ImgModel,
+    ImgModel
   },
   data () {
     return {
@@ -409,7 +413,7 @@ export default {
       modalVisible: false,
       ImgModalVisible: false,
       photos: [],
-      needToFix: [],
+      needToFix: []
     }
   },
   watch: {
@@ -417,53 +421,53 @@ export default {
     async visible (val, valOld) {
       this.modalVisible = val
       // console.log(this.situation,'asdd')
-      if (this.name === "优质服务") {
-        this.needToFix = ["acceptedContent", "relationLocation"]
-      } else if (this.name === "电费补抄") {
+      if (this.name === '优质服务') {
+        this.needToFix = ['acceptedContent', 'relationLocation']
+      } else if (this.name === '电费补抄') {
         this.needToFix = [
-          "dfbcGdUseraddress",
-          "dfbcGdUsername",
-          "dfbcGdCode",
-          "dfbcGdZcid",
-          "dfbcGdUsername",
+          'dfbcGdUseraddress',
+          'dfbcGdUsername',
+          'dfbcGdCode',
+          'dfbcGdZcid',
+          'dfbcGdUsername'
         ]
-      } else if (this.name === "电费回收") {
-        this.needToFix = ["userName", "userLocation"]
-      } else if (this.name === "计量运维") {
+      } else if (this.name === '电费回收') {
+        this.needToFix = ['userName', 'userLocation']
+      } else if (this.name === '计量运维') {
         this.needToFix = [
-          "elecmeterAssetNum",
-          "platformName",
-          "workOrderNo",
-          "userAdd",
-          "elecmeterCode",
-          "userName",
-          "terminalFactory",
-          "elecmeterFactory",
+          'elecmeterAssetNum',
+          'platformName',
+          'workOrderNo',
+          'userAdd',
+          'elecmeterCode',
+          'userName',
+          'terminalFactory',
+          'elecmeterFactory'
         ]
-      } else if (this.name === "采集运维") {
+      } else if (this.name === '采集运维') {
         this.needToFix = [
-          "elecmeterAssetNum",
-          "platformName",
-          "terminalFactory",
-          "terAssetNo",
-          "elecmeterFactory",
-          "userName",
-          "userElecAdd",
+          'elecmeterAssetNum',
+          'platformName',
+          'terminalFactory',
+          'terAssetNo',
+          'elecmeterFactory',
+          'userName',
+          'userElecAdd'
         ]
-      } else if (this.name === "费控复电") {
+      } else if (this.name === '费控复电') {
         this.needToFix = [
-          "elecmeterAssetNum",
-          "terminalLocation",
-          "userLocation",
+          'elecmeterAssetNum',
+          'terminalLocation',
+          'userLocation'
         ]
-      } else if (this.name === "线损治理") {
-        this.needToFix = ["elecmeterAssetNum"]
-      } else if (this.name === "反窃查违") {
-        this.needToFix = ["powerConsumption"]
-      } else if (this.name === "主动运维") {
-        this.needToFix = ["tgName"]
+      } else if (this.name === '线损治理') {
+        this.needToFix = ['elecmeterAssetNum']
+      } else if (this.name === '反窃查违') {
+        this.needToFix = ['powerConsumption']
+      } else if (this.name === '主动运维') {
+        this.needToFix = ['tgName']
       }
-    },
+    }
   },
   methods: {
     loaMore (name) {
@@ -484,13 +488,13 @@ export default {
     // 点击取消
     handleCancel () {
       this.modalVisible = !this.modalVisible
-      this.$emit("changeModal", false)
+      this.$emit('changeModal', false)
     },
     // 点击按钮放大图片
     showModal2 (e) {
       this.photos = e
-      console.log(this.situation, "数据")
-      console.log(this.photos, "图片路径")
+      console.log(this.situation, '数据')
+      console.log(this.photos, '图片路径')
       this.ImgModalVisible = true
     },
     // 点击
@@ -500,10 +504,10 @@ export default {
     // 点击取消
     handleCancel2 () {
       this.ImgModalVisible = !this.ImgModalVisible
-      this.$emit("changeimgModal", false)
-    },
-  },
-};
+      this.$emit('changeimgModal', false)
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 /deep/ .ant-modal-body {

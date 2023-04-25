@@ -21,7 +21,7 @@
       :visible="NewModalVisible"
       modalName="工单详情"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
+      :newModelData="newModelData"
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
@@ -114,7 +114,7 @@ export default {
       selectItem: {},
       clickRow: {},
       // 一下为重新修改的代码
-      NewModelData: {},
+      newModelData: {},
       situation: [],
       dictionary: [],
       progress: {},
@@ -234,7 +234,7 @@ export default {
     // 数据展示列表
     async clickRows(e) {
       this.dictionary = serviceList
-      this.NewModelData = e
+      this.newModelData = e
       console.log('优质服务', e)
 
       // 开始处理进度条

@@ -5,13 +5,10 @@
       <p class="p1" style="font-size:23px">绩效指标详情—{{ data.name }}</p>
       <p class="p2" style="font-size:14px">计算规则</p>
       <p class="p3" style="font-size:11px">满分10分</p>
-      <p class="p3" style="font-size:11px">
-        采集成功的用户数量/该区域管辖的所有用户数量
-        目标值定为100%，每低0.5%，扣1分。采集成功率为95%时，
-        此项分数扣减为0
+      <p class="p3" style="font-size:11px">{{ reasonList[data.name] }}
       </p>
-      <p class="p2" style="font-size:14px">计算过程</p>
-      <div class="formula">
+      <p class="p2" style="font-size:14px" v-show="false">计算过程</p>
+      <div class="formula" v-show="false">
         {{ formula }}
       </div>
     </div>
@@ -36,6 +33,7 @@
 		getAction
 	} from '@/api/manage'
 	import MathJax from '@/utils/globalVariable.js'
+	import { reasonList } from './constion.js'
 	const columns = [{
 			title: '供电营业所',
 			dataIndex: 'name',
@@ -61,7 +59,8 @@
 		data() {
 			return {
 				columns,
-				formula: '$$等分=\\sum _{nT}^{i=1}\\frac{第i期支付金额}{1+年化综合成本}$$'
+				formula: '$$等分=\\sum _{nT}^{i=1}\\frac{第i期支付金额}{1+年化综合成本}$$',
+				reasonList
 			}
 		},
 		props: {

@@ -30,7 +30,7 @@
 import Tables from '@/components/tables/baseTables'
 import NewModel from '@/components/NewModel/consumerModel'
 import SearchForm from '@/components/searchform/consumerSearch'
-import { postAction } from '@/api/manage'
+import { postAction, getConsListweb } from '@/api/manage'
 const columns = [
   {
     title: '用户编号',
@@ -158,9 +158,12 @@ export default {
     ) {
       this.loading = true
       this.data = []
-      const res = await postAction(
-        `coll/getConsListweb?consNo=${payload.consNo}&consName=${payload.consName}&orgName=${payload.orgName}&elecTypeCode=${payload.elecTypeCode}`
-      )
+      const res = await getConsListweb({
+        consNo: payload.consNo,
+        consName: payload.consName,
+        orgName: payload.orgName,
+        elecTypeCode: payload.elecTypeCode
+      })
       if (
         res &&
         res.length > 0 &&

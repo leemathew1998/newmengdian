@@ -18,7 +18,7 @@
       :visible="NewModalVisible"
       modalName="工单详情"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
+      :newModelData="newModelData"
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
@@ -115,7 +115,7 @@ export default {
       drawerVisible: false,
       selectItem: {},
       clickRow: {},
-      NewModelData: {},
+      newModelData: {},
       progress: {},
       situation: {
         livePhotos: [],
@@ -155,7 +155,7 @@ export default {
       this.selectedRowKeys = e
     },
     async clickRows (e) {
-      this.NewModelData = e
+      this.newModelData = e
       this.dictionary = achtiveMeteringList
       // this.clickRow = e
       const res1 = await getAction('activeOperation/load?workOrderNo=' + e.workOrderNo)

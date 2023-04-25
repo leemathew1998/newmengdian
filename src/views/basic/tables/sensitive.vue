@@ -20,7 +20,7 @@
     <NewModel
       :visible="NewModalVisible"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
+      :newModelData="newModelData"
       :dictionary="dictionary"
       :progress="progress"
       :imgdata="imgdata"
@@ -127,7 +127,7 @@ export default {
       NewModalVisible: false,
       selectItem: {},
       // 一下为重新修改的代码
-      NewModelData: {},
+      newModelData: {},
       situation: [],
       dictionary: [],
       progress: {},
@@ -162,7 +162,7 @@ export default {
     async clickRows (e) {
       this.clickRow = e
       this.dictionary = sensitive
-      this.NewModelData = e
+      this.newModelData = e
       this.progress.progress = 2
       this.NewModalVisible = true
     }

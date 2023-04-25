@@ -21,7 +21,7 @@
                 color: #000;
                 line-height: 50px;
               "
-              >原始数据</span
+            >原始数据</span
             >
           </div>
           <!-- 原始数据展示 -->
@@ -51,7 +51,7 @@
                   slot="content"
                   v-if="
                     item.name == 'timeCalculation' ||
-                    item.name == 'phaseCalculation'
+                      item.name == 'phaseCalculation'
                   "
                 >
                   <a-table
@@ -64,19 +64,19 @@
                 <div v-if="!needToFix.includes(item.name)">
                   <span class="key">{{ item.label }}：</span>
                   <span :class="['value', item.name]">{{
-                    NewModelData[item.name]
+                    newModelData[item.name]
                   }}</span>
                 </div>
               </a-popover>
               <div
                 v-if="
                   !needToFix.includes(item.name) &&
-                  !needToClick.includes(item.name)
+                    !needToClick.includes(item.name)
                 "
               >
                 <span class="key">{{ item.label }}：</span>
                 <span :class="['value', item.name]">{{
-                  NewModelData[item.name]
+                  newModelData[item.name]
                 }}</span>
               </div>
             </div>
@@ -92,7 +92,7 @@
               <div v-if="needToFix.includes(item.name)">
                 <span class="key">{{ item.label }}：</span>
                 <span :class="['value', item.name]">{{
-                  NewModelData[item.name]
+                  newModelData[item.name]
                 }}</span>
               </div>
             </div>
@@ -110,13 +110,13 @@
               <a-popover slot="progressDot" slot-scope="{ status, prefixCls }">
                 <template slot="content">
                   <span
-                    >状态:
+                  >状态:
                     {{
                       status == "finish"
                         ? "处理中"
                         : status == "wait"
-                        ? "已归档"
-                        : "待归档"
+                          ? "已归档"
+                          : "待归档"
                     }}</span
                   >
                 </template>
@@ -223,7 +223,7 @@
 <script>
 import ImgModel from '@/components/ImgModel/index'
 import {
-  getAction,
+  getAction
 } from '@/api/manage'
 export default {
   name: 'NewModel',
@@ -232,15 +232,15 @@ export default {
       type: Boolean,
       required: true
     },
-    NewModelData: {
-      type: Object,
+    newModelData: {
+      type: Object
     },
     // modalName: {
     // 	type: String,
     // 	default: ""
     // },
     situation: {
-      type: Array,
+      type: Array
       // required: true
       // default: [{ livePhotos: [] }]
     },
@@ -337,7 +337,7 @@ export default {
         title: null,
         value: {}
       }
-      const res1 = await getAction('/lineloss/pearson?platformId=' + this.NewModelData.platformId)
+      const res1 = await getAction('/lineloss/pearson?platformId=' + this.newModelData.platformId)
       for (let key in res1) {
         this.popoverData.value[key] = res1[key]
       }
@@ -351,7 +351,7 @@ export default {
       //     data: [],
       //   }
       // }
-      // const res = await getAction('/lineloss/split?platformId=' + this.NewModelData.platformId)
+      // const res = await getAction('/lineloss/split?platformId=' + this.newModelData.platformId)
       // this.popoverData.value.columns.push({
       //   dataIndex: 'index',
       //   key: '时间段',
@@ -395,7 +395,7 @@ export default {
       //     data: [],
       //   }
       // }
-      // const res = await getAction('/lineloss/split?platformId=' + this.NewModelData.platformId)
+      // const res = await getAction('/lineloss/split?platformId=' + this.newModelData.platformId)
       // let data = [{
       //   name: '供电量',
       //   value: 'powerSupply'
@@ -440,7 +440,7 @@ export default {
         this.phaseCalculation()
       }
     }
-  },
+  }
 }
 </script>
 <style lang="less" scoped>

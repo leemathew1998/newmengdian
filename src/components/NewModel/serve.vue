@@ -1,72 +1,87 @@
 <template>
-	<div>
-		<!-- 弹窗 -->
-		<a-modal v-model="modalVisible" @ok="handleOk" @cancel="handleCancel" :width="1100" :title="name" :okText="name"
-			:footer="null">
-			<!-- 详情 -->
-			<div class="details">
-				<div class="top">
-					<div class="head">
-						<span style="
+  <div>
+    <!-- 弹窗 -->
+    <a-modal
+      v-model="modalVisible"
+      @ok="handleOk"
+      @cancel="handleCancel"
+      :width="1100"
+      :title="name"
+      :okText="name"
+      :footer="null">
+      <!-- 详情 -->
+      <div class="details">
+        <div class="top">
+          <div class="head">
+            <span
+              style="
                 font-size: 16px;
                 font-weight: 600;
                 color: #000;
                 line-height: 50px;
               ">原始数据</span>
-					</div>
-					<!-- 原始数据展示 -->
-					<div class="center">
-						<div class="one" v-for="(item, key) in dictionary" :key="key" :style="{
+          </div>
+          <!-- 原始数据展示 -->
+          <div class="center">
+            <div
+              class="one"
+              v-for="(item, key) in dictionary"
+              :key="key"
+              :style="{
                 display: needToFix.includes(item.name) ? 'none' : 'block',
               }">
-							<div v-if="!needToFix.includes(item.name)">
-								<span class="key">{{ item.label }}：</span>
-								<span class="value">{{ NewModelData[item.name] }}</span>
-							</div>
-						</div>
-						<div class="two" v-for="(item, key) in dictionary" :key="'abc' + key" :style="{
+              <div v-if="!needToFix.includes(item.name)">
+                <span class="key">{{ item.label }}：</span>
+                <span class="value">{{ newModelData[item.name] }}</span>
+              </div>
+            </div>
+            <div
+              class="two"
+              v-for="(item, key) in dictionary"
+              :key="'abc' + key"
+              :style="{
                 display: needToFix.includes(item.name) ? 'block' : 'none',
               }">
-							<div v-if="needToFix.includes(item.name)">
-								<span class="key">{{ item.label }}：</span>
-								<span class="value">{{ NewModelData[item.name] }}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- 进度 -->
-			<div class="schedule">
-				<div class="center">
-					<div class="head">
-						<span>工单进度</span>
-					</div>
-					<div class="middle">
-						<a-steps :current="progress.progress">
-							<a-popover slot="progressDot" slot-scope="{  status, prefixCls }">
-								<template slot="content">
-									<span>状态:
-										{{
+              <div v-if="needToFix.includes(item.name)">
+                <span class="key">{{ item.label }}：</span>
+                <span class="value">{{ newModelData[item.name] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 进度 -->
+      <div class="schedule">
+        <div class="center">
+          <div class="head">
+            <span>工单进度</span>
+          </div>
+          <div class="middle">
+            <a-steps :current="progress.progress">
+              <a-popover slot="progressDot" slot-scope="{ status, prefixCls }">
+                <template slot="content">
+                  <span>状态:
+                    {{
                       status == "finish"
                         ? "处理中"
                         : status == "wait"
-                        ? "已归档"
-                        : "待归档"
+                          ? "已归档"
+                          : "待归档"
                     }}</span>
-								</template>
-								<span :class="`${prefixCls}-icon-dot`" />
-								<!-- 工单状态步骤条 -->
-							</a-popover>
-							<a-step title="待处理" :description="progress.stepOne" />
-							<a-step title="处理中" :description="progress.stepTwo" />
-							<a-step title="待归档" :description="progress.stepThree" />
-							<a-step title="已归档" :description="progress.stepFour" />
-						</a-steps>
-					</div>
-				</div>
-			</div>
-			<!-- 记录 -->
-			<!-- 	<div class="record">
+                </template>
+                <span :class="`${prefixCls}-icon-dot`" />
+                <!-- 工单状态步骤条 -->
+              </a-popover>
+              <a-step title="待处理" :description="progress.stepOne" />
+              <a-step title="处理中" :description="progress.stepTwo" />
+              <a-step title="待归档" :description="progress.stepThree" />
+              <a-step title="已归档" :description="progress.stepFour" />
+            </a-steps>
+          </div>
+        </div>
+      </div>
+      <!-- 记录 -->
+      <!-- 	<div class="record">
 				<div class="mindo">
 					<div v-show="isSensitivity !== 'undefiend'">
 						<p class="zero">敏感用户</p>
@@ -100,21 +115,21 @@
 					</div>
 				</div>
 			</div> -->
-		</a-modal>
-	</div>
+    </a-modal>
+  </div>
 </template>
 <script>
-	import ImgModel from "@/components/ImgModel/index";
+	import ImgModel from '@/components/ImgModel/index'
 	export default {
-		name: "NewModel",
+		name: 'NewModel',
 		props: {
 			visible: {
 				type: Boolean,
-				required: true,
+				required: true
 			},
-			NewModelData: {
+			newModelData: {
 				type: Object,
-				required: true,
+				required: true
 			},
 			isSensitivity: Array,
 			isOutage: Array,
@@ -124,126 +139,126 @@
 			// 	default: ""
 			// },
 			situation: {
-				type: Array,
+				type: Array
 				// required: true
 				// default: [{ livePhotos: [] }]
 			},
 			dictionary: {
 				required: true,
-				type: Array,
+				type: Array
 			},
 			imgdata: {
-				type: Array,
+				type: Array
 			},
 			progress: {
 				type: Object,
-				required: true,
+				required: true
 			},
 			name: {
 				required: true,
-				type: String,
-			},
+				type: String
+			}
 		},
 		components: {
-			ImgModel,
+			ImgModel
 		},
 		data() {
 			return {
 				modalVisible: false,
 				ImgModalVisible: false,
-				photos: "",
-				needToFix: [],
-			};
+				photos: '',
+				needToFix: []
+			}
 		},
 		watch: {
 			// 弹窗现场情况
 			async visible(val, valOld) {
-				this.modalVisible = val;
+				this.modalVisible = val
 				// console.log(this.situation,'asdd')
-				if (this.name === "优质服务") {
-					this.needToFix = ["acceptedContent", "relationLocation"];
-				} else if (this.name === "电费补抄") {
+				if (this.name === '优质服务') {
+					this.needToFix = ['acceptedContent', 'relationLocation']
+				} else if (this.name === '电费补抄') {
 					this.needToFix = [
-						"dfbcGdUseraddress",
-						"dfbcGdUsername",
-						"dfbcGdCode",
-						"dfbcGdZcid",
-						"dfbcGdUsername",
-					];
-				} else if (this.name === "电费回收") {
-					this.needToFix = ["userName", "userLocation"];
-				} else if (this.name === "计量运维") {
+						'dfbcGdUseraddress',
+						'dfbcGdUsername',
+						'dfbcGdCode',
+						'dfbcGdZcid',
+						'dfbcGdUsername'
+					]
+				} else if (this.name === '电费回收') {
+					this.needToFix = ['userName', 'userLocation']
+				} else if (this.name === '计量运维') {
 					this.needToFix = [
-						"elecmeterAssetNum",
-						"platformName",
-						"workOrderNo",
-						"userAdd",
-						"elecmeterCode",
-						"userName",
-						"terminalFactory",
-						"elecmeterFactory",
-					];
-				} else if (this.name === "采集运维") {
+						'elecmeterAssetNum',
+						'platformName',
+						'workOrderNo',
+						'userAdd',
+						'elecmeterCode',
+						'userName',
+						'terminalFactory',
+						'elecmeterFactory'
+					]
+				} else if (this.name === '采集运维') {
 					this.needToFix = [
-						"elecmeterAssetNum",
-						"platformName",
-						"terminalFactory",
-						"terAssetNo",
-						"elecmeterFactory",
-						"userName",
-						"userElecAdd",
-					];
-				} else if (this.name === "费控复电") {
+						'elecmeterAssetNum',
+						'platformName',
+						'terminalFactory',
+						'terAssetNo',
+						'elecmeterFactory',
+						'userName',
+						'userElecAdd'
+					]
+				} else if (this.name === '费控复电') {
 					this.needToFix = [
-						"elecmeterAssetNum",
-						"terminalLocation",
-						"userLocation",
-					];
-				} else if (this.name === "线损治理") {
-					this.needToFix = ["elecmeterAssetNum"];
-				} else if (this.name === "反窃查违") {
-					this.needToFix = ["powerConsumption"];
+						'elecmeterAssetNum',
+						'terminalLocation',
+						'userLocation'
+					]
+				} else if (this.name === '线损治理') {
+					this.needToFix = ['elecmeterAssetNum']
+				} else if (this.name === '反窃查违') {
+					this.needToFix = ['powerConsumption']
 				}
-			},
+			}
 		},
 		methods: {
 			loaMore(name) {
 				// 此处写下拉展示函数
 				for (let i = 0; i < this.needToFix.length; i++) {
 					if (this.needToFix[i] === name) {
-						this.needToFix.splice(i, 1);
+						this.needToFix.splice(i, 1)
 					}
 				}
 			},
 			showModal() {
-				this.modalVisible = true;
+				this.modalVisible = true
 			},
 			// 点击
 			handleOk(e) {
-				this.modalVisible = false;
+				this.modalVisible = false
 			},
 			// 点击取消
 			handleCancel() {
-				this.modalVisible = !this.modalVisible;
-				this.$emit("changeModal", false);
+				this.modalVisible = !this.modalVisible
+				this.$emit('changeModal', false)
 			},
 			// 点击按钮放大图片
 			showModal2(e) {
-				this.photos = e;
-				console.log(this.photos, "图片路径");
-				this.ImgModalVisible = true;
+				this.photos = e
+				console.log(this.photos, '图片路径')
+				this.ImgModalVisible = true
 			},
 			// 点击
 			handleOk2(e) {
-				this.ImgModalVisible = false;
+				this.ImgModalVisible = false
 			},
 			// 点击取消
 			handleCancel2() {
-				this.ImgModalVisible = !this.ImgModalVisible;
-				this.$emit("changeimgModal", false);
-			},
-		},
-	};
+				this.ImgModalVisible = !this.ImgModalVisible
+				this.$emit('changeimgModal', false)
+			}
+		}
+	}
 </script>
 <style lang="less" scoped>
 	/deep/ .ant-modal-body {

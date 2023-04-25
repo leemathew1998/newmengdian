@@ -23,7 +23,7 @@
       :visible="NewModalVisible"
       modalName="工单详情"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
+      :newModelData="newModelData"
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
@@ -129,7 +129,7 @@ export default {
       selectItem: {},
       clickRow: {},
       // 一下为重新修改的代码
-      NewModelData: {},
+      newModelData: {},
       situation: [],
       dictionary: [],
       progress: {},
@@ -237,7 +237,7 @@ export default {
     // 弹框、现场处理
     async clickRows(e) {
       this.dictionary = chargeList
-      this.NewModelData = e
+      this.newModelData = e
       // 此处为现场情况，为以后考虑，设置为数组  初始化数据
       this.situation = []
       const { data } = await getAction(

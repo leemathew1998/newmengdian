@@ -23,7 +23,7 @@
       :visible="NewModalVisible"
       modalName="工单详情"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
+      :newModelData="newModelData"
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
@@ -46,56 +46,56 @@ const columns = [
   {
     title: '工单编号',
     dataIndex: 'workOrderNo',
-    align: 'center',
+    // align: 'center',
     ellipsis: true,
     width: 120
   },
   {
     title: '台区经理',
     dataIndex: 'tgManager',
-    align: 'center',
+    // align: 'center',
     ellipsis: true,
     width: 80
   },
   {
     title: '台区编号',
     dataIndex: 'tgId',
-    align: 'center',
+    // align: 'center',
     ellipsis: true,
     width: 110
   },
   {
     title: '台区名称',
     dataIndex: 'tgName',
-    align: 'center',
+    // align: 'center',
     ellipsis: true,
     width: 130
   },
   {
     title: '供电单位',
-    dataIndex: 'orgNo',
-    align: 'center',
+    dataIndex: 'orgName',
+    // align: 'center',
     ellipsis: true,
     width: 130
   },
   {
     title: '用户名称',
     dataIndex: 'consName',
-    align: 'center',
+    // align: 'center',
     ellipsis: true,
     width: 180
   },
   {
     title: '用户地址',
     dataIndex: 'elecAddr',
-    align: 'center',
+    // align: 'center',
     ellipsis: true,
     width: 190
   },
   {
     title: '用户电话',
     dataIndex: 'mobile',
-    align: 'center',
+    // align: 'center',
     ellipsis: true,
     width: 120
   },
@@ -106,21 +106,21 @@ const columns = [
     scopedSlots: {
       customRender: 'elecTypeCode'
     },
-    align: 'center',
+    // align: 'center',
     width: 130
   },
   {
     title: '处理状态',
     dataIndex: 'workOrderStatus',
     ellipsis: true,
-    align: 'center',
+    // align: 'center',
     width: 120
   },
   {
     title: '电度电费',
     dataIndex: 'oweAmt',
     ellipsis: true,
-    align: 'center',
+    // align: 'center',
     width: 100
   }
 ]
@@ -137,7 +137,7 @@ export default {
       selectItem: {},
       clickRow: {},
       // 一下为重新修改的代码
-      NewModelData: {},
+      newModelData: {},
       situation: [],
       dictionary: [],
       progress: {},
@@ -224,7 +224,7 @@ export default {
     // 步骤进度条  弹框
     async clickRows(e) {
       this.dictionary = recoveryList
-      this.NewModelData = e
+      this.newModelData = e
       if (e.workOrderStatus === '待处理') {
         this.progress.progress = 0
       } else if (e.workOrderStatus === '处理中') {
@@ -247,6 +247,7 @@ export default {
         'workOrder5time'
       )
       this.situation.push(res)
+      console.log(this.situation)
       this.NewModalVisible = true
     }
   }

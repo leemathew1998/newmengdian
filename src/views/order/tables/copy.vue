@@ -21,7 +21,7 @@
       :visible="NewModalVisible"
       modalName="工单详情"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
+      :newModelData="newModelData"
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
@@ -124,7 +124,7 @@ export default {
       selectItem: {},
       clickRow: {},
       // 一下为重新修改的代码
-      NewModelData: {},
+      newModelData: {},
       situation: [],
       dictionary: [],
       progress: {},
@@ -219,7 +219,7 @@ export default {
     async clickRows(e) {
       this.NewModalVisible = true
 
-      this.NewModelData = e
+      this.newModelData = e
       this.dictionary = copyList
 
       // 开始处理进度条

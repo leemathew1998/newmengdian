@@ -20,7 +20,7 @@
     <NewModel
       :visible="NewModalVisible"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
+      :newModelData="newModelData"
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
@@ -122,7 +122,7 @@ export default {
       modalVisible: false,
       selectItem: {},
       // 一下为重新修改的代码
-      NewModelData: {},
+      newModelData: {},
       situation: [],
       dictionary: [],
       progress: {},
@@ -172,7 +172,7 @@ export default {
       this.clickRow = e
       this.dictionary = meteringList
       // 原始数据
-      this.NewModelData = e
+      this.newModelData = e
       // 现场情况暂时不处理
       // 开始处理进度条,接着跟上时间
       if (e.workOrderStatus === '待处理') {
@@ -232,7 +232,7 @@ export default {
               label: '时间',
               name: ListOfReason[i].englishName
             })
-            this.NewModelData[ListOfReason[i].englishName] = `${moment()
+            this.newModelData[ListOfReason[i].englishName] = `${moment()
               .subtract(1, 'day')
               .format('MM月DD日')}${
               reason[ListOfReason[i].englishName].split('时')[0]
@@ -246,7 +246,7 @@ export default {
               label: ListOfReason[i].chineseName,
               name: ListOfReason[i].englishName
             })
-            this.NewModelData[ListOfReason[i].englishName] =
+            this.newModelData[ListOfReason[i].englishName] =
               reason[ListOfReason[i].englishName]
           } else if (ListOfReason[i].englishName == 'oneReverseActive') {
             this.dictionary.push({
@@ -255,7 +255,7 @@ export default {
               }`,
               name: ListOfReason[i].englishName
             })
-            this.NewModelData[ListOfReason[i].englishName] =
+            this.newModelData[ListOfReason[i].englishName] =
               reason[ListOfReason[i].englishName]
           } else if (ListOfReason[i].englishName == 'twoReverseActive') {
             this.dictionary.push({
@@ -264,7 +264,7 @@ export default {
               }`,
               name: ListOfReason[i].englishName
             })
-            this.NewModelData[ListOfReason[i].englishName] =
+            this.newModelData[ListOfReason[i].englishName] =
               reason[ListOfReason[i].englishName]
           } else if (ListOfReason[i].englishName == 'threeReverseActive') {
             this.dictionary.push({
@@ -273,7 +273,7 @@ export default {
               }`,
               name: ListOfReason[i].englishName
             })
-            this.NewModelData[ListOfReason[i].englishName] =
+            this.newModelData[ListOfReason[i].englishName] =
               reason[ListOfReason[i].englishName]
           } else if (
             ListOfReason[i].englishName == 'nowPositiveActive' ||
@@ -287,7 +287,7 @@ export default {
               }`,
               name: ListOfReason[i].englishName
             })
-            this.NewModelData[ListOfReason[i].englishName] =
+            this.newModelData[ListOfReason[i].englishName] =
               reason[ListOfReason[i].englishName]
           } else if (
             ListOfReason[i].englishName == 'beforePositiveActive' ||
@@ -301,14 +301,14 @@ export default {
               }`,
               name: ListOfReason[i].englishName
             })
-            this.NewModelData[ListOfReason[i].englishName] =
+            this.newModelData[ListOfReason[i].englishName] =
               reason[ListOfReason[i].englishName]
           } else {
             this.dictionary.push({
               label: ListOfReason[i].chineseName,
               name: ListOfReason[i].englishName
             })
-            this.NewModelData[ListOfReason[i].englishName] =
+            this.newModelData[ListOfReason[i].englishName] =
               reason[ListOfReason[i].englishName]
           }
         }

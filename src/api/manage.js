@@ -328,3 +328,11 @@ export const activeOperation = (params) => {
     params: params
   })
 }
+
+export const getConsListweb = (params)=>{
+  return axios({
+    url: 'coll/getConsListweb',
+    method: 'post',
+    params: params
+  })
+}

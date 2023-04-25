@@ -62,9 +62,8 @@ export default {
   },
   watch: {
     rightInitPage: {
-      handler: async function (newVal) {
+      handler: function (newVal) {
         if (newVal) {
-          await this.loadRightMathPage()
           this.$refs['rightInitPage'].className = 'box animated fadeOutRight'
           setTimeout(() => {
             this.$refs['rightInitPage'].style.display = 'none'
@@ -72,6 +71,11 @@ export default {
             this.$refs['rightMainPage'].className = 'box animated fadeInRight'
           }, 400)
         }
+      }
+    },
+    'rightPageData.name': {
+      handler: function(newVal) {
+        this.loadRightMathPage()
       }
     }
   },
@@ -129,6 +133,7 @@ export default {
           index: i
         })
 			})
+      console.log(this.rightPageData)
     }
   },
   components: {
@@ -160,7 +165,7 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD')//
+      dateTime: moment().add(-4, 'days').format('yyyy-MM-DD')//
     }
   }
 }

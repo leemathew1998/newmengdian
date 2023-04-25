@@ -19,7 +19,7 @@
     <!-- <NewModel
       :visible="NewModalVisible"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :NewModelData="NewModelData"
+      :newModelData="newModelData"
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
@@ -120,7 +120,7 @@ export default {
       NewModalVisible: false,
       selectItem: {},
       // 一下为重新修改的代码
-      NewModelData: {},
+      newModelData: {},
       situation: [],
       dictionary: [],
       progress: {},
@@ -171,13 +171,13 @@ export default {
     async clickRows (e) {
       // this.clickRow = e;
       // // 获取上面原始数据
-      // // this.NewModelData = await getAction("api/collect/rawdata", {
+      // // this.newModelData = await getAction("api/collect/rawdata", {
       // //   id: e.id,
       // // });
-      // this.NewModelData = await getAction("coll/rawdata", {
+      // this.newModelData = await getAction("coll/rawdata", {
       // 	id: e.id,
       // });
-      // // console.log(this.NewModelData);
+      // // console.log(this.newModelData);
       // // val.sendTime = moment(val.sendTime).format("MM-DD h:mm:ss");
       // // 此处为现场情况，为以后考虑，设置为数组
       // this.situation = [];

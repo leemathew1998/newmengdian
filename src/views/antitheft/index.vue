@@ -18,7 +18,7 @@
         :visible="NewModalVisible"
         modalName="工单详情"
         @changeModal="NewModalVisible = !NewModalVisible"
-        :NewModelData="NewModelData"
+        :newModelData="newModelData"
         :situation="situation"
         :dictionary="dictionary"
         :progress="progress"
@@ -37,71 +37,71 @@
 </template>
 
 <script>
-import SearchForm from "@/components/searchform/SearchFormForAntitheft"
-import Tables from "@/components/tables/Tables"
+import SearchForm from '@/components/searchform/SearchFormForAntitheft'
+import Tables from '@/components/tables/Tables'
 import NewModel from '@/components/NewModel/mean'
-import Drawer from "@/components/drawer/Drawer"
+import Drawer from '@/components/drawer/Drawer'
 import {
   getAction,
   postAction
-} from "@/api/manage"
+} from '@/api/manage'
 import {
   antitheftList
 } from '@/components/NewModel/constant.js'
 import moment from 'moment'
 const columns = [{
-  title: "台区名称",
-  dataIndex: "tgName",
-  align: "center",
+  title: '台区名称',
+  dataIndex: 'tgName',
+  align: 'center'
 },
 {
-  title: "供电单位",
-  dataIndex: "orgName",
-  align: "center",
+  title: '供电单位',
+  dataIndex: 'orgName',
+  align: 'center'
 },
 {
-  title: "用户电压",
-  dataIndex: "consVoltCode",
-  align: "center",
+  title: '用户电压',
+  dataIndex: 'consVoltCode',
+  align: 'center'
 },
 {
-  title: "用户编号",
-  dataIndex: "consNo",
-  align: "center",
+  title: '用户编号',
+  dataIndex: 'consNo',
+  align: 'center'
 },
 {
-  title: "用户地址",
-  dataIndex: "consAddr",
-  align: "center",
+  title: '用户地址',
+  dataIndex: 'consAddr',
+  align: 'center',
   width: 170
 },
 {
-  title: "违约用电行为",
-  dataIndex: "violateCode",
-  align: "center",
+  title: '违约用电行为',
+  dataIndex: 'violateCode',
+  align: 'center'
 },
 {
-  title: "窃电时长",
-  dataIndex: "violateLong",
-  align: "center",
+  title: '窃电时长',
+  dataIndex: 'violateLong',
+  align: 'center'
 },
 {
-  title: "窃电小时数",
-  dataIndex: "violateHour",
-  align: "center",
+  title: '窃电小时数',
+  dataIndex: 'violateHour',
+  align: 'center',
   width: 170
 },
 {
-  title: "检查人员",
-  dataIndex: "checkerName",
-  align: "center",
+  title: '检查人员',
+  dataIndex: 'checkerName',
+  align: 'center'
 },
 {
-  title: "提交时间",
-  dataIndex: "commitTime",
-  align: "center",
+  title: '提交时间',
+  dataIndex: 'commitTime',
+  align: 'center',
   width: 170
-},
+}
 ]
 const data = []
 export default {
@@ -114,10 +114,10 @@ export default {
       selectItem: {},
       clickRow: {},
       NewModalVisible: false,
-      NewModelData: [],
+      newModelData: [],
       situation: [],
       dictionary: [],
-      progress: {},
+      progress: {}
     }
   },
   components: {
@@ -139,14 +139,13 @@ export default {
         consNo: '',
         consName: ''
       }
-      const data = await postAction("pi/AllStatus", obj)
+      const data = await postAction('pi/AllStatus', obj)
       this.data = data
       for (let i = 0; i < this.data.length; i++) {
         this.data[i].selectTime = moment(
           this.data[i].selectTime
         ).format('YYYY-MM-DD hh-mm-ss')
       }
-
     },
     changeSelectedRowKeys (e) {
       this.selectedRowKeys = e
@@ -154,7 +153,7 @@ export default {
     // 模糊查询
     async solveformData (values) {
       console.log(values, 123)
-      const data = await postAction("pi/AllStatus", values)
+      const data = await postAction('pi/AllStatus', values)
       this.data = data
       for (let i = 0; i < this.data.length; i++) {
         this.data[i].selectTime = moment(
@@ -166,7 +165,7 @@ export default {
       console.log(e)
       // e.lenthtimeStealing = e.lenthtimeStealing.split('至')[0] + "至" + e.lenthtimeStealing.split('至')[1]
       // e.selectTime = e.selectTime
-      this.NewModelData = e
+      this.newModelData = e
       this.NewModalVisible = true
       this.dictionary = antitheftList
       this.situation = []
@@ -186,9 +185,9 @@ export default {
 
     handleChange (value) {
       console.log(`selected ${value}`)
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

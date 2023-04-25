@@ -126,7 +126,7 @@ const err = (error) => {
 // request interceptor
 service.interceptors.request.use(
   (config) => {
-    console.log('request config', config)
+    // console.log('request config', config)
     if (!config.params) {
       config.params = {}
     }

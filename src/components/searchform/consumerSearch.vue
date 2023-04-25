@@ -30,17 +30,18 @@
 
         <!-- 供电单位 -->
         <a-form-item>
-          <a-select
+          <a-cascader
             v-decorator="[
-              'orgName',
-              { rules: [{ message: '请选择供电单位' }] },
+              'orgNo',
+              {
+                rules: [{ required: false, message: '请选择供电单位' }],
+              },
             ]"
+            :options="cascaderOptions"
+            :style="{ minWidth: '150px' }"
             placeholder="请选择供电单位"
-            :style="{ width: '150px' }"
             allowClear
-          >
-            <a-select-option value="哈克单位"> 哈克单位 </a-select-option>
-          </a-select>
+          ></a-cascader>
         </a-form-item>
         <!-- 台区名称 -->
         <a-form-item>
@@ -103,6 +104,7 @@
 </template>
 
 <script>
+import { getAllStation } from '@/api/order.js'
 const treeData = [
   {
     title: '大工业用电',
@@ -171,14 +173,7 @@ const treeData = [
   {
     title: '大用户直购电',
     value: '大用户直购电',
-    key: '大用户直购电',
-    children: [
-      {
-        title: '大用户直购电',
-        value: '大用户直购电',
-        key: '大用户直购电'
-      }
-    ]
+    key: '大用户直购电'
   },
   {
     title: '其它用电',
@@ -187,51 +182,47 @@ const treeData = [
   }
 ]
 export default {
-  props: {
-    // value:{
-    // 	type:Object
-    // },
-  },
   data() {
     return {
       form: this.$form.createForm(this, {
         name: 'searchform'
       }),
-      treeData
+      treeData,
+      cascaderOptions: []
     }
   },
   mounted() {
+    // 如果有路由参数就获取赋值
+    Object.keys(this.$route.query).forEach(key => {
+      this.form.setFieldsValue({
+        [key]: this.$route.query[key]
+      })
+    })
+    getAllStation().then((res) => {
+      this.cascaderOptions = res
+    })
     // 验证字段
     this.$nextTick(() => {
       this.form.validateFields()
+      this.handleSubmit()
     })
   },
   methods: {
     // 搜索传值
     handleSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
+      e && e.preventDefault()
+      this.form.validateFields((_, values) => {
         this.$emit('formData', values)
         // this.$emit('input', values);
         // console.log(values,'asdd');
       })
     },
-    // searchList(){
-    // 	const inputValue = e.target.values;
-    // 	this.form.validateFields((err, values) => {
-    // 		console.log(values,'uuu');
-    // 		this.$emit("formData", values);
-    // 		if (!err) {
-    // 			console.log("Received values of form: ", values);
-    // 		}
-    // 	});
-    // },
     // 重置为空
     handleReset(e) {
       this.form.resetFields()
       e.preventDefault()
 
-      this.form.validateFields((err, values) => {
+      this.form.validateFields((_, values) => {
         this.$emit('formData', values)
       })
     },
@@ -239,16 +230,7 @@ export default {
     onChange(date, dateString) {
       console.log(dateString)
     }
-    // ande: function(e){
-    // 	console.log(e,'e')
-    // },
   }
-  // watch:{
-  // 	value:_.debounce( function(newvalue,oldvalue){
-  // 		console.log(newvalue,'s');
-
-  // 	})
-  // },
 }
 </script>
 

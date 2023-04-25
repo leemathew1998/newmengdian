@@ -21,7 +21,7 @@
                 color: #000;
                 line-height: 50px;
               "
-              >原始数据</span
+            >原始数据</span
             >
           </div>
           <!-- 原始数据展示 -->
@@ -36,7 +36,7 @@
             >
               <div v-if="!needToFix.includes(item.name)">
                 <span class="key">{{ item.label }}：</span>
-                <span class="value">{{ NewModelData[item.name] }}</span>
+                <span class="value">{{ newModelData[item.name] }}</span>
               </div>
             </div>
             <div
@@ -49,7 +49,7 @@
             >
               <div v-if="needToFix.includes(item.name)">
                 <span class="key">{{ item.label }}：</span>
-                <span class="value">{{ NewModelData[item.name] }}</span>
+                <span class="value">{{ newModelData[item.name] }}</span>
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@
                   <a-button
                     type="primary"
                     @click="showModal2(situation[0].autograph)"
-                    >查看图片</a-button
+                  >查看图片</a-button
                   >
                 </div>
                 <ImgModel
@@ -149,8 +149,10 @@
                     class="logo"
                     alt="logo"
                   />
-                  <a-button type="primary" @click="showModal2(item)"
-                    >查看图片</a-button
+                  <a-button
+                    type="primary"
+                    @click="showModal2(item)"
+                  >查看图片</a-button
                   >
                 </div>
                 <ImgModel
@@ -178,7 +180,7 @@ export default {
       type: Boolean,
       required: true
     },
-    NewModelData: {
+    newModelData: {
       type: Object,
       required: true
     },

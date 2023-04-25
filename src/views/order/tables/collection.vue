@@ -23,7 +23,7 @@
     <NewModel
       :visible="NewModalVisible"
       @changeModal="NewModalVisible = !NewModalVisible"
-      :newModelData="NewModelData"
+      :newModelData="newModelData"
       :situation="situation"
       :dictionary="dictionary"
       :progress="progress"
@@ -134,7 +134,7 @@ export default {
       NewModalVisible: false,
       selectItem: {},
       // 一下为重新修改的代码
-      NewModelData: {},
+      newModelData: {},
       situation: [],
       dictionary: [],
       progress: {},
@@ -204,47 +204,47 @@ export default {
         this.dictionary = unUsualList
       }
       if (res) {
-        this.NewModelData = res
-        this.NewModelData.workOrderCtime = moment(
-          this.NewModelData.workOrderCtime
+        this.newModelData = res
+        this.newModelData.workOrderCtime = moment(
+          this.newModelData.workOrderCtime
         ).format('YYYY-MM-DD hh:mm:ss')
-        // console.log( this.NewModelData,'aaa');
+        // console.log( this.newModelData,'aaa');
         if (this.clickRow['eventType'] === '采集失败') {
           this.dictionary = failList
-          if (this.NewModelData.synchroTime) {
-            this.NewModelData.synchroTime = moment(
-              this.NewModelData.synchroTime
+          if (this.newModelData.synchroTime) {
+            this.newModelData.synchroTime = moment(
+              this.newModelData.synchroTime
             ).format('YYYY-MM-DD HH:MM:SS')
           }
         } else if (this.clickRow['eventType'] === '采集未接入') {
           this.dictionary = unConnectList
-          if (this.NewModelData.synchroTime) {
-            this.NewModelData.synchroTime = moment(
-              this.NewModelData.synchroTime
+          if (this.newModelData.synchroTime) {
+            this.newModelData.synchroTime = moment(
+              this.newModelData.synchroTime
             ).format('YYYY-MM-DD HH:MM:SS')
           }
-          if (this.NewModelData.expoUserTime) {
-            this.NewModelData.expoUserTime = moment(
-              this.NewModelData.expoUserTime
+          if (this.newModelData.expoUserTime) {
+            this.newModelData.expoUserTime = moment(
+              this.newModelData.expoUserTime
             ).format('YYYY-MM-DD HH:MM:SS')
           }
         } else {
-          if (this.NewModelData.terMeterReadtime) {
-            this.NewModelData.terMeterReadtime = moment(
-              this.NewModelData.terMeterReadtime
+          if (this.newModelData.terMeterReadtime) {
+            this.newModelData.terMeterReadtime = moment(
+              this.newModelData.terMeterReadtime
             ).format('YYYY-MM-DD HH:MM:SS')
           }
-          if (this.NewModelData.sendTime) {
-            this.NewModelData.sendTime = moment(
-              this.NewModelData.sendTime
+          if (this.newModelData.sendTime) {
+            this.newModelData.sendTime = moment(
+              this.newModelData.sendTime
             ).format('YYYY-MM-DD HH:MM:SS')
           }
-          this.NewModelData.sendTime = moment(
-            this.NewModelData.sendTime
+          this.newModelData.sendTime = moment(
+            this.newModelData.sendTime
           ).format('YYYY-MM-DD HH:MM:SS')
-          if (this.NewModelData.synchroTime) {
-            this.NewModelData.synchroTime = moment(
-              this.NewModelData.synchroTime
+          if (this.newModelData.synchroTime) {
+            this.newModelData.synchroTime = moment(
+              this.newModelData.synchroTime
             ).format('YYYY-MM-DD HH:MM:SS')
           }
           this.dictionary = unUsualList

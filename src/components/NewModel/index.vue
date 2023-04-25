@@ -72,7 +72,7 @@
                 <div v-if="!needToFix.includes(item.name)">
                   <span class="key">{{ item.label }}：</span>
                   <span :class="['value', item.name]">{{
-                    NewModelData[item.name]
+                    newModelData[item.name]
                   }}</span>
                 </div>
               </a-popover>
@@ -84,7 +84,7 @@
               >
                 <span class="key">{{ item.label }}：</span>
                 <span :class="['value', item.name]">{{
-                  NewModelData[item.name]
+                  newModelData[item.name]
                 }}</span>
               </div>
             </div>
@@ -100,7 +100,7 @@
               <div v-if="needToFix.includes(item.name)">
                 <span class="key">{{ item.label }}：</span>
                 <span :class="['value', item.name]">{{
-                  NewModelData[item.name]
+                  newModelData[item.name]
                 }}</span>
               </div>
             </div>
@@ -362,7 +362,7 @@ export default {
         title: null,
         value: {}
       }
-      const res1 = await postAction('/lineloss/pearson?tgId=' + this.NewModelData.tgId)
+      const res1 = await postAction('/lineloss/pearson?tgId=' + this.newModelData.tgId)
       console.log('pearson', res1)
 
       for (let key in res1) {
@@ -378,7 +378,7 @@ export default {
           data: []
         }
       }
-      const res = await postAction('/lineloss/split?tgId=' + this.NewModelData.tgId)
+      const res = await postAction('/lineloss/split?tgId=' + this.newModelData.tgId)
       this.popoverData1.value.columns.push({
         dataIndex: 'index',
         key: '时间段',
@@ -423,7 +423,7 @@ export default {
           data: []
         }
       }
-      const res = await postAction('/lineloss/split?tgId=' + this.NewModelData.tgId)
+      const res = await postAction('/lineloss/split?tgId=' + this.newModelData.tgId)
       console.log('split', res)
       let data = [{
         name: '供电量',
