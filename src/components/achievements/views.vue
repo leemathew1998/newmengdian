@@ -22,6 +22,7 @@
         :customRow="rowClick"
         bordered
         :loading="loading"
+        :pagination="false"
       >
       </a-table>
     </div>

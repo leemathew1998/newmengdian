@@ -120,5 +120,144 @@ export const tableColumnList = {
 			dataIndex: 'num',
 			align: 'center'
 		}
+	],
+	'终止发行比例': [
+		{
+			title: '站长手动归档客户数',
+			dataIndex: 'noop',
+			align: 'center'
+		},
+		{
+			title: '该旗县所有用户数',
+			dataIndex: 'num',
+			align: 'center'
+		}
+	],
+	'高损台区占比': [
+		{
+			title: '高损台区个数',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '所有台区个数',
+			dataIndex: 'num2',
+			align: 'center'
+		}
+	],
+	'负损台区占比': [
+		{
+			title: '负损台区个数',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '所有台区个数',
+			dataIndex: 'num2',
+			align: 'center'
+		}
+	],
+	'经济运行台区占比': [
+		{
+			title: '线损率在0-4的台区个数',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '所有台区个数',
+			dataIndex: 'num2',
+			align: 'center'
+		}
+	],
+	'采集消缺及时率': [
+		{
+			title: '采集失败工单数',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '采集失败工单总数',
+			dataIndex: 'num2',
+			align: 'center'
+		}
+	],
+	'低压线损率': [
+		{
+			title: '损耗电量',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '供电量',
+			dataIndex: 'num2',
+			align: 'center'
+		}
+	],
+	'高负损台区消缺及时率': [
+		{
+			title: '未处理高损台区工单数',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '所有高损台区工单数',
+			dataIndex: 'num2',
+			align: 'center'
+		}
+	],
+	'电费结零率': [
+		{
+			title: '欠费金额',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '发行金额',
+			dataIndex: 'num2',
+			align: 'center'
+		}
+	],
+	'配电异常台区次数': [
+		{
+			title: '异常台区次数',
+			dataIndex: 'num1',
+			align: 'center'
+		}
+	],
+	'现场复电及时率': [
+		{
+			title: '复电时间小于45分钟',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '所有复电工单数',
+			dataIndex: 'num2',
+			align: 'center'
+		}
+	],
+	'运维抢修到达及时率': [
+		{
+			title: '45min到达现场的工单数',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '所有工单数量',
+			dataIndex: 'num2',
+			align: 'center'
+		}
+	],
+	'计量消缺及时率': [
+		{
+			title: '三天以上未处理',
+			dataIndex: 'num1',
+			align: 'center'
+		},
+		{
+			title: '所有计量异常工单',
+			dataIndex: 'num2',
+			align: 'center'
+		}
 	]
 }

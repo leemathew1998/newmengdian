@@ -27,7 +27,7 @@
           :rightInitPageData="rightInitPageData"
           :rightPageLoading="rightPageLoading"></rightPageForSite>
       </div>
-      <div ref="rightMainPage" class="box" style="display: none">
+      <div ref="rightMainPage" class="box" style="display: none;height: 100%;">
         <div class="head">
           <sites :data="rightPageData"> </sites>
         </div>
@@ -111,7 +111,7 @@ export default {
       let temp = []
       for (const key in indexCenter16List) {
         let originalValue = res[0].data[0][indexCenter16List[key].rate]
-        originalValue = originalValue ? `${originalValue}%` : '-'
+        originalValue = originalValue != null ? `${originalValue}%` : '0'
         temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,

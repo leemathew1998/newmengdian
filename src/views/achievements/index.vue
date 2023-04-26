@@ -30,7 +30,7 @@
           :rightPageLoading="rightPageLoading"
         ></rightPageForMaster>
       </div>
-      <div ref="rightMainPage" class="box" style="display: none">
+      <div ref="rightMainPage" class="box" style="display: none;height: 100%;">
         <div class="head">
           <views :data="rightPageData"> </views>
         </div>
@@ -119,12 +119,12 @@ export default {
       // 处理中间数据
       let temp = []
       for (const key in indexCenter16List) {
-        // let originalValue = res[0].data[0][indexCenter16List[key].rate]
-        // originalValue = originalValue ? `${originalValue}%` : '-'
+        let originalValue = res[0].data[0][indexCenter16List[key].rate]
+        originalValue = originalValue != null ? `${originalValue}%` : '0'
         temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,
-          originalValue: `${res[0].data[0][indexCenter16List[key].rate]}%`,
+          originalValue: originalValue,
           integral: res[0].data[0][indexCenter16List[key].point],
           orgNo: res[0].data[0].orgNo,
           ymd: this.dateTime
@@ -152,6 +152,8 @@ export default {
           this.rightPageData.data.push(item)
         })
       } else if (res && res.constructor === Object) {
+        // 终止发行比例"noop"
+        res.noop = 0
         this.rightPageData.data.push(res)
       }
       console.log(this.rightPageData.data)
@@ -186,7 +188,7 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: moment().add(-5, 'days').format('yyyy-MM-DD') //
+      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
     }
   }
 }

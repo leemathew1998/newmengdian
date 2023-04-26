@@ -28,5 +28,65 @@ export const MAP_NAME_TO_FUNC = {
 		url: 'ach/getSuper13',
 		method: 'post',
 		params: params
-	})
+	}),
+	'终止发行比例': (params) => axios({
+		url: 'ach/getSuper5',
+		method: 'post',
+		params: params
+	}),
+	'高损台区占比': (params) => axios({
+		url: 'ach/getLineLoss8',
+		method: 'post',
+		params: params
+	}),
+	'负损台区占比': (params) => axios({
+		url: 'ach/getLineLoss9',
+		method: 'post',
+		params: params
+	}),
+	'经济运行台区占比': (params) => axios({
+		url: 'ach/getLineLoss10',
+		method: 'post',
+		params: params
+	}),
+	'采集消缺及时率': (params) => {
+		return new Promise((resolve, reject) => {
+			resolve({ num1: 0, num2: 0 })
+		})
+	},
+	'低压线损率': (params) => {
+		return new Promise((resolve, reject) => {
+			resolve({ num1: 0, num2: 0 })
+		})
+	},
+	'高负损台区消缺及时率': (params) => {
+		return new Promise((resolve, reject) => {
+			resolve({ num1: 0, num2: 0 })
+		})
+	},
+	'电费结零率': (params) => {
+		return new Promise((resolve, reject) => {
+			resolve({ num1: 0, num2: 0 })
+		})
+	},
+	'配电异常台区次数': (params) => {
+		return new Promise((resolve, reject) => {
+			resolve({ num1: 0, num2: 0 })
+		})
+	},
+	'现场复电及时率': (params) => {
+		return new Promise((resolve, reject) => {
+			resolve({ num1: 0, num2: 0 })
+		})
+	},
+	'运维抢修到达及时率': (params) => {
+		return new Promise((resolve, reject) => {
+			resolve({ num1: 0, num2: 0 })
+		})
+	},
+	'计量消缺及时率': (params) => {
+		return new Promise((resolve, reject) => {
+			resolve({ num1: 0, num2: 0 })
+		})
+	}
 }

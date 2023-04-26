@@ -26,7 +26,7 @@
       <div ref="rightInitPage" class="box">
         <rightPageForManger></rightPageForManger>
       </div>
-      <div ref="rightMainPage" class="box" style="display: none">
+      <div ref="rightMainPage" class="box" style="display: none;height: 100%;">
         <div class="head">
           <manger :rightInitPage="rightInitPage"> </manger>
         </div>
@@ -55,9 +55,9 @@ import {
 import moment from 'moment'
 export default {
   mounted() {
-    this.dateTime = this.$route.params.ymd || moment().add(-5, 'days').format('yyyy-MM-DD')
-    this.orgNo = this.$route.params.orgNo || '154212205'
-    this.username = this.$route.params.name || this.$store.state.username || 'wpo'
+    this.dateTime = this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
+    this.orgNo = this.$route.params.orgNo
+    this.username = this.$route.params.name || this.$store.state.username
     this.init2()
   },
   watch: {
@@ -112,7 +112,7 @@ export default {
       let temp = []
       for (const key in indexCenter16List) {
         let originalValue = res[0].data[0][indexCenter16List[key].rate]
-        originalValue = originalValue ? `${originalValue}%` : '-'
+        originalValue = originalValue != null ? `${originalValue}%` : '0'
         temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,

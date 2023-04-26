@@ -20,19 +20,22 @@ export const rankNamePoint = [{
 export const leftBottomColumns = [{
 	title: '排名',
 	dataIndex: 'ranking',
-	align: 'center'
+	align: 'center',
+	width: '20%'
 },
 {
 	title: '名称',
 	dataIndex: 'countyName',
 	ellipsis: true,
-	align: 'center'
+	align: 'center',
+	width: '60%'
 },
 {
 	title: '积分',
 	dataIndex: 'toPoint',
 	ellipsis: true,
-	align: 'center'
+	align: 'center',
+	width: '20%'
 }
 ]
 
