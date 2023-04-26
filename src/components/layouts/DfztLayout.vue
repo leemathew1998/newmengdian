@@ -11,7 +11,7 @@
           background: '#fff',
           minHeight: '280px',
           overflow: 'initial',
-          // 'overflow-y': 'hidden',
+          'overflow-y': 'hidden',
           height:'calc(100% - 100px)'
         }"
       >

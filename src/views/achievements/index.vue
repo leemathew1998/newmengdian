@@ -57,7 +57,7 @@ export default {
   created() {
     this.init2()
   },
-  mounted(){
+  mounted() {
     //     Array.from({ length: 10 }, (_, i) => i).forEach(i => {
     //   this.rightInitPageData.push({
     //     ranking: i,
@@ -107,6 +107,7 @@ export default {
       this.leftBottomLoading = false
     },
     async leftBottomClickRow(record) {
+      this.rightInitPage = false
       this.tableLoading = true
       this.rightPageLoading = true
       const res = await Promise.all([
@@ -185,7 +186,7 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
+      dateTime: moment().add(-5, 'days').format('yyyy-MM-DD') //
     }
   }
 }
@@ -209,7 +210,7 @@ export default {
     }
 
     .left-bottom {
-      flex: 4;
+      flex: 6;
     }
   }
 

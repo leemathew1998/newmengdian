@@ -4,12 +4,26 @@
       <span class="title">各所站积分</span>
     </div>
     <a-input-search placeholder="请输入供电所名称" style="width: 100%" @search="onSearch" />
-    <a-table class="box-table" :columns="rightInitPageColumns" :data-source="rightInitPageData" size="small"
-      :loading="rightPageLoading" :customRow="handleClickRow" :pagination="false">
+    <a-table
+      class="box-table"
+      :columns="rightInitPageColumns"
+      :data-source="rightInitPageData"
+      size="small"
+      :loading="rightPageLoading"
+      :customRow="handleClickRow"
+      :pagination="false">
     </a-table>
     <a-divider style="margin:0px" />
-    <Charts ref="chartRef" :legendData="legend" :xAxisData="xAxis" :yAxismin="0" :yAxismax="100" :seriesData="seriesData"
-      :id="`chart`" class="chart-class">
+    <Charts
+      ref="chartRef"
+      :legendData="legend"
+      :xAxisData="xAxis"
+      :yAxismin="0"
+      :yAxismax="100"
+      :seriesData="seriesData"
+      :id="`chart`"
+      :echartSize="echartSize"
+      class="chart-class">
       <template>
         <div id="chart"></div>
       </template>
@@ -28,9 +42,10 @@ export default {
     // 开始计算剩余高度给echart
     const el = document.querySelector('.chart-class')
     el.style.height = `${el.clientHeight}px`
+    this.echartSize.height = el.clientHeight
+    this.echartSize.width = el.clientWidth
     const table = document.querySelector('.box-table')
     table.style.height = `${table.clientHeight}px`
-    console.dir(el.clientHeight)
   },
   watch: {
     rightPageLoading: {
@@ -147,7 +162,11 @@ export default {
     return {
       legend: [],
       xAxis: [],
-      seriesData: []
+      seriesData: [],
+      echartSize: {
+        height: 100,
+        width: 100
+      }
     }
   }
 }
@@ -157,9 +176,6 @@ export default {
 /deep/ tr {
   cursor: pointer;
 }
-
-
-
 
 .box {
   border: 1px #f5f5f5 solid;

@@ -1,5 +1,5 @@
 <template>
-  <div class="warp">
+  <div class="warp-site">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
         <leftTop :name="$route.params.name" :dateTime.sync="dateTime"></leftTop>
@@ -58,7 +58,7 @@ export default {
   created() {
     // this.init()
     // console.log(this.$route.params)
-    this.dateTime = this.$route.params.ymd
+    this.dateTime = this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
     this.init2()
   },
   watch: {
@@ -71,8 +71,21 @@ export default {
             this.$refs['rightMainPage'].style.display = 'block'
             this.$refs['rightMainPage'].className = 'box animated fadeInRight'
           }, 400)
+        } else {
+          this.$refs['rightMainPage'].className = 'box animated fadeOutRight'
+          setTimeout(() => {
+            this.$refs['rightMainPage'].style.display = 'none'
+            this.$refs['rightInitPage'].style.display = 'block'
+            this.$refs['rightInitPage'].className = 'box animated fadeInRight'
+          }, 400)
         }
       }
+    },
+    dateTime() {
+      this.centerData = []
+      this.rightInitPageData = []
+      this.rightInitPage = false
+      this.init2()
     }
   },
   methods: {
@@ -87,6 +100,7 @@ export default {
     },
     async leftBottomClickRow(record) {
       console.warn('record', record)
+      this.rightInitPage = false
       this.tableLoading = true
       this.rightPageLoading = true
       const res = await Promise.all([
@@ -118,56 +132,6 @@ export default {
       this.rightInitPageData = sortRanking(resRight)
       this.rightPageLoading = false
     }
-    // async init () {
-    //   let temp = []
-    //   let temp_left_bottom = []
-    //   let res
-    //   let res2
-
-    //   res = await postAction('/ach/stationList')
-    //   res2 = await postAction('/ach/dayPoint?id=1')
-    //   for (const key in indexCenter16List) {
-    //     temp.push({
-    //       id: key,
-    //       indexItems: indexCenter16List[key].name,
-    //       originalValue: res2.data[indexCenter16List[key].rate] + '%',
-    //       integral: res2.data[indexCenter16List[key].point]
-    //     })
-    //   }
-    //   res.data.map((item) => {
-    //     if (item.stationName == this.$route.params.name) {
-    //       // for (const key in indexCenter16List) {
-    //       //   temp.push({
-    //       //     id: key,
-    //       //     indexItems: indexCenter16List[key].name,
-    //       //     originalValue: item[indexCenter16List[key].rate] + "%",
-    //       //     integral: item[indexCenter16List[key].point],
-    //       //   })
-    //       // }
-    //       this.centerData = temp
-    //       this.tableLoading = false
-    //     }
-    //     temp_left_bottom.push({
-    //       countyName: item.stationName,
-    //       toPoint: item.toPoint
-    //     })
-    //   })
-    //   this.leftBottomData = sortRanking(temp_left_bottom)
-    //   this.leftBottomLoading = false
-
-    //   res = await postAction(`/ach/selectStaByman?id=${this.id}`)
-    //   let temp_right_init = []
-    //   res.data.map(item => {
-    //     temp_right_init.push({
-    //       stationName: item.tgManager,
-    //       toPoint: item.totalScore
-    //     })
-    //   })
-    //   this.rightInitPageData = sortRanking(temp_right_init)
-    //   // console.log(res, 'res')
-
-    //   this.rightPageLoading = false
-    // }
   },
   components: {
     sites,
@@ -203,20 +167,22 @@ export default {
 <style lang="less" scoped>
 @import url("../../assets/less/animate.css");
 
-.warp {
+.warp-site {
   display: flex;
+  height: 100%;
 
   .wrap-left {
     flex: 2;
     display: flex;
     flex-direction: column;
+    // height: 100% !important;
 
     .left-top {
-      // flex: 4;
+      flex: 4;
     }
 
     .left-bottom {
-      // flex: 6;
+      flex: 6;
     }
   }
 
@@ -233,6 +199,7 @@ export default {
   border: 1px #f5f5f5 solid;
   border-radius: 5px;
   padding: 2px;
+  height: 100%;
 }
 
 .head {

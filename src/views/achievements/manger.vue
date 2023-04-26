@@ -1,8 +1,8 @@
 <template>
-  <div class="warp">
+  <div class="warp-managr">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop :name="$route.params.name" :dateTime.sync="dateTime"></leftTop>
+        <leftTop :name="username" :dateTime.sync="dateTime"></leftTop>
       </div>
       <div class="left-bottom">
         <div class="box">
@@ -28,7 +28,7 @@
       </div>
       <div ref="rightMainPage" class="box" style="display: none">
         <div class="head">
-          <manger> </manger>
+          <manger :rightInitPage="rightInitPage"> </manger>
         </div>
       </div>
     </div>
@@ -55,8 +55,9 @@ import {
 import moment from 'moment'
 export default {
   mounted() {
-    // this.init()
-    this.dateTime = this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
+    this.dateTime = this.$route.params.ymd || moment().add(-5, 'days').format('yyyy-MM-DD')
+    this.orgNo = this.$route.params.orgNo || '154212205'
+    this.username = this.$route.params.name || this.$store.state.username || 'wpo'
     this.init2()
   },
   watch: {
@@ -69,14 +70,27 @@ export default {
             this.$refs['rightMainPage'].style.display = 'block'
             this.$refs['rightMainPage'].className = 'box animated fadeInRight'
           }, 400)
+        } else {
+          this.$refs['rightMainPage'].className = 'box animated fadeOutRight'
+          setTimeout(() => {
+            this.$refs['rightMainPage'].style.display = 'none'
+            this.$refs['rightInitPage'].style.display = 'block'
+            this.$refs['rightInitPage'].className = 'box animated fadeInRight'
+          }, 400)
         }
       }
+    },
+    dateTime() {
+      this.centerData = []
+      this.rightInitPageData = []
+      this.rightInitPage = false
+      this.init2()
     }
   },
   methods: {
     async init2() {
       this.leftBottomLoading = true
-      const res = await postAction(`ach/selectStaByman?ymd=${this.dateTime}&orgNo=${this.$route.params.orgNo}`)
+      const res = await postAction(`ach/selectStaByman?ymd=${this.dateTime}&orgNo=${this.orgNo}`)
       console.log(res)
       res.data.forEach(i => {
         i.countyName = i.tgManager
@@ -86,6 +100,7 @@ export default {
     },
     async leftBottomClickRow(record) {
       console.warn('record', record)
+      this.rightInitPage = false
       this.tableLoading = true
       this.rightPageLoading = true
       const res = await Promise.all([
@@ -111,41 +126,6 @@ export default {
 
       this.rightPageLoading = false
     }
-    // async init () {
-    //   let temp = []
-    //   let temp_center = []
-    //   this.$route.params.name = this.$route.params.name ? this.$route.params.name : '刘月焱'
-    //   const res = await postAction('/ach/selectStaByman?id=1')
-    //   const res2 = await postAction('/ach/dayPoint?id=1')
-    //   for (const key in indexCenter16List) {
-    //     temp_center.push({
-    //       id: key,
-    //       indexItems: indexCenter16List[key].name,
-    //       originalValue: res2.data[indexCenter16List[key].rate] + '%',
-    //       integral: res2.data[indexCenter16List[key].point]
-    //     })
-    //   }
-    //   res.data.map((item) => {
-    //     if (this.$route.params.name == item.tgManager) {
-    //       // for (const key in indexCenter16List) {
-    //       //   temp_center.push({
-    //       //     id: key,
-    //       //     indexItems: indexCenter16List[key].name,
-    //       //     originalValue: item[indexCenter16List[key].rate] + "%",
-    //       //     integral: item[indexCenter16List[key].point],
-    //       //   })
-    //       // }
-    //     }
-    //     temp.push({
-    //       countyName: item.tgManager,
-    //       toPoint: item.totalScore
-    //     })
-    //   })
-    //   this.centerData = temp_center
-    //   this.tableLoading = false
-    //   this.leftBottomData = sortRanking(temp)
-    //   this.leftBottomLoading = false
-    // }
 
   },
   components: {
@@ -173,7 +153,8 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')//
+      dateTime: this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD'),
+      orgNo: 154212205
     }
   }
 }
@@ -182,20 +163,22 @@ export default {
 <style lang="less" scoped>
 @import url("../../assets/less/animate.css");
 
-.warp {
+.warp-managr {
   display: flex;
+  height: 100%;
 
   .wrap-left {
     flex: 2;
     display: flex;
     flex-direction: column;
+    // height: 100% !important;
 
     .left-top {
-      // flex: 4;
+      flex: 4;
     }
 
     .left-bottom {
-      // flex: 6;
+      flex: 6;
     }
   }
 
@@ -212,9 +195,11 @@ export default {
   border: 1px #f5f5f5 solid;
   border-radius: 5px;
   padding: 2px;
+  height: 100%;
 }
 
 .head {
   width: 100%;
+  height: 100%;
 }
 </style>
