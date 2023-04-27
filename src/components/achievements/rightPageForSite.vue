@@ -28,6 +28,7 @@
       :id="`chart`"
       :echartSize="echartSize"
       class="chart-class"
+      v-show="false"
     >
       <template>
         <div id="chart"></div>

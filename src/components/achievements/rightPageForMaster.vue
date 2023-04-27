@@ -23,7 +23,8 @@
       :seriesData="seriesData"
       :id="`chart`"
       :echartSize="echartSize"
-      class="chart-class">
+      class="chart-class"
+      v-show="false">
       <template>
         <div id="chart"></div>
       </template>

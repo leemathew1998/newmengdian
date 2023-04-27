@@ -111,7 +111,7 @@ export default {
       let temp = []
       for (const key in indexCenter16List) {
         let originalValue = res[0].data[0][indexCenter16List[key].rate]
-        originalValue = originalValue != null ? `${originalValue}%` : '0'
+        originalValue = originalValue != null ? `${originalValue}${indexCenter16List[key].tail}` : '0'
         temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,

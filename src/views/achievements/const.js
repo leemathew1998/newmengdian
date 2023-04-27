@@ -61,83 +61,99 @@ export const rightInitPageColumns = [{
 export const indexCenter16List = [{
 	name: '采集成功率',
 	rate: 'colSuccRate',
-	point: 'colSuccPoint'
+	point: 'colSuccPoint',
+	tail: '%'
 },
 {
 	name: '采集消缺及时率',
 	rate: 'colFailRate',
-	point: 'colFailPoint'
+	point: 'colFailPoint',
+	tail: '%'
 },
 {
 	name: '费控停电成功率',
 	rate: 'costconStopRate',
-	point: 'costconStopPoint'
+	point: 'costconStopPoint',
+	tail: '%'
 },
 {
 	name: '费控复电成功率',
 	rate: 'costconComeRate',
-	point: 'costconComePoint'
+	point: 'costconComePoint',
+	tail: '%'
 },
 {
 	name: '终止发行比例',
 	rate: 'autoPublishRate',
-	point: 'autoPublishPoint'
+	point: 'autoPublishPoint',
+	tail: '%'
 },
 {
 	name: '低压线损率',
 	rate: 'lowLinelossRate',
-	point: 'lowLinelossPoint'
+	point: 'lowLinelossPoint',
+	tail: '%'
 },
 {
 	name: '高损台区占比',
 	rate: 'highlossTgRate',
-	point: 'highlossTgPoint'
+	point: 'highlossTgPoint',
+	tail: '%'
 },
 {
 	name: '负损台区占比',
 	rate: 'lowlossTgRate',
-	point: 'lowlossTgPoint'
+	point: 'lowlossTgPoint',
+	tail: '%'
 },
 {
 	name: '经济运行台区占比',
 	rate: 'econrunTgRate',
-	point: 'econrunTgPoint'
+	point: 'econrunTgPoint',
+	tail: '%'
 },
 {
 	name: '电费结零率',
 	rate: 'powerfeesZeroRate',
-	point: 'powerfeesZeroPoint'
+	point: 'powerfeesZeroPoint',
+	tail: '%'
 },
 {
 	name: '配电异常台区次数',
 	rate: 'exceptTgNum',
-	point: 'exceptTgPoint'
+	point: 'exceptTgPoint',
+	tail: ''
 },
 
 {
 	name: '现场复电及时率',
 	rate: 'powerbackHandleRate',
-	point: 'powerbackHandlePoint'
+	point: 'powerbackHandlePoint',
+	tail: '%'
 },
 {
 	name: '投诉意见工单数量',
 	rate: 'complaintWorkorderNum',
-	point: 'complaintWorkorderPoint'
+	point: 'complaintWorkorderPoint',
+	tail: ''
 },
 {
 	name: '运维抢修到达及时率',
 	rate: 'repairSceneRate',
-	point: 'repairScenePoint'
+	point: 'repairScenePoint',
+	tail: '%'
 },
 {
 	name: '计量消缺及时率',
 	rate: 'meterHandleRate',
-	point: 'meterHandlePoint'
+	point: 'meterHandlePoint',
+	tail: '%'
 },
 {
 	name: '高负损台区消缺及时率',
 	rate: 'tgHandleRate',
-	point: 'tgHandlePoint'
+	point: 'tgHandlePoint',
+	tail: '%'
 }
 ]
 
