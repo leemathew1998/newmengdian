@@ -82,15 +82,21 @@ const columns = [
   //   // ellipsis: true,
   //   align: 'center'
   // },
-  {
-    title: '工单周期',
-    dataIndex: 'workOrderCycle',
-    ellipsis: true,
-    align: 'center'
-  },
+  // {
+  //   title: '工单周期',
+  //   dataIndex: 'workOrderCycle',
+  //   ellipsis: true,
+  //   align: 'center'
+  // },
   {
     title: '工单状态',
     dataIndex: 'workOrderStatus',
+    ellipsis: true,
+    align: 'center'
+  },
+    {
+    title: '损耗电量',
+    dataIndex: 'lossPq',
     ellipsis: true,
     align: 'center'
   },

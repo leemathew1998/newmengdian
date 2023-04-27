@@ -213,7 +213,6 @@ export default {
         print: [],
         photoprint: []
       },
-      dictionary: [],
       clickRow: {},
       imgdata: [],
       exportUrl: 'repairsWorkOrder',
@@ -254,7 +253,7 @@ export default {
     async solveformData(e) {
       let tempStatus = e.workOrderStatus
       delete e.workOrderStatus
-      const {
+      let {
         data: { records }
       } = await repairsWorkOrder(e)
       // 张生要求，"采集你先把时间最近的放前面"

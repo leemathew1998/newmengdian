@@ -94,7 +94,6 @@ const columns = [
     dataIndex: 'eventType',
     ellipsis: true,
     align: 'center'
-
   },
   {
     title: '工单状态',
@@ -104,7 +103,7 @@ const columns = [
   },
   {
     title: '工单创建时间',
-    dataIndex: 'workOrderStime',
+    dataIndex: 'workOrderCtime',
     ellipsis: true
     // align: "center",
   }
@@ -147,7 +146,7 @@ export default {
       })
       this.$refs.table.pagination.total = res.data.total
       res.data.records = res.data.records.map((item) => {
-        item.workOrderStime = moment(item.workOrderStime).format(
+        item.workOrderCtime = moment(item.workOrderCtime).format(
           'YYYY-MM-DD HH:mm:ss'
         )
         if (item.workOrderStatus == 1) {
@@ -333,7 +332,7 @@ export default {
         .then((res) => {
           this.$refs.table.pagination.total = res.data.total
           res.data.records.map((item) => {
-            item.workOrderStime = moment(item.workOrderStime).format(
+            item.workOrderCtime = moment(item.workOrderCtime).format(
               'YYYY-MM-DD HH:mm:ss'
             )
             if (item.workOrderStatus == 1) {
