@@ -35,28 +35,43 @@
 </template>
 
 <script>
+import { postAction } from '@/api/manage'
+import cookie from '@/utils/cookie.js'
 export default {
   data() {
     return {
-      username: "",
-    };
+      username: ''
+    }
   },
   created() {
-    this.username = this.$store.getters.username;
+    this.username = this.$store.getters.username
   },
   methods: {
     confirm() {
-      this.$store.commit("clearUserInfo", []);
-      console.log("与张升测试ISC，在此处修改跳转，如需要改变，直接切换即可！");
-      this.$router.push("/overView");
-      // this.$router.push('/user/login')
-      this.$notification["success"]({
-        message: "退出成功！",
-        duration: 4,
-      });
-    },
-  },
-};
+      postAction(`SysUser/logout1`)
+      this.$store.commit('clearUserInfo', [])
+      this.$notification['success']({
+        message: '注销成功',
+        duration: 4
+      })
+      cookie.clearCookie('ticket')
+      this.$router.push({
+        name: '/overView',
+        params: {
+          needLogin: false
+        }
+      })
+      // this.$store.commit('clearUserInfo', [])
+      // console.log('与张升测试ISC，在此处修改跳转，如需要改变，直接切换即可！')
+      // this.$router.push('/overView')
+      // // this.$router.push('/user/login')
+      // this.$notification['success']({
+      //   message: '退出成功！',
+      //   duration: 4
+      // })
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

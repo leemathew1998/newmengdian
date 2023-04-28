@@ -83,7 +83,7 @@ export default {
       nowTime: '',
       welcomeWord: '',
       userName: '',
-      devModel: false
+      devModel: true
     }
   },
   async created() {
@@ -113,7 +113,9 @@ export default {
       this.$notification['warning']({
         message: '请登录'
       })
-      !this.devModel && this.handleSubmit()
+      const needLogin = (this.$route && this.$route.params && this.$route.params.needLogin) || false
+      console.log(this.$route, 'this.$route')
+      !this.devModel && needLogin && this.handleSubmit()
     } else {
       const res = await postAction('SysUser/getToken', {})
       this.userName = cookie.getCookie('loName2')
@@ -178,6 +180,7 @@ export default {
     },
 
     async logOut() {
+      postAction(`SysUser/logout1`)
       this.$store.commit('clearUserInfo', [])
       this.$notification['success']({
         message: '注销成功',
@@ -185,7 +188,7 @@ export default {
       })
       cookie.clearCookie('ticket')
       // this.$router.push("/user/login");
-      this.$router.push('/overView')
+      // this.$router.push('/overView')
     },
     // 免登录获取token
     handleSubmit() {
