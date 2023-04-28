@@ -144,21 +144,24 @@ export default {
     solveClick(name) {
       const ticket = cookie.getCookie('ticket')
       if (!ticket && !this.devModel) {
+        this.$notification['warning']({
+          message: '请先进行登录！'
+        })
         return
       }
-      if (name === '驾驶舱') {
+      if (name == '驾驶舱') {
         window.open(
-          `http://10.173.172.9:18880/#/mdPowerGrid/powerCenter?fromOrigin=otherSystem&projectName=%E8%92%99%E4%B8%9C%E5%8F%B0%E5%8C%BA%E7%B2%BE%E7%BB%86%E5%8C%96&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
+          `http://10.173.172.9:18880/#/mdPowerGrid/powerCenter?fromOrigin=otherSystem&projectName=台区精细化&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
           '_blank'
         )
-      } else if (name === '三维模型管理') {
+      } else if (name == '三维模型管理') {
         window.open(
-          `http://10.173.172.9:18880/#/modelCenter/index?fromOrigin=otherSystem&projectName=%E8%92%99%E4%B8%9C%E5%8F%B0%E5%8C%BA%E7%B2%BE%E7%BB%86%E5%8C%96&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
+          `http://10.173.172.9:18880/#/modelCenter/index?fromOrigin=otherSystem&projectName=台区精细化&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
           '_blank'
         )
-      } else if (name === '业扩报装') {
+      } else if (name == '业扩报装') {
         window.open(
-          `http://10.173.172.9:18880/#/mdPowerGrid/businessExpansionList?fromOrigin=otherSystem&projectName=%E8%92%99%E4%B8%9C%E5%8F%B0%E5%8C%BA%E7%B2%BE%E7%BB%86%E5%8C%96&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
+          `http://10.173.172.9:18880/#/mdPowerGrid/businessExpansionList?fromOrigin=otherSystem&projectName=台区精细化&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
           '_blank'
         )
       } else {
