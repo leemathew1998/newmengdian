@@ -6,50 +6,47 @@
   </a-config-provider>
 </template>
 <script>
-import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
-import enquireScreen from "@/utils/device";
-
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import enquireScreen from '@/utils/device'
 
 export default {
-  name: "APP",
-  provide(){
-    return{
-      reload:this.reload
+  name: 'APP',
+  provide() {
+    return {
+      reload: this.reload
     }
   },
   data() {
     return {
       locale: zhCN,
-      isRouterAlive:true
-    };
+      isRouterAlive: true
+    }
   },
-  methods:{
-    reload(){
+  methods: {
+    reload() {
       this.isRouterAlive = false
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.isRouterAlive = true
       })
     }
   },
   created() {
-    let that = this;
+    let that = this
     enquireScreen((deviceType) => {
       // tablet
       if (deviceType === 0) {
-        that.$store.commit("TOGGLE_DEVICE", "mobile");
-        that.$store.dispatch("setSidebar", false);
-      }
-      // mobile
-      else if (deviceType === 1) {
-        that.$store.commit("TOGGLE_DEVICE", "mobile");
-        that.$store.dispatch("setSidebar", false);
+        that.$store.commit('TOGGLE_DEVICE', 'mobile')
+        that.$store.dispatch('setSidebar', false)
+      } else if (deviceType === 1) {
+        that.$store.commit('TOGGLE_DEVICE', 'mobile')
+        that.$store.dispatch('setSidebar', false)
       } else {
-        that.$store.commit("TOGGLE_DEVICE", "desktop");
-        that.$store.dispatch("setSidebar", true);
+        that.$store.commit('TOGGLE_DEVICE', 'desktop')
+        that.$store.dispatch('setSidebar', true)
       }
-    });
-  },
-};
+    })
+  }
+}
 </script>
 <style>
 #app {

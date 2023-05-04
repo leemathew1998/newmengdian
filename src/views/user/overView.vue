@@ -7,34 +7,34 @@
     </div>
     <div class="main animated bounceInUp">
       <div class="rowOne">
-        <Item ImageSrc="驾驶舱" name="驾驶舱" @toggleClick="solveClick"></Item>
+        <Item imageSrc="驾驶舱" name="驾驶舱" @toggleClick="solveClick"></Item>
         <Item
-          ImageSrc="业扩报装"
+          imageSrc="业扩报装"
           name="业扩报装"
           @toggleClick="solveClick"
         ></Item>
       </div>
       <div class="rowTwo">
         <Item
-          ImageSrc="业务工单"
+          imageSrc="业务工单"
           name="业务工单"
           @toggleClick="solveClick"
         ></Item>
         <Item name=""></Item>
         <Item
-          ImageSrc="绩效管理"
+          imageSrc="绩效管理"
           name="绩效管理"
           @toggleClick="solveClick"
         ></Item>
       </div>
       <div class="rowThree">
         <Item
-          ImageSrc="反窃查询"
+          imageSrc="反窃查询"
           name="反窃查询"
           @toggleClick="solveClick"
         ></Item>
         <Item
-          ImageSrc="三维模型管理"
+          imageSrc="三维模型管理"
           name="三维模型管理"
           @toggleClick="solveClick"
         ></Item>
@@ -113,7 +113,10 @@ export default {
       this.$notification['warning']({
         message: '请登录'
       })
-      const needLogin = (this.$route && this.$route.params && this.$route.params.needLogin) || false
+      let needLogin = true
+      if (this.$route.params.hasOwnProperty('needLogin')) {
+        needLogin = this.$route.params.needLogin
+      }
       console.log(this.$route, 'this.$route')
       !this.devModel && needLogin && this.handleSubmit()
     } else {
@@ -192,7 +195,7 @@ export default {
     },
     // 免登录获取token
     handleSubmit() {
-      console.log('1234')
+      console.log('进入isc')
       window.open('http://25.73.1.171/api/SysUser/login1', '_self')
       // await getAction(`http://25.73.1.171/api/SysUser/login1`)
       // this.userName = "？？？";
@@ -291,7 +294,6 @@ export default {
     .rowOne,
     .rowTwo,
     .rowThree {
-      // width: 100%;
       padding: 0 25%;
       margin-bottom: -50px;
       display: flex;
