@@ -55,17 +55,18 @@ export default {
 }
 .wrap {
   background: url(../../../assets/Overview/未选中.png) no-repeat;
-  background-position: center !important;
+  background-position: center center !important;
+  background-size: contain;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
-  // width: 20vw;
-  // height: 20vw;
-  width: 250px !important;
-  height: 250px !important;
+  width: 18vw;
+  height: 18vw;
+  // width: 250px !important;
+  // height: 250px !important;
   .img {
     width: 50px;
     height: 50px;

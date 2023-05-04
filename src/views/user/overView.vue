@@ -257,6 +257,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  overflow-y: hidden;
 
   .header {
     background: url(../../assets/Overview/title.png) no-repeat !important;
@@ -294,15 +295,11 @@ export default {
     .rowOne,
     .rowTwo,
     .rowThree {
-      padding: 0 25%;
-      margin-bottom: -50px;
+      // padding: 0 25%;
+      margin-bottom: -4vw;
       display: flex;
       flex-direction: row;
-      justify-content: space-around;
-    }
-
-    .rowTwo {
-      padding: 0 13%;
+      justify-content: center;
     }
   }
 
