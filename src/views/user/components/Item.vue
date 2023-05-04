@@ -63,10 +63,10 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 18vw;
-  height: 18vw;
-  // width: 250px !important;
-  // height: 250px !important;
+  // width: 18vw;
+  // height: 18vw;
+  width: 250px !important;
+  height: 250px !important;
   .img {
     width: 50px;
     height: 50px;

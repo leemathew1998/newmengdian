@@ -10,18 +10,19 @@ const getters = {
 	token: state => state.user.token,
 	role: state => state.user.role,
 	avatar: state => {
-		state.user.avatar = Vue.ls.get(USER_INFO).avatar;
+		state.user.avatar = Vue.ls.get(USER_INFO).avatar
 		return state.user.avatar
 	},
 	username: state => state.user.username,
+	department: state => state.user.department,
 	nickname: state => {
-		state.user.info.realname = Vue.ls.get(USER_INFO).realname;
+		state.user.info.realname = Vue.ls.get(USER_INFO).realname
 		return state.user.info.realname
 	},
 	welcome: state => state.user.welcome,
 	permissionList: state => state.user.permissionList,
 	userInfo: state => {
-		state.user.info = Vue.ls.get(USER_INFO);
+		state.user.info = Vue.ls.get(USER_INFO)
 		return state.user.info
 	},
 	addRouters: state => state.permission.addRouters,

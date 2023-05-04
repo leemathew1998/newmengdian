@@ -72,7 +72,7 @@ export default {
     },
     async solveData() {
       this.seriesData = []
-      const res = await postAction('/ach/acStationSp?id=1')
+      const res = await postAction('ach/acStationSp?id=1')
       this.legend.map(item => {
         let tem = []
         res.data[item].map(item_ => {

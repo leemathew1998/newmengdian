@@ -64,7 +64,7 @@
           {{ nowTime }}
         </div>
       </div>
-      <div class="right">国网呼伦贝尔供电公司</div>
+      <div class="right">{{ orgName }}</div>
     </div>
   </div>
 </template>
@@ -83,12 +83,14 @@ export default {
       nowTime: '',
       welcomeWord: '',
       userName: '',
-      devModel: true
+      orgName: '',
+      devModel: false
     }
   },
   async created() {
     // 初始化时间
     this.userName = this.$store.getters.username || '请登录'
+    this.orgName = this.$store.getters.department || ''
     this.welcomeWord =
       moment().hour() < 9
         ? '早上好'
@@ -122,11 +124,12 @@ export default {
     } else {
       const res = await postAction('SysUser/getToken', {})
       this.userName = cookie.getCookie('loName2')
+      this.orgName = cookie.getCookie('orgName')
       this.$store.commit('setUserInfo', {
         username: this.userName,
         role: 'admin',
         token: res.token,
-        department: '哈克供电营业站'
+        department: this.orgName
       })
     }
 
@@ -152,6 +155,7 @@ export default {
         this.$notification['warning']({
           message: '请先进行登录！'
         })
+        this.handleSubmit()
         return
       }
       if (name == '驾驶舱') {
@@ -183,12 +187,14 @@ export default {
     },
 
     async logOut() {
-      postAction(`SysUser/logout1`)
+      window.open('http://25.73.1.171/api/SysUser/logout1', '_self')
       this.$store.commit('clearUserInfo', [])
       this.$notification['success']({
         message: '注销成功',
         duration: 4
       })
+      this.userName = '请登录'
+      this.orgName = ''
       cookie.clearCookie('ticket')
       // this.$router.push("/user/login");
       // this.$router.push('/overView')
@@ -265,6 +271,7 @@ export default {
     background-position: center !important;
     // background-size: 100% 100% !important;
     width: 100%;
+    height: 10vh;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -289,21 +296,28 @@ export default {
 
   .main {
     width: 80%;
+    height: 70vh;
     display: flex;
     flex-direction: column;
 
     .rowOne,
     .rowTwo,
     .rowThree {
-      // padding: 0 25%;
-      margin-bottom: -4vw;
+      padding: 0 25%;
+      margin-bottom: -50px;
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: space-around;
+    }
+
+    .rowTwo {
+      padding: 0 13%;
     }
   }
 
   .footer {
+    z-index: 100;
+    height: 20vh;
     width: 100%;
     padding: 20px 40px;
     display: flex;

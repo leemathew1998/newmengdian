@@ -1,49 +1,49 @@
 <template>
-	<a-layout-sider v-model="collapsed" :style="{ overflow: 'auto', position: 'fixed', left: 0 }" id="warp" width="80">
-		<div class="logo_warp">
-			<div class="logo" />
-		</div>
-		<a-menu theme="dark" mode="inline" :selectedKeys="selectedKeys" class="sider_menu" @click="changekeys">
-			<a-menu-item key="/overView" v-show="roleControl['/dashboard']">
-				<img src="@/assets/home.svg" alt="" class="svg" style="height: 44px;width: 44px;" />
-				<span>
-					首页
-				</span>
-			</a-menu-item>
-			<a-menu-item key="/order" v-show="roleControl['/order']">
-				<img src="@/assets/order.svg" alt="" class="svg" />
-				<span>业务工单</span>
-			</a-menu-item>
-			<!-- <a-menu-item key="/overhaul" v-show="roleControl['/overhaul']">
+  <a-layout-sider v-model="collapsed" :style="{ overflow: 'auto', position: 'fixed', left: 0 }" id="warp" width="80">
+    <div class="logo_warp">
+      <div class="logo" />
+    </div>
+    <a-menu theme="dark" mode="inline" :selectedKeys="selectedKeys" class="sider_menu" @click="changekeys">
+      <a-menu-item key="/overView" v-show="roleControl['/dashboard']">
+        <img src="@/assets/home.svg" alt="" class="svg" style="height: 44px;width: 44px;" />
+        <span>
+          首页
+        </span>
+      </a-menu-item>
+      <a-menu-item key="/order" v-show="roleControl['/order']">
+        <img src="@/assets/order.svg" alt="" class="svg" />
+        <span>业务工单</span>
+      </a-menu-item>
+      <!-- <a-menu-item key="/overhaul" v-show="roleControl['/overhaul']">
 				<img src="@/assets/u30.svg" alt="" class="svg" />
 				<span>检修管理</span>
 			</a-menu-item> -->
-			<a-menu-item key="/antitheft" v-show="roleControl['/antitheft']">
-				<img src="@/assets/u30.svg" alt="" class="svg" />
-				<span>反窃查违</span>
-			</a-menu-item>
-			<a-menu-item key="/extend" v-show="roleControl['/extend']">
-				<img src="@/assets/u20.svg" alt="" class="svg" />
-				<span>供电方案</span>
-				<span>辅助编制</span>
-			</a-menu-item>
-			<a-menu-item key="/achievements" v-show="roleControl['/achievements']">
-				<img src="@/assets/u142.svg" alt="" class="svg" />
-				<span>绩效管理</span>
-			</a-menu-item>
-			<a-menu-item key="/collection" v-show="roleControl['/collection']">
-				<img src="@/assets/u146.svg" alt="" class="svg" />
-				<span>采集数据</span>
-			</a-menu-item>
-			<a-menu-item key="/basic" v-show="roleControl['/basic']">
-				<img src="@/assets/u146.svg" alt="" class="svg" />
-				<span>基础服务</span>
-			</a-menu-item>
-		</a-menu>
-		<div class="logo_warp">
-			<div class="filpLogo" />
-		</div>
-	</a-layout-sider>
+      <a-menu-item key="/antitheft" v-show="roleControl['/antitheft']">
+        <img src="@/assets/u30.svg" alt="" class="svg" />
+        <span>反窃查违</span>
+      </a-menu-item>
+      <a-menu-item key="/extend" v-show="roleControl['/extend']">
+        <img src="@/assets/u20.svg" alt="" class="svg" />
+        <span>供电方案</span>
+        <span>辅助编制</span>
+      </a-menu-item>
+      <a-menu-item key="/achievements" v-show="roleControl['/achievements']">
+        <img src="@/assets/u142.svg" alt="" class="svg" />
+        <span>绩效管理</span>
+      </a-menu-item>
+      <!-- <a-menu-item key="/collection" v-show="roleControl['/collection']">
+        <img src="@/assets/u146.svg" alt="" class="svg" />
+        <span>采集数据</span>
+      </a-menu-item> -->
+      <a-menu-item key="/basic" v-show="roleControl['/basic']">
+        <img src="@/assets/u146.svg" alt="" class="svg" />
+        <span>基础服务</span>
+      </a-menu-item>
+    </a-menu>
+    <div class="logo_warp">
+      <div class="filpLogo" />
+    </div>
+  </a-layout-sider>
 </template>
 
 <script>
@@ -54,15 +54,15 @@
 				selectedKeys: [],
 				roleControl: {
 					'/dashboard': false,
-					'/order': false,
-					'/overhaul': false,
-					'/antitheft': false,
-					'/extend': false,
+					'/order': true,
+					'/overhaul': true,
+					'/antitheft': true,
+					'/extend': true,
 					'/achievements': true,
-					'/collection': false,
-					'/basic': false,
+					'/collection': true,
+					'/basic': true
 				}
-			};
+			}
 		},
 		created() {
 			const role = this.$store.getters.role
@@ -70,15 +70,12 @@
 			const nowRouter = this.$router.getRoutes()
 			// 此处做标记，绩效主页面还是需要展示的，只是展示出来台区经理会跳到他的界面上去
 			nowRouter.forEach((item) => {
-				if (['/dashboard', '/order', '/overhaul', '/antitheft', '/extend', '/collection', '/basic']
+				if (['/dashboard', '/overhaul', '/extend']
 					.indexOf(item.path) != -1) {
-
 					if (item.meta.roles.includes(role)) {
 						this.roleControl[item.path] = true
-
 					} else {
 						this.roleControl[item.path] = false
-
 					}
 				}
 			})
@@ -91,12 +88,12 @@
 			changekeys(e) {
 				this.selectedKeys = [e.key]
 				this.$router.push(e.key)
-			},
+			}
 		},
 		computed: {
 
 		}
-	};
+	}
 </script>
 
 <style lang="less" scoped>
@@ -168,6 +165,7 @@
 	}
 
 	/deep/ .ant-menu-item {
-		padding-left: 16px !important
+		padding-left: 16px !important;
+		justify-content: center;
 	}
 </style>

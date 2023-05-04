@@ -22,6 +22,8 @@
       <div class="dataTimePicker">
         <!-- <a-month-picker placeholder="请选择月份" /> -->
         <a-date-picker
+          :default-value="initDate"
+          format="YYYY-MM-DD"
           :allowClear="false"
           :disabledDate="disabledDate"
           @change="onChange"
@@ -36,6 +38,11 @@
 import moment from 'moment'
 export default {
   props: ['name', 'dateTime'],
+  computed: {
+    initDate() {
+      return moment(this.dateTime, 'YYYY-MM-DD')
+    }
+  },
   methods: {
     onChange(date, dateString) {
       this.$emit('update:dateTime', dateString)
