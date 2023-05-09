@@ -43,7 +43,7 @@
               v-decorator="[
                 'status',
                 {
-                  initialValue:['1','2','3'],
+                  initialValue: ['1', '2', '3'],
                   rules: [
                     {
                       type: 'array',
@@ -68,19 +68,18 @@
             <a-tree-select
               style="width: 100%"
               :tree-data="treeData"
-              tree-checkable
               v-decorator="[
                 'elecTypeCode',
                 {
                   rules: [
                     {
-                      type: 'array',
                       message: '请选择用电类别',
                       trigger: 'blur',
                     },
                   ],
                 },
               ]"
+              @change="treeChange"
               search-placeholder="请选择用电类别"
               placeholder="请选择用电类别"
               :style="{ minWidth: '150px', maxWidth: '250px' }"
@@ -97,8 +96,7 @@
               :options="cascaderOptions"
               :style="{ minWidth: '150px' }"
               placeholder="请选择供电单位"
-              allowClear
-            />
+              allowClear />
           </a-form-model-item>
           <!-- 工单编号 -->
           <!-- <a-form-item>
@@ -236,6 +234,13 @@ export default {
     })
   },
   methods: {
+    treeChange(value, label, extra) {
+      if (value == '居民生活用电' || value == '一般工商业') {
+        this.$nextTick(() => {
+          this.form.resetFields(['elecTypeCode'])
+        })
+      }
+    },
     handleSubmit(e) {
       e && e.preventDefault()
       this.form.validateFields((err, values) => {

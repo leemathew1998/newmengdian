@@ -165,12 +165,12 @@ export default {
         )
       } else if (name == '三维模型管理') {
         window.open(
-          `http://10.173.172.9:18880/#/modelCenter/index?fromOrigin=otherSystem&projectName=台区精细化&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
+          `http://10.173.172.9:18880/#/modelCenter/index?projectName=台区精细化&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
           '_blank'
         )
       } else if (name == '业扩报装') {
         window.open(
-          `http://10.173.172.9:18880/#/mdPowerGrid/businessExpansionList?fromOrigin=otherSystem&projectName=台区精细化&RelyUserId=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
+          `http://10.173.172.9:18880/#/mdPowerGrid/businessExpansionList?projectName=台区精细化=bc4ba096-ac22-4f68-b43d-9499679ede7a&MdTicket=${ticket}`,
           '_blank'
         )
       } else {

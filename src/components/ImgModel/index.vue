@@ -36,12 +36,12 @@ export default {
   watch: {
     imgvisible (newVal, oldVal) {
       this.imgmodalVisible = newVal
-      let len = this.photos.split('.').length
-      let name = this.photos.split('.')[len - 1].toLocaleLowerCase()
-      let video = this.photos.includes('mp4') || this.photos.includes('avi') || this.photos.includes('MOV')
-      if (name != 'jpg' && name != 'jpeg' && name != 'png' && name != '' && video) {
-        this.isVideo = true
-      }
+      // let len = this.photos.split('.').length
+      // let name = this.photos.split('.')[len - 1].toLocaleLowerCase()
+      // let video = this.photos.includes('mp4') || this.photos.includes('avi') || this.photos.includes('MOV')
+      // if (name != 'jpg' && name != 'jpeg' && name != 'png' && name != '' && video) {
+      //   this.isVideo = true
+      // }
     },
     photos (newVal, oldVal) {
       this.modalPhotos = newVal
