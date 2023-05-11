@@ -236,6 +236,9 @@ export default {
   methods: {
     treeChange(value, label, extra) {
       if (value == '居民生活用电' || value == '一般工商业') {
+        this.$notification['warning']({
+          message: '需要选择子层级！'
+        })
         this.$nextTick(() => {
           this.form.resetFields(['elecTypeCode'])
         })
