@@ -1,14 +1,11 @@
+/* eslint-disable no-sparse-arrays */
 import {
 	DfztLayout,
-	UserLayout,
-	TabLayout,
-	RouteView,
-	BlankLayout,
-	PageView
+	UserLayout
 } from '@/components/layouts'
 
 /**
- * 
+ *
  管理员路由
  */
 
@@ -57,7 +54,7 @@ export const constantRouterMap = [{
 		component: () => import('@/views/dashboard/index'),
 		meta: {
 			roles: ['admin', 'user']
-		},
+		}
 	},
 	{
 		path: '/order',
@@ -131,7 +128,7 @@ export const constantRouterMap = [{
 				roles: ['admin', 'user']
 			},
 			component: () => import('@/views/order/tables/activeRepair')
-		},]
+		}]
 	},
 	{
 		path: '/overhaul',
@@ -160,8 +157,7 @@ export const constantRouterMap = [{
 		meta: {
 			roles: ['admin']
 		},
-		component: () => import('@/views/achievements/index'),
-
+		component: () => import('@/views/achievements/index')
 	}, {
 		path: '/achievements/site',
 		name: 'achievements/site',
@@ -178,7 +174,8 @@ export const constantRouterMap = [{
 		},
 		component: () => import('@/views/achievements/manger')
 
-	}, {
+	},
+	{
 		path: '/basic',
 		name: 'basic',
 		meta: {
@@ -218,10 +215,17 @@ export const constantRouterMap = [{
 				roles: ['admin', 'user']
 			},
 			component: () => import('@/views/basic/tables/party')
-		},
+		}
 		]
-
 	},
+	{
+		path: '/roleManagement',
+		name: 'roleManagement',
+		meta: {
+			roles: ['admin', 'user']
+		},
+		component: () => import('@/views/user/roleManagement/index')
+	}
 	]
 },
 {
@@ -238,7 +242,7 @@ export const constantRouterMap = [{
 		meta: {
 			roles: ['admin', 'user']
 		},
-		component: () => import( /* webpackChunkName: "user" */ '@/views/user/Login')
+		component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login')
 	},
 	{
 		path: 'register',
@@ -246,7 +250,7 @@ export const constantRouterMap = [{
 		meta: {
 			roles: ['admin', 'user']
 		},
-		component: () => import( /* webpackChunkName: "user" */ '@/views/user/register/Register')
+		component: () => import(/* webpackChunkName: "user" */ '@/views/user/register/Register')
 	},
 	{
 		path: 'register-result',
@@ -254,7 +258,7 @@ export const constantRouterMap = [{
 		meta: {
 			roles: ['admin', 'user']
 		},
-		component: () => import( /* webpackChunkName: "user" */ '@/views/user/register/RegisterResult')
+		component: () => import(/* webpackChunkName: "user" */ '@/views/user/register/RegisterResult')
 	},
 	{
 		path: 'alteration',
@@ -262,7 +266,7 @@ export const constantRouterMap = [{
 		meta: {
 			roles: ['admin', 'user']
 		},
-		component: () => import( /* webpackChunkName: "user" */ '@/views/user/alteration/Alteration')
+		component: () => import(/* webpackChunkName: "user" */ '@/views/user/alteration/Alteration')
 	}
 	]
 },
@@ -297,5 +301,5 @@ export const constantRouterMap = [{
 	},
 	redirect: '/404',
 	hidden: true
-},
+}
 ]

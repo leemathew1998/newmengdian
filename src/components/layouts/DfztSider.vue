@@ -39,6 +39,10 @@
         <img src="@/assets/u146.svg" alt="" class="svg" />
         <span>基础服务</span>
       </a-menu-item>
+      <a-menu-item key="/roleManagement" v-show="roleControl['/basic']">
+        <img src="@/assets/u146.svg" alt="" class="svg" />
+        <span>用户管理</span>
+      </a-menu-item>
     </a-menu>
     <div class="logo_warp">
       <div class="filpLogo" />
