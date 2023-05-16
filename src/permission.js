@@ -12,14 +12,46 @@ router.beforeEach((to, from, next) => {
   if (whiteList.includes(to.path)) {
     next()
   } else {
-    // next()
-    if (store.getters.token) {
-      if (to.meta.roles.includes(store.getters.role)) {
-        next()
+    console.log(store.getters.username)
+    if (store.getters.username) {
+      if (to.path === '/roleManagement') {
+        if (store.getters.isManage == 1) {
+          next()
+        } else {
+          next({
+            path: '/404'
+          })
+        }
       } else {
         next()
-        // 此处证明他为台区经理，跳转到他台区经理绩效界面
-        // if (to.path == '/achievements') {
+      }
+    } else if (to.query && to.query.forcedRouting) {
+      if (to.path === '/roleManagement') {
+        if (store.getters.isManage == 1) {
+          next()
+        } else {
+          next({
+            path: '/404'
+          })
+        }
+      } else {
+        next()
+      }
+    } else {
+      next()
+      // next({
+      //   path: '/overView?redirect=' + to.path
+      // })
+    }
+  }
+})
+
+router.afterEach(() => {
+  NProgress.done() // finish progress bar
+})
+
+/**
+ *         // if (to.path == '/achievements') {
         //   next({
         //     path: '/achievements/manger'
         //   })
@@ -28,21 +60,4 @@ router.beforeEach((to, from, next) => {
         //     path: '/404'
         //   })
         // }
-      }
-    } else if (to.query && to.query.forcedRouting) {
-      next()
-      // next({
-      //   path: "/user/login?redirect=" + to.path,
-      // });
-    } else {
-      next()
-      // next({
-      //   path: "/overView?redirect=" + to.path,
-      // });
-    }
-  }
-})
-
-router.afterEach(() => {
-  NProgress.done() // finish progress bar
-})
+ */

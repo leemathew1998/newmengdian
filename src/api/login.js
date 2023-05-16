@@ -93,3 +93,25 @@ export function forceLogout (parameter) {
 		data: parameter
 	})
 }
+
+export function addUser (parameter) {
+	return axios({
+		url: 'SysUser/getinsertUser',
+		method: 'post',
+		params: parameter
+	})
+}
+export function updateUser (parameter) {
+	return axios({
+		url: 'SysUser/getupdateUser',
+		method: 'post',
+		params: parameter
+	})
+}
+export function deleteUser (parameter) {
+	return axios({
+		url: 'SysUser/getdeleteUser',
+		method: 'post',
+		params: parameter
+	})
+}

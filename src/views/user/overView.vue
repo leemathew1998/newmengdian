@@ -84,7 +84,7 @@ export default {
       welcomeWord: '',
       userName: '',
       orgName: '',
-      devModel: false
+      devModel: false// 开发环境开启
     }
   },
   async created() {
@@ -123,25 +123,19 @@ export default {
       !this.devModel && needLogin && this.handleSubmit()
     } else {
       const res = await postAction('SysUser/getToken', {})
+
       this.userName = cookie.getCookie('loName2')
       this.orgName = cookie.getCookie('orgName')
+      const role = await postAction(`SysUser/getUserRole?userName=${this.userName}`)
+      const isManage = await postAction(`SysUser/getIsManage?userName=${this.userName}`)
       this.$store.commit('setUserInfo', {
         username: this.userName,
-        role: 'admin',
+        role: role.role,
         token: res.token,
+        isManage: isManage.isManage,
         department: this.orgName
       })
     }
-
-    // 张升isc集成测试
-    // const href = window.location.href;
-    // if (href.includes("ticket")) {
-    //   const res = await getAction(`SysUser/login1`);
-    //   console.log("张升注意看返回值！", res);
-    // }
-    // const res = await getAction(`SysUser/login1`);
-    // console.log("张升注意看返回值！", res);
-    // this.handleSubmit()
   },
   beforeDestroy() {
     clearInterval(timer)

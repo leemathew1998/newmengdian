@@ -1,8 +1,8 @@
 <template>
   <div class="warp-order">
     <!-- 搜索 -->
-    <div class="form">
-      <SearchForm @formData="solveformData"></SearchForm>
+    <div class="form" >
+      <SearchForm v-show="false" @formData="solveformData"></SearchForm>
       <!-- <SearchForm v-model="solveformData"></SearchForm> -->
     </div>
 
@@ -14,6 +14,7 @@
       ref="table"
       @changeSelectedRowKeys="changeSelectedRowKeys"
       @tablePaginationChange="loadData"
+      @addUser="operations"
     >
       <template v-slot="slotProps">
         <a-button
@@ -22,60 +23,91 @@
           type="primary"
           @click.stop="operations(slotProps.table_key)"
         >
-          修改角色
+          修改
         </a-button>
+        <a-popconfirm
+          title="确定要删除此用户吗？"
+          ok-text="确定"
+          cancel-text="取消"
+          @confirm="deleteUser(slotProps.table_key)"
+        >
+          <a-button
+            style="display: flex; justify-content: center; margin-left: 10px"
+            size="small"
+            type="danger"
+          >
+            删除
+          </a-button>
+        </a-popconfirm>
       </template>
     </Tables>
-    <a-modal
-      title="修改用户角色"
-      :visible="modalVisible"
-      @ok="handleOk"
-      @cancel="handleCancel"
-    >
-      <a-radio-group v-model="roleSelect" name="radioGroup" :default-value="1">
-        <a-radio :value="1">
-          台区经理
-        </a-radio>
-        <a-radio :value="2">
-          所站长
-        </a-radio>
-        <a-radio :value="3">
-          C
-        </a-radio>
-        <a-radio :value="4">
-          D
-        </a-radio>
-      </a-radio-group>
-    </a-modal>
+    <UserModal
+      :modalVisible.sync="modalVisible"
+      :selectedRowKeys="selectedRowKeys"
+    ></UserModal>
   </div>
 </template>
 <script>
 import Tables from '@/components/tables/TableForUserManage'
 import SearchForm from '@/components/searchform/SearchRoleManage'
-
-import moment from 'moment'
+import UserModal from './modalBox.vue'
 import { postAction } from '@/api/manage'
+import { deleteUser } from '@/api/login.js'
 const columns = [
   {
-    title: '用户名称',
+    title: '门户账号',
     dataIndex: 'userName',
     align: 'center',
     ellipsis: true,
     width: 130
   },
   {
-    title: '所属单位',
-    dataIndex: 'dept',
+    title: '真实姓名',
+    dataIndex: 'relaName',
     align: 'center',
     ellipsis: true,
     width: 130
   },
   {
-    title: '用户角色',
-    dataIndex: 'role',
+    title: '掌机登录账号',
+    dataIndex: 'userName1',
     align: 'center',
     ellipsis: true,
-    width: 150
+    width: 130
+  },
+  {
+    title: '所属单位',
+    dataIndex: 'orgName',
+    align: 'center',
+    ellipsis: true,
+    width: 130
+  },
+  {
+    title: '单位编号',
+    dataIndex: 'orgNo',
+    align: 'center',
+    ellipsis: true,
+    width: 130
+  },
+  {
+    title: '角色权限',
+    dataIndex: 'isRole',
+    align: 'center',
+    ellipsis: true,
+    width: 130,
+    scopedSlots: {
+      customRender: 'isRole'
+    }
+  },
+  {
+    title: '管理员',
+    dataIndex: 'isManage',
+    align: 'center',
+    ellipsis: true,
+    width: 130,
+    scopedSlots: {
+      customRender: 'isManage'
+    }
   },
   {
     title: '操作',
@@ -94,23 +126,35 @@ export default {
       modalVisible: false,
       data: [],
       columns,
-      roleSelect: null
+      roleSelect: null,
+      selectedRowKeys: {}
     }
   },
   components: {
     Tables,
-    SearchForm
+    SearchForm,
+    UserModal
+  },
+  watch: {
+    modalVisible(newVal) {
+      if (!newVal) {
+        setTimeout(() => {
+          this.loadData()
+        }, 400)
+      }
+    }
   },
   methods: {
     // 数据展示分装
-    async initList() {},
     async loadData() {
       this.loading = true
-      this.data.push({
-        userName: '111',
-        dept: '123',
-        role: '11'
+      const res = await postAction(`SysUser/getUserList`).catch((err) => {
+        console.log(err)
       })
+      res.forEach((row) => {
+        row.isAdd = false
+      })
+      this.data = res
       this.loading = false
     },
     // 搜索
@@ -118,29 +162,21 @@ export default {
       console.log('solveformData', e)
       this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
       this.loadData()
-      // this.loading = true
     },
     changeSelectedRowKeys(e) {
       this.selectedRowKeys = e
     },
     operations(key) {
-      console.log('click')
+      this.selectedRowKeys = key
       this.modalVisible = true
     },
-    handleOk(e) {
-      if (this.roleSelect === null) {
-        this.$notification['warn']({
-          message: '请选择用户角色'
-        })
-        return
-      }
-      console.log(this.roleSelect)
-      setTimeout(() => {
-        this.modalVisible = false
-      }, 2000)
-    },
-    handleCancel(e) {
-      this.modalVisible = false
+    async deleteUser(payload) {
+      const res = await deleteUser({ id: payload.id })
+      this.$notification['success']({
+        message: '操作成功',
+        description: res
+      })
+      this.loadData()
     }
   }
 }
@@ -158,7 +194,7 @@ export default {
     // width: 100%;
     margin: 10px 0;
     display: flex;
-    justify-content: space-around;
+    // justify-content: space-around;
   }
 }
 

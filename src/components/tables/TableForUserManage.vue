@@ -9,19 +9,35 @@
       :loading="loading"
       :pagination="pagination"
       :scroll="{ x: scroll, y: caclHeight }"
-      rowKey="id">
+      rowKey="id"
+    >
+      <template slot="isRole" slot-scope="text">
+        <div>{{ text == 1 ? "台区经理" : "所站长" }}</div>
+      </template>
+      <template slot="isManage" slot-scope="text">
+        <div>{{ text == 1 ? "是" : "否" }}</div>
+      </template>
       <template slot="operation" slot-scope="text, record">
-        <div style="display: flex;justify-content: center;">
+        <div style="display: flex; justify-content: center">
           <slot :table_key="record"></slot>
         </div>
       </template>
     </a-table>
+    <div class="bottom">
+      <div class="left">
+        <a-button
+          type="primary"
+          style="margin-right: 10px; background-color: #28599d"
+          @click="addUser"
+        >
+          新增用户
+        </a-button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import UploadModal from '@/components/modal/UploadModal'
-import ExportModal from '@/components/modal/ExportModal'
 export default {
   // inject:['reload'],
   name: 'TableForUserManage',
@@ -64,10 +80,6 @@ export default {
       require: true
     }
   },
-  components: {
-    UploadModal,
-    ExportModal
-  },
   data() {
     return {
       selectedRowKeys: [],
@@ -103,7 +115,6 @@ export default {
   mounted() {
     const el = document.querySelector('.warp-table')
     this.caclHeight = el.clientHeight - 120
-    console.dir(el.clientHeight)
   },
   watch: {
     pageConfig: {
@@ -132,6 +143,19 @@ export default {
     }
   },
   methods: {
+    // 新增用户
+    addUser() {
+      this.$emit('addUser', {
+        isAdd: true,
+        isManage: undefined,
+        isRole: undefined,
+        orgName: null,
+        orgNo: undefined,
+        relaName: undefined,
+        userId: undefined,
+        userName: undefined
+      })
+    },
     // 返回给父组件方便查询
     pageParamsReturn() {
       return {
@@ -187,10 +211,10 @@ export default {
 
   /deep/.ant-table-wrapper {
     height: 100%;
-    .ant-spin-nested-loading{
+    .ant-spin-nested-loading {
       height: 100%;
     }
-    .ant-spin-container{
+    .ant-spin-container {
       height: 100%;
     }
   }

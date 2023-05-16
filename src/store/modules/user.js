@@ -30,7 +30,8 @@ if (localStorage.getItem('UserInfo') == null) {
 		'username': null,
 		'role': null,
 		'password': null,
-		'department': null
+		'department': null,
+		'isManage': 0
 	}))
 }
 
@@ -41,6 +42,7 @@ const user = {
 		password: JSON.parse(localStorage.getItem('UserInfo')).password,
 		department: JSON.parse(localStorage.getItem('UserInfo')).department,
 		role: JSON.parse(localStorage.getItem('UserInfo')).role,
+		isManage: JSON.parse(localStorage.getItem('UserInfo')).isManage,
 		realname: '',
 		tenantid: '',
 		welcome: 'welcome!',
@@ -56,17 +58,13 @@ const user = {
 			for (let key in info) {
 				state[key] = info[key]
 			}
-			// state.token = info.token
-			// state.username = info.username
-			// state.password = info.password
-			// state.department = info.department
-			// state.role = info.role
 			localStorage.setItem('UserInfo', JSON.stringify({
 				'token': info.token,
 				'username': info.username,
 				'role': info.role,
 				'password': info.password,
-				'department': info.department
+				'department': info.department,
+				'isManage': info.isManage
 			}))
 		},
 		clearUserInfo: (state, info) => {
@@ -75,12 +73,14 @@ const user = {
 			state.password = null
 			state.department = null
 			state.role = null
+			state.isManage = null
 			localStorage.setItem('UserInfo', JSON.stringify({
 				'token': null,
 				'username': null,
 				'role': null,
 				'password': null,
-				'department': null
+				'department': null,
+				'isManage': 0
 			}))
 		},
 		SET_ROLE: (state, role) => {
@@ -121,13 +121,13 @@ const user = {
 	},
 
 	actions: {
-		changewelcome ({
+		changewelcome({
 			commit
 		}, info) {
 			// console.log(info)
 		},
 		// CAS验证登录
-		ValidateLogin ({
+		ValidateLogin({
 			commit
 		}, userInfo) {
 			return new Promise((resolve, reject) => {
@@ -157,7 +157,7 @@ const user = {
 			})
 		},
 		// 登录
-		Login ({
+		Login({
 			commit
 		}, userInfo) {
 			return new Promise((resolve, reject) => {
@@ -197,7 +197,7 @@ const user = {
 		// })
 		// },
 		// 获取用户信息
-		GetPermissionList ({
+		GetPermissionList({
 			commit
 		}) {
 			return new Promise((resolve, reject) => {
@@ -236,7 +236,7 @@ const user = {
 		},
 
 		// 登出
-		Logout ({
+		Logout({
 			commit,
 			state
 		}) {
@@ -287,7 +287,7 @@ const user = {
 		//     })
 		//   })
 		// },
-		saveTenant ({
+		saveTenant({
 			commit
 		}, id) {
 			Vue.ls.set(TENANT_ID, id, 7 * 24 * 60 * 60 * 1000)
