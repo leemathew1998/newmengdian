@@ -12,7 +12,7 @@
       rowKey="id"
     >
       <template slot="isRole" slot-scope="text">
-        <div>{{ text == 1 ? "台区经理" : "所站长" }}</div>
+        <div>{{ text == 1 ? "所站长" : "台区经理" }}</div>
       </template>
       <template slot="isManage" slot-scope="text">
         <div>{{ text == 1 ? "是" : "否" }}</div>
@@ -149,7 +149,7 @@ export default {
         isAdd: true,
         isManage: undefined,
         isRole: undefined,
-        orgName: null,
+        orgName: undefined,
         orgNo: undefined,
         relaName: undefined,
         userId: undefined,

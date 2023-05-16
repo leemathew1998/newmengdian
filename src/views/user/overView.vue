@@ -126,13 +126,14 @@ export default {
 
       this.userName = cookie.getCookie('loName2')
       this.orgName = cookie.getCookie('orgName')
-      const role = await postAction(`SysUser/getUserRole?userName=${this.userName}`)
-      const isManage = await postAction(`SysUser/getIsManage?userName=${this.userName}`)
+      let username = cookie.getCookie('userName')
+      const role = await postAction(`SysUser/getUserRole?userName=${username}`)
+      const isManage = await postAction(`SysUser/getIsManage?userName=${username}`)
       this.$store.commit('setUserInfo', {
         username: this.userName,
         role: role.role,
         token: res.token,
-        isManage: isManage.isManage,
+        isManage: isManage.manage,
         department: this.orgName
       })
     }

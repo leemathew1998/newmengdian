@@ -72,9 +72,9 @@ export default {
       collapsed: false,
       selectedKeys: [],
       roleControl: {
-        '/dashboard': false,
+        '/dashboard': true,
         '/order': true,
-        '/overhaul': true,
+        // '/overhaul': true,
         '/antitheft': true,
         '/extend': true,
         '/achievements': true,
@@ -85,21 +85,21 @@ export default {
     }
   },
   created() {
-    const role = this.$store.getters.role
+    // const role = this.$store.getters.role
     if (this.$store.getters.isManage == 1) {
       this.roleControl['/userManage'] = true
     }
-    const nowRouter = this.$router.getRoutes()
-    // 此处做标记，绩效主页面还是需要展示的，只是展示出来台区经理会跳到他的界面上去
-    nowRouter.forEach((item) => {
-      if (['/dashboard', '/overhaul', '/extend'].indexOf(item.path) != -1) {
-        if (item.meta.roles.includes(role)) {
-          this.roleControl[item.path] = true
-        } else {
-          this.roleControl[item.path] = false
-        }
-      }
-    })
+    // const nowRouter = this.$router.getRoutes()
+    // // 此处做标记，绩效主页面还是需要展示的，只是展示出来台区经理会跳到他的界面上去
+    // nowRouter.forEach((item) => {
+    //   if (['/overhaul'].indexOf(item.path) != -1) {
+    //     if (item.meta.roles.includes(role)) {
+    //       this.roleControl[item.path] = true
+    //     } else {
+    //       this.roleControl[item.path] = false
+    //     }
+    //   }
+    // })
   },
   mounted() {
     const path = this.$route.path.split('/')

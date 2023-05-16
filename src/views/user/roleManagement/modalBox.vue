@@ -61,8 +61,8 @@
           ]"
           placeholder="请选择用户角色"
         >
-          <a-select-option value="1">台区经理</a-select-option>
-          <a-select-option value="2">所站长</a-select-option>
+          <a-select-option value="1">所站长</a-select-option>
+          <a-select-option value="2">台区经理</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="是否为管理员">
@@ -99,29 +99,33 @@ export default {
         name: 'userForm'
       }),
       cascaderOptions: [
-        {
-          value: '154212103',
-          label: 'nihao'
-        },
-        {
-          value: '154212104',
-          label: 'buhao',
-          children: [
-            {
-              value: '15421210401',
-              label: 'test'
-            }
-          ]
-        }
+        // {
+        //   value: '1542121',
+        //   label: 'first one'
+        // },
+        // {
+        //   value: '1542122',
+        //   label: 'second one',
+        //   children: [
+        //     {
+        //       value: '154212201',
+        //       label: 'second son'
+        //     },
+        //     {
+        //       value: '154212202',
+        //       label: 'second bother'
+        //     }
+        //   ]
+        // }
       ],
       confirmLoading: false,
-      tempSaveSelectOrgNo: {}
+      tempSaveSelectOrgNo: ''
     }
   },
   mounted() {
-    // getAllStation().then((res) => {
-    //   this.cascaderOptions = res
-    // })
+    getAllStation().then((res) => {
+      this.cascaderOptions = res
+    })
   },
   watch: {
     modalVisible(newVal) {
@@ -134,13 +138,22 @@ export default {
             })
           }
         })
+        this.tempSaveSelectOrgNo = this.selectedRowKeys['orgNo']
+
+        let alhpa = []
+        if (this.selectedRowKeys['orgNo']) {
+          alhpa = [this.selectedRowKeys['orgNo']]
+          if (this.selectedRowKeys['orgNo'].length == 9) {
+            alhpa.unshift(this.selectedRowKeys['orgNo'].slice(0, 7))
+          }
+        }
+        console.log(alhpa)
         this.form.getFieldDecorator('orgNo', {
-          initialValue: this.selectedRowKeys['orgNo']
-            ? [this.selectedRowKeys['orgNo']]
-            : [],
+          initialValue: alhpa,
           preserve: true
         })
       } else {
+        this.tempSaveSelectOrgNo = ''
         this.form.resetFields()
       }
     }
@@ -156,11 +169,12 @@ export default {
           return
         }
         this.confirmLoading = true
-        values.relaName = values.userName
-        values.orgNo = this.tempSaveSelectOrgNo.value
+        values.orgNo = this.tempSaveSelectOrgNo
+
         // values.orgNo = values.orgNo ? values.orgNo[0] : undefined
-        console.log(values)
+        console.log(values, this.tempSaveSelectOrgNo)
         let res
+        // 新增和修改都在这里
         if (values.isAdd) {
           delete values.id
           res = await addUser(values)
@@ -168,17 +182,24 @@ export default {
           res = await updateUser(values)
         }
         this.confirmLoading = false
-        this.$notification['success']({
-          message: '操作成功',
-          description: res
-        })
+
+        if (!values.isAdd && this.$store.getters.username == values.userName) {
+          this.$notification['success']({
+            message: '操作成功,请重新登录',
+            description: res
+          })
+        } else {
+          this.$notification['success']({
+            message: '操作成功',
+            description: res
+          })
+        }
         this.$emit('update:modalVisible', false)
       })
     },
     orgNoSelected(_, selectedOptions) {
       const item = selectedOptions.pop()
-      console.log(item)
-      this.tempSaveSelectOrgNo = item
+      this.tempSaveSelectOrgNo = item.value
       this.$nextTick(() => {
         this.form.setFieldsValue({
           orgName: item ? item.label : ''

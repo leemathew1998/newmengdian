@@ -83,13 +83,6 @@ const columns = [
     width: 130
   },
   {
-    title: '单位编号',
-    dataIndex: 'orgNo',
-    align: 'center',
-    ellipsis: true,
-    width: 130
-  },
-  {
     title: '角色权限',
     dataIndex: 'isRole',
     align: 'center',
