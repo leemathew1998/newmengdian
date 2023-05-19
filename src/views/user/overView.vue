@@ -84,7 +84,7 @@ export default {
       welcomeWord: '',
       userName: '',
       orgName: '',
-      devModel: false// 开发环境开启
+      devModel: false // 开发环境开启
     }
   },
   async created() {
@@ -128,12 +128,15 @@ export default {
       this.orgName = cookie.getCookie('orgName')
       let username = cookie.getCookie('userName')
       const role = await postAction(`SysUser/getUserRole?userName=${username}`)
-      const isManage = await postAction(`SysUser/getIsManage?userName=${username}`)
+      let isManage = false
+      if (role.role == 3) {
+        isManage = true
+      }
       this.$store.commit('setUserInfo', {
         username: this.userName,
         role: role.role,
         token: res.token,
-        isManage: isManage.manage,
+        isManage: isManage,
         department: this.orgName
       })
     }

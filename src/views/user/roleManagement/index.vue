@@ -1,7 +1,7 @@
 <template>
   <div class="warp-order">
     <!-- 搜索 -->
-    <div class="form" >
+    <div class="form">
       <SearchForm v-show="false" @formData="solveformData"></SearchForm>
       <!-- <SearchForm v-model="solveformData"></SearchForm> -->
     </div>
@@ -14,11 +14,20 @@
       ref="table"
       @changeSelectedRowKeys="changeSelectedRowKeys"
       @tablePaginationChange="loadData"
-      @addUser="operations"
+      @addUser="addUser"
+      @reloadPage="loadData"
     >
       <template v-slot="slotProps">
         <a-button
           style="display: flex; justify-content: center"
+          size="small"
+          type="primary"
+          @click.stop="addUserFromRow(slotProps.table_key)"
+        >
+          新增
+        </a-button>
+        <a-button
+          style="display: flex; justify-content: center; margin-left: 10px"
           size="small"
           type="primary"
           @click.stop="operations(slotProps.table_key)"
@@ -53,6 +62,7 @@ import SearchForm from '@/components/searchform/SearchRoleManage'
 import UserModal from './modalBox.vue'
 import { postAction } from '@/api/manage'
 import { deleteUser } from '@/api/login.js'
+import cookie from '@/utils/cookie.js'
 const columns = [
   {
     title: '门户账号',
@@ -68,13 +78,20 @@ const columns = [
     ellipsis: true,
     width: 130
   },
-  {
-    title: '掌机登录账号',
-    dataIndex: 'userName1',
-    align: 'center',
-    ellipsis: true,
-    width: 130
-  },
+  // {
+  //   title: '抄表员账号',
+  //   dataIndex: 'userName1',
+  //   align: 'center',
+  //   ellipsis: true,
+  //   width: 130
+  // },
+  // {
+  //   title: '抄表员',
+  //   dataIndex: 'readName',
+  //   align: 'center',
+  //   ellipsis: true,
+  //   width: 130
+  // },
   {
     title: '所属单位',
     dataIndex: 'orgName',
@@ -93,20 +110,10 @@ const columns = [
     }
   },
   {
-    title: '管理员',
-    dataIndex: 'isManage',
-    align: 'center',
-    ellipsis: true,
-    width: 130,
-    scopedSlots: {
-      customRender: 'isManage'
-    }
-  },
-  {
     title: '操作',
     dataIndex: 'operation',
     align: 'center',
-    width: 80,
+    width: 100,
     scopedSlots: {
       customRender: 'operation'
     }
@@ -123,6 +130,27 @@ export default {
       selectedRowKeys: {}
     }
   },
+  // {
+  //       isAdd: false,
+  //       disable: false,
+  //       userName: '12',
+  //       relaName: '1',
+  //       userName1: '12',
+  //       readName: '1',
+  //       orgName: '1',
+  //       isRole: '1',
+  //       readNameList: []
+  //     }, {
+  //       isAdd: false,
+  //       disable: false,
+  //       userName: '12',
+  //       relaName: '1',
+  //       userName1: '12',
+  //       readName: '1',
+  //       orgName: '1',
+  //       isRole: '1',
+  //       readNameList: []
+  //     }
   components: {
     Tables,
     SearchForm,
@@ -141,11 +169,17 @@ export default {
     // 数据展示分装
     async loadData() {
       this.loading = true
-      const res = await postAction(`SysUser/getUserList`).catch((err) => {
-        console.log(err)
-      })
+      let orgNo = cookie.getCookie('orgNo')
+      // orgNo = '1542121'
+      const res = await postAction(`SysUser/getUserList?orgNo=${orgNo}`).catch(
+        (err) => {
+          console.log(err)
+        }
+      )
       res.forEach((row) => {
         row.isAdd = false
+        row.disable = false
+        row.readNameList = []
       })
       this.data = res
       this.loading = false
@@ -159,10 +193,28 @@ export default {
     changeSelectedRowKeys(e) {
       this.selectedRowKeys = e
     },
+    // 本页面的修改按钮，不需要禁用，新增操作
     operations(key) {
+      key.disable = false
+      key.isAdd = false
       this.selectedRowKeys = key
       this.modalVisible = true
     },
+    // 由table发送的修改，需要禁用和新增
+    addUser(payload) {
+      this.selectedRowKeys = payload
+      this.modalVisible = true
+    },
+    // 本页面的新增抄表员
+    addUserFromRow(key) {
+      key.disable = true
+      key.isAdd = true
+      key.userName1 = ''
+      key.readName = ''
+      this.selectedRowKeys = key
+      this.modalVisible = true
+    },
+    // 编辑
     async deleteUser(payload) {
       const res = await deleteUser({ id: payload.id })
       this.$notification['success']({

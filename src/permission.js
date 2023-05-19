@@ -15,7 +15,7 @@ router.beforeEach((to, from, next) => {
     console.log(store.getters.username)
     if (store.getters.username) {
       if (to.path === '/roleManagement') {
-        if (store.getters.isManage == 1) {
+        if (store.getters.isManage) {
           next()
         } else {
           next({
@@ -27,7 +27,7 @@ router.beforeEach((to, from, next) => {
       }
     } else if (to.query && to.query.forcedRouting) {
       if (to.path === '/roleManagement') {
-        if (store.getters.isManage == 1) {
+        if (store.getters.isManage) {
           next()
         } else {
           next({

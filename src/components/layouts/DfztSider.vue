@@ -86,7 +86,7 @@ export default {
   },
   created() {
     // const role = this.$store.getters.role
-    if (this.$store.getters.isManage == 1) {
+    if (this.$store.getters.isManage) {
       this.roleControl['/userManage'] = true
     }
     // const nowRouter = this.$router.getRoutes()

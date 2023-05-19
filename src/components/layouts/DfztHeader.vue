@@ -10,13 +10,13 @@
     class="warp"
   >
     <div class="left">
-      <!-- 		<img src="@/assets/u506.png" alt="" class="img">
-			<div class="text">
-				<div class="chinese">国网呼伦贝尔供电公司</div>
-				<div class="english">STATE GRID HULUNBEIER POWER</div>
-			</div> -->
+      <img src="@/assets/u506.png" alt="" class="img">
+      <div class="text">
+        <div class="chinese">国网呼伦贝尔供电公司</div>
+        <div class="english">STATE GRID HULUNBEIER POWER</div>
+      </div>
     </div>
-    <!-- <div class="center">台区网格化精细管理</div> -->
+    <div class="center">台区网格化精细管理</div>
     <!-- <div class="center">主界面</div> -->
     <div class="right">
       <img src="@/assets/u513.svg" alt="" class="right_img" />

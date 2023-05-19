@@ -8,15 +8,60 @@
       @change="tablePaginationChange"
       :loading="loading"
       :pagination="pagination"
-      :scroll="{ x: scroll, y: caclHeight }"
+      :scroll="{ y: caclHeight }"
       rowKey="id"
+      @expand="expand"
     >
       <template slot="isRole" slot-scope="text">
-        <div>{{ text == 1 ? "所站长" : "台区经理" }}</div>
+        <div>{{ MAP_ROLES[text] }}</div>
       </template>
-      <template slot="isManage" slot-scope="text">
-        <div>{{ text == 1 ? "是" : "否" }}</div>
-      </template>
+      <p slot="expandedRowRender" slot-scope="record" style="margin: 0">
+        <!-- <span v-if="expandLoadings">加载中...</span> -->
+        <span >
+          <div
+            class="expanded"
+            v-for="item in record.readNameList"
+            :key="item.readName"
+          >
+            <span
+              style="min-width: 150px"
+              class="expanded-item"
+            >抄表员姓名:{{ item.readName }}</span
+            >
+            <span
+              style="min-width: 200px"
+              class="expanded-item"
+            >抄表员账号:{{ item.userName1 }}</span
+            >
+            <a-button
+              style="display: flex; justify-content: center"
+              size="small"
+              type="primary"
+              @click.stop="operations(item)"
+            >
+              修改
+            </a-button>
+            <a-popconfirm
+              title="确定要删除此用户吗？"
+              ok-text="确定"
+              cancel-text="取消"
+              @confirm="deleteUser(item)"
+            >
+              <a-button
+                style="
+                  display: flex;
+                  justify-content: center;
+                  margin-left: 10px;
+                "
+                size="small"
+                type="danger"
+              >
+                删除
+              </a-button>
+            </a-popconfirm>
+          </div>
+        </span>
+      </p>
       <template slot="operation" slot-scope="text, record">
         <div style="display: flex; justify-content: center">
           <slot :table_key="record"></slot>
@@ -38,6 +83,8 @@
 </template>
 
 <script>
+import { postAction } from '@/api/manage'
+import { deleteUser } from '@/api/login.js'
 export default {
   // inject:['reload'],
   name: 'TableForUserManage',
@@ -91,9 +138,15 @@ export default {
         showSizeChanger: true,
         pageSizeOptions: ['10', '20', '40', '80', '100'],
         showTotal: (total) => `共 ${total} 条`,
-        pageSize: 10
+        pageSize: 20
       },
-      caclHeight: 100
+      caclHeight: 100,
+      MAP_ROLES: {
+        1: '所站长',
+        2: '台区经理',
+        3: '管理员'
+      },
+      expandLoadings: false
     }
   },
   created() {
@@ -147,14 +200,33 @@ export default {
     addUser() {
       this.$emit('addUser', {
         isAdd: true,
+        disable: false,
         isManage: undefined,
         isRole: undefined,
         orgName: undefined,
         orgNo: undefined,
         relaName: undefined,
         userId: undefined,
-        userName: undefined
+        userName: undefined,
+        userName1: undefined,
+        readName: undefined
       })
+    },
+    // 修改用户
+    operations(payload) {
+      payload.isAdd = false
+      payload.disable = true
+      console.log(payload)
+      this.$emit('addUser', payload)
+    },
+    // 删除用户
+    async deleteUser(payload) {
+      const res = await deleteUser({ id: payload.id })
+      this.$notification['success']({
+        message: '操作成功',
+        description: res
+      })
+      this.$emit('reloadPage')
     },
     // 返回给父组件方便查询
     pageParamsReturn() {
@@ -165,6 +237,32 @@ export default {
     },
     onShowSizeChange(current, pageSize) {
       console.log(current, pageSize)
+    },
+    async expand(expanded, record) {
+      if (expanded) {
+        this.expandLoadings = true
+        record.readNameList.length = 0
+        // setTimeout(() => {
+        //   record.readNameList = [
+        //     {
+        //       readName: '1we34',
+        //       userName1: '11dfghjkhgfd1'
+        //     },
+        //     {
+        //       readName: '123r43',
+        //       userName1: '1dsf11'
+        //     },
+        //     {
+        //       readName: '1354235',
+        //       userName1: '1fergbd11'
+        //     }
+        //   ]
+        //   this.expandLoadings = false
+        // }, 2000)
+        const res = await postAction(`SysUser/getReadName?userName=${record.userName}`).catch(err => { console.log(err) })
+        record.readNameList = res
+        this.expandLoadings = false
+      }
     },
     // 选择更改
     onSelectChange(selectedRowKeys) {
@@ -272,5 +370,15 @@ export default {
 
 /deep/.ant-table td {
   white-space: nowrap;
+}
+.expanded {
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 1px solid #999;
+  padding: 8px 0px;
+  .expanded-item {
+    white-space: nowrap;
+    margin-right: 16px;
+  }
 }
 </style>

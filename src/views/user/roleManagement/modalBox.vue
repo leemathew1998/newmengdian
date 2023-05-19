@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="修改用户信息"
+    :title="selectedRowKeys.isAdd ? '新增用户信息' : '修改用户信息'"
     :visible="modalVisible"
     @ok="handleSubmit"
     @cancel="handleCancel"
@@ -18,6 +18,7 @@
             'userName',
             { rules: [{ required: true, message: '请输入门户账号!' }] },
           ]"
+          :disabled="selectedRowKeys.disable"
           placeholder="请输入门户账号"
         />
       </a-form-item>
@@ -27,16 +28,28 @@
             'relaName',
             { rules: [{ required: true, message: '请输入真实姓名!' }] },
           ]"
+          :disabled="selectedRowKeys.disable"
           placeholder="请输入真实姓名"
         />
       </a-form-item>
-      <a-form-item label="掌机登录账号">
+      <a-form-item label="抄表员账号">
         <a-input
           v-decorator="[
             'userName1',
-            { rules: [{ required: true, message: '请输入掌机登录账号!' }] },
+            { rules: [{ required: true, message: '请输入抄表员账号!' }] },
           ]"
-          placeholder="请输入掌机登录账号"
+          :disabled="localDisable"
+          placeholder="请输入抄表员账号"
+        />
+      </a-form-item>
+      <a-form-item label="抄表员姓名">
+        <a-input
+          v-decorator="[
+            'readName',
+            { rules: [{ required: true, message: '请输入抄表员姓名!' }] },
+          ]"
+          :disabled="localDisable"
+          placeholder="请输入抄表员姓名"
         />
       </a-form-item>
       <a-form-item label="供电单位">
@@ -47,10 +60,12 @@
               rules: [{ required: true, message: '请选择供电单位' }],
             },
           ]"
+          :disabled="selectedRowKeys.disable"
           :options="cascaderOptions"
           :style="{ minWidth: '150px' }"
           placeholder="请选择供电单位"
           @change="orgNoSelected"
+          changeOnSelect
         ></a-cascader>
       </a-form-item>
       <a-form-item label="用户权限">
@@ -59,13 +74,16 @@
             'isRole',
             { rules: [{ required: true, message: '请选择用户角色' }] },
           ]"
+          :disabled="selectedRowKeys.disable"
           placeholder="请选择用户角色"
+          @change="roleSelected"
         >
           <a-select-option value="1">所站长</a-select-option>
           <a-select-option value="2">台区经理</a-select-option>
+          <a-select-option value="3">管理员</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="是否为管理员">
+      <!-- <a-form-item label="是否为管理员">
         <a-select
           v-decorator="[
             'isManage',
@@ -76,7 +94,7 @@
           <a-select-option value="1">是</a-select-option>
           <a-select-option value="0">否</a-select-option>
         </a-select>
-      </a-form-item>
+      </a-form-item> -->
     </a-form>
   </a-modal>
 </template>
@@ -99,27 +117,14 @@ export default {
         name: 'userForm'
       }),
       cascaderOptions: [
-        // {
-        //   value: '1542121',
-        //   label: 'first one'
-        // },
-        // {
-        //   value: '1542122',
-        //   label: 'second one',
-        //   children: [
-        //     {
-        //       value: '154212201',
-        //       label: 'second son'
-        //     },
-        //     {
-        //       value: '154212202',
-        //       label: 'second bother'
-        //     }
-        //   ]
-        // }
+        {
+          value: '1542121',
+          label: '北京'
+        }
       ],
       confirmLoading: false,
-      tempSaveSelectOrgNo: ''
+      tempSaveSelectOrgNo: '',
+      localDisable: false
     }
   },
   mounted() {
@@ -175,8 +180,10 @@ export default {
         console.log(values, this.tempSaveSelectOrgNo)
         let res
         // 新增和修改都在这里
+
         if (values.isAdd) {
           delete values.id
+          delete values.readNameList
           res = await addUser(values)
         } else {
           res = await updateUser(values)
@@ -205,6 +212,26 @@ export default {
           orgName: item ? item.label : ''
         })
       })
+    },
+    // 权限切换
+    roleSelected(value) {
+      if (value == 1) {
+        this.form.setFieldsValue({
+          userName1: '-'
+        })
+        this.form.setFieldsValue({
+          readName: '-'
+        })
+        this.localDisable = true
+      } else {
+        this.form.setFieldsValue({
+          userName1: ''
+        })
+        this.form.setFieldsValue({
+          readName: ''
+        })
+        this.localDisable = false
+      }
     },
     handleCancel(e) {
       this.$emit('update:modalVisible', false)
