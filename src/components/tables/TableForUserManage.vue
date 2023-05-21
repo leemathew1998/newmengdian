@@ -2,63 +2,32 @@
   <!-- 表格、导入、导出数据 -->
   <div class="warp-table">
     <!-- 表格部分 -->
-    <a-table
-      :columns="columns"
-      :data-source="data"
-      @change="tablePaginationChange"
-      :loading="loading"
-      :pagination="pagination"
-      :scroll="{ y: caclHeight }"
-      rowKey="id"
-      @expand="expand"
-    >
+    <a-table :columns="columns" :data-source="data" @change="tablePaginationChange" :loading="loading"
+      :pagination="pagination" :scroll="{ y: caclHeight }" rowKey="id" @expand="expand"
+      :expandedRowKeys.sync="expandedRowKeys">
       <template slot="isRole" slot-scope="text">
         <div>{{ MAP_ROLES[text] }}</div>
       </template>
       <p slot="expandedRowRender" slot-scope="record" style="margin: 0">
-        <!-- <span v-if="expandLoadings">加载中...</span> -->
-        <span >
-          <div
-            class="expanded"
-            v-for="item in record.readNameList"
-            :key="item.readName"
-          >
-            <span
-              style="min-width: 150px"
-              class="expanded-item"
-            >抄表员姓名:{{ item.readName }}</span
-            >
-            <span
-              style="min-width: 200px"
-              class="expanded-item"
-            >抄表员账号:{{ item.userName1 }}</span
-            >
-            <a-button
-              style="display: flex; justify-content: center"
-              size="small"
-              type="primary"
-              @click.stop="operations(item)"
-            >
-              修改
-            </a-button>
-            <a-popconfirm
-              title="确定要删除此用户吗？"
-              ok-text="确定"
-              cancel-text="取消"
-              @confirm="deleteUser(item)"
-            >
-              <a-button
-                style="
+        <span>
+          <div class="expanded" v-for="(item, index) in record.readNameList" :key="item.readName">
+            <span style="min-width: 150px" class="expanded-item">抄表员姓名:{{ item.readName }}</span>
+            <span style="min-width: 200px" class="expanded-item">抄表员账号:{{ item.userName1 }}</span>
+            <div class="expanded-item">
+              <a-button style="display: flex; justify-content: center" size="small" type="primary"
+                @click.stop="operations(record, index)">
+                修改
+              </a-button>
+              <a-popconfirm title="确定要删除此用户吗？" ok-text="确定" cancel-text="取消" @confirm="deleteUser(record, index)">
+                <a-button style="
                   display: flex;
                   justify-content: center;
                   margin-left: 10px;
-                "
-                size="small"
-                type="danger"
-              >
-                删除
-              </a-button>
-            </a-popconfirm>
+                " size="small" type="danger">
+                  删除
+                </a-button>
+              </a-popconfirm>
+            </div>
           </div>
         </span>
       </p>
@@ -70,11 +39,7 @@
     </a-table>
     <div class="bottom">
       <div class="left">
-        <a-button
-          type="primary"
-          style="margin-right: 10px; background-color: #28599d"
-          @click="addUser"
-        >
+        <a-button type="primary" style="margin-right: 10px; background-color: #28599d" @click="addUser">
           新增用户
         </a-button>
       </div>
@@ -146,7 +111,8 @@ export default {
         2: '台区经理',
         3: '管理员'
       },
-      expandLoadings: false
+      expandLoadings: false,
+      expandedRowKeys: []
     }
   },
   created() {
@@ -193,6 +159,11 @@ export default {
         }
       },
       deep: true
+    },
+    loading(newVal) {
+      if (newVal) {
+        this.expandedRowKeys = []
+      }
     }
   },
   methods: {
@@ -213,15 +184,19 @@ export default {
       })
     },
     // 修改用户
-    operations(payload) {
-      payload.isAdd = false
-      payload.disable = true
-      console.log(payload)
-      this.$emit('addUser', payload)
+    operations(payload, index) {
+      const item = payload.readNameList[index]
+      item.isAdd = false
+      item.disable = true
+      item.userName = payload.userName
+      item.relaName = payload.relaName
+      item.orgNo = payload.orgNo
+      item.isRole = payload.isRole
+      this.$emit('addUser', item)
     },
     // 删除用户
-    async deleteUser(payload) {
-      const res = await deleteUser({ id: payload.id })
+    async deleteUser(payload,index) {
+      const res = await deleteUser({ id: payload.readNameList[index].id })
       this.$notification['success']({
         message: '操作成功',
         description: res
@@ -242,24 +217,11 @@ export default {
       if (expanded) {
         this.expandLoadings = true
         record.readNameList.length = 0
-        // setTimeout(() => {
-        //   record.readNameList = [
-        //     {
-        //       readName: '1we34',
-        //       userName1: '11dfghjkhgfd1'
-        //     },
-        //     {
-        //       readName: '123r43',
-        //       userName1: '1dsf11'
-        //     },
-        //     {
-        //       readName: '1354235',
-        //       userName1: '1fergbd11'
-        //     }
-        //   ]
-        //   this.expandLoadings = false
-        // }, 2000)
         const res = await postAction(`SysUser/getReadName?userName=${record.userName}`).catch(err => { console.log(err) })
+        res.forEach(item => {
+          item.isAdd = false
+          item.disable = false
+        })
         record.readNameList = res
         this.expandLoadings = false
       }
@@ -309,9 +271,11 @@ export default {
 
   /deep/.ant-table-wrapper {
     height: 100%;
+
     .ant-spin-nested-loading {
       height: 100%;
     }
+
     .ant-spin-container {
       height: 100%;
     }
@@ -371,14 +335,23 @@ export default {
 /deep/.ant-table td {
   white-space: nowrap;
 }
+
+.expanded:last-child {
+  border-bottom: none;
+}
+
 .expanded {
   display: flex;
   justify-content: flex-start;
   border-bottom: 1px solid #999;
   padding: 8px 0px;
+
   .expanded-item {
     white-space: nowrap;
     margin-right: 16px;
+    flex: 1;
+    display: flex;
+    align-items: center;
   }
 }
 </style>

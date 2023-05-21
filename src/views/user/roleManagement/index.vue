@@ -78,20 +78,6 @@ const columns = [
     ellipsis: true,
     width: 130
   },
-  // {
-  //   title: '抄表员账号',
-  //   dataIndex: 'userName1',
-  //   align: 'center',
-  //   ellipsis: true,
-  //   width: 130
-  // },
-  // {
-  //   title: '抄表员',
-  //   dataIndex: 'readName',
-  //   align: 'center',
-  //   ellipsis: true,
-  //   width: 130
-  // },
   {
     title: '所属单位',
     dataIndex: 'orgName',
@@ -130,27 +116,6 @@ export default {
       selectedRowKeys: {}
     }
   },
-  // {
-  //       isAdd: false,
-  //       disable: false,
-  //       userName: '12',
-  //       relaName: '1',
-  //       userName1: '12',
-  //       readName: '1',
-  //       orgName: '1',
-  //       isRole: '1',
-  //       readNameList: []
-  //     }, {
-  //       isAdd: false,
-  //       disable: false,
-  //       userName: '12',
-  //       relaName: '1',
-  //       userName1: '12',
-  //       readName: '1',
-  //       orgName: '1',
-  //       isRole: '1',
-  //       readNameList: []
-  //     }
   components: {
     Tables,
     SearchForm,
@@ -184,7 +149,7 @@ export default {
       this.data = res
       this.loading = false
     },
-    // 搜索
+    // 搜索，暂时不需要
     solveformData(e) {
       console.log('solveformData', e)
       this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
@@ -193,7 +158,7 @@ export default {
     changeSelectedRowKeys(e) {
       this.selectedRowKeys = e
     },
-    // 本页面的修改按钮，不需要禁用，新增操作
+    // 本页面的修改按钮，针对台区经理的，不需要禁用，修改操作
     operations(key) {
       key.disable = false
       key.isAdd = false

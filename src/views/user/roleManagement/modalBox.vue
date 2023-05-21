@@ -1,100 +1,50 @@
 <template>
-  <a-modal
-    :title="selectedRowKeys.isAdd ? '新增用户信息' : '修改用户信息'"
-    :visible="modalVisible"
-    @ok="handleSubmit"
-    @cancel="handleCancel"
-    :confirm-loading="confirmLoading"
-  >
-    <a-form
-      labelAlign="left"
-      :form="form"
-      :label-col="{ span: 5 }"
-      :wrapper-col="{ span: 12 }"
-    >
+  <a-modal :title="selectedRowKeys.isAdd ? '新增用户信息' : '修改用户信息'" :visible="modalVisible" @ok="handleSubmit"
+    @cancel="handleCancel" :confirm-loading="confirmLoading">
+    <a-form labelAlign="left" :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
       <a-form-item label="门户账号">
-        <a-input
-          v-decorator="[
-            'userName',
-            { rules: [{ required: true, message: '请输入门户账号!' }] },
-          ]"
-          :disabled="selectedRowKeys.disable"
-          placeholder="请输入门户账号"
-        />
+        <a-input v-decorator="[
+          'userName',
+          { rules: [{ required: true, message: '请输入门户账号!' }] },
+        ]" :disabled="selectedRowKeys.disable" placeholder="请输入门户账号" />
       </a-form-item>
       <a-form-item label="真实名称">
-        <a-input
-          v-decorator="[
-            'relaName',
-            { rules: [{ required: true, message: '请输入真实姓名!' }] },
-          ]"
-          :disabled="selectedRowKeys.disable"
-          placeholder="请输入真实姓名"
-        />
+        <a-input v-decorator="[
+          'relaName',
+          { rules: [{ required: true, message: '请输入真实姓名!' }] },
+        ]" :disabled="selectedRowKeys.disable" placeholder="请输入真实姓名" />
       </a-form-item>
       <a-form-item label="抄表员账号">
-        <a-input
-          v-decorator="[
-            'userName1',
-            { rules: [{ required: true, message: '请输入抄表员账号!' }] },
-          ]"
-          :disabled="localDisable"
-          placeholder="请输入抄表员账号"
-        />
+        <a-input v-decorator="[
+          'userName1',
+          { rules: [{ required: true, message: '请输入抄表员账号!' }] },
+        ]" :disabled="localDisable" placeholder="请输入抄表员账号" />
       </a-form-item>
       <a-form-item label="抄表员姓名">
-        <a-input
-          v-decorator="[
-            'readName',
-            { rules: [{ required: true, message: '请输入抄表员姓名!' }] },
-          ]"
-          :disabled="localDisable"
-          placeholder="请输入抄表员姓名"
-        />
+        <a-input v-decorator="[
+          'readName',
+          { rules: [{ required: true, message: '请输入抄表员姓名!' }] },
+        ]" :disabled="localDisable" placeholder="请输入抄表员姓名" />
       </a-form-item>
       <a-form-item label="供电单位">
-        <a-cascader
-          v-decorator="[
-            'orgNo',
-            {
-              rules: [{ required: true, message: '请选择供电单位' }],
-            },
-          ]"
-          :disabled="selectedRowKeys.disable"
-          :options="cascaderOptions"
-          :style="{ minWidth: '150px' }"
-          placeholder="请选择供电单位"
-          @change="orgNoSelected"
-          changeOnSelect
-        ></a-cascader>
+        <a-cascader v-decorator="[
+          'orgNo',
+          {
+            rules: [{ required: true, message: '请选择供电单位' }],
+          },
+        ]" :disabled="selectedRowKeys.disable" :options="cascaderOptions" :style="{ minWidth: '150px' }"
+          placeholder="请选择供电单位" @change="orgNoSelected" changeOnSelect></a-cascader>
       </a-form-item>
       <a-form-item label="用户权限">
-        <a-select
-          v-decorator="[
-            'isRole',
-            { rules: [{ required: true, message: '请选择用户角色' }] },
-          ]"
-          :disabled="selectedRowKeys.disable"
-          placeholder="请选择用户角色"
-          @change="roleSelected"
-        >
+        <a-select v-decorator="[
+          'isRole',
+          { rules: [{ required: true, message: '请选择用户角色' }] },
+        ]" :disabled="selectedRowKeys.disable" placeholder="请选择用户角色" @change="roleSelected">
           <a-select-option value="1">所站长</a-select-option>
           <a-select-option value="2">台区经理</a-select-option>
           <a-select-option value="3">管理员</a-select-option>
         </a-select>
       </a-form-item>
-      <!-- <a-form-item label="是否为管理员">
-        <a-select
-          v-decorator="[
-            'isManage',
-            { rules: [{ required: true, message: '是否为管理员' }] },
-          ]"
-          placeholder="是否为管理员"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="0">否</a-select-option>
-        </a-select>
-      </a-form-item> -->
     </a-form>
   </a-modal>
 </template>
@@ -135,6 +85,7 @@ export default {
   watch: {
     modalVisible(newVal) {
       if (newVal) {
+        console.log(JSON.stringify(this.selectedRowKeys))
         Object.keys(this.selectedRowKeys).forEach((key) => {
           if (key !== 'orgNo') {
             this.form.getFieldDecorator(key, {
@@ -152,7 +103,6 @@ export default {
             alhpa.unshift(this.selectedRowKeys['orgNo'].slice(0, 7))
           }
         }
-        console.log(alhpa)
         this.form.getFieldDecorator('orgNo', {
           initialValue: alhpa,
           preserve: true
@@ -180,10 +130,11 @@ export default {
         console.log(values, this.tempSaveSelectOrgNo)
         let res
         // 新增和修改都在这里
-
+        if (values.hasOwnProperty('readNameList')) {
+          delete values.readNameList
+        }
         if (values.isAdd) {
           delete values.id
-          delete values.readNameList
           res = await addUser(values)
         } else {
           res = await updateUser(values)
@@ -224,12 +175,12 @@ export default {
         })
         this.localDisable = true
       } else {
-        this.form.setFieldsValue({
-          userName1: ''
-        })
-        this.form.setFieldsValue({
-          readName: ''
-        })
+        // this.form.setFieldsValue({
+        //   userName1: ''
+        // })
+        // this.form.setFieldsValue({
+        //   readName: ''
+        // })
         this.localDisable = false
       }
     },
