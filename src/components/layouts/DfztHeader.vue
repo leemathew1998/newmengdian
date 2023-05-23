@@ -13,7 +13,8 @@
       <img src="@/assets/u506.png" alt="" class="img">
       <div class="text">
         <div class="chinese">国网呼伦贝尔供电公司</div>
-        <div class="english">STATE GRID HULUNBEIER POWER</div>
+        <div class="english">STATE GRID HULUNBEIER</div>
+        <div class="english">ELECTRIC POWER SUPPLY COMPANY</div>
       </div>
     </div>
     <div class="center">台区网格化精细管理</div>

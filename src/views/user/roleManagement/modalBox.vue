@@ -1,45 +1,71 @@
 <template>
-  <a-modal :title="selectedRowKeys.isAdd ? '新增用户信息' : '修改用户信息'" :visible="modalVisible" @ok="handleSubmit"
-    @cancel="handleCancel" :confirm-loading="confirmLoading">
+  <a-modal
+    :title="selectedRowKeys.isAdd ? '新增用户信息' : '修改用户信息'"
+    :visible="modalVisible"
+    @ok="handleSubmit"
+    @cancel="handleCancel"
+    :confirm-loading="confirmLoading">
     <a-form labelAlign="left" :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
       <a-form-item label="门户账号">
-        <a-input v-decorator="[
-          'userName',
-          { rules: [{ required: true, message: '请输入门户账号!' }] },
-        ]" :disabled="selectedRowKeys.disable" placeholder="请输入门户账号" />
+        <a-input
+          v-decorator="[
+            'userName',
+            { rules: [{ required: true, message: '请输入门户账号!' }] },
+          ]"
+          :disabled="selectedRowKeys.disable"
+          placeholder="请输入门户账号" />
       </a-form-item>
       <a-form-item label="真实名称">
-        <a-input v-decorator="[
-          'relaName',
-          { rules: [{ required: true, message: '请输入真实姓名!' }] },
-        ]" :disabled="selectedRowKeys.disable" placeholder="请输入真实姓名" />
+        <a-input
+          v-decorator="[
+            'relaName',
+            { rules: [{ required: true, message: '请输入真实姓名!' }] },
+          ]"
+          :disabled="selectedRowKeys.disable"
+          placeholder="请输入真实姓名" />
       </a-form-item>
       <a-form-item label="抄表员账号">
-        <a-input v-decorator="[
-          'userName1',
-          { rules: [{ required: true, message: '请输入抄表员账号!' }] },
-        ]" :disabled="localDisable" placeholder="请输入抄表员账号" />
+        <a-input
+          v-decorator="[
+            'userName1',
+            { rules: [{ required: true, message: '请输入抄表员账号!' }] },
+          ]"
+          :disabled="localDisable"
+          placeholder="请输入抄表员账号" />
       </a-form-item>
       <a-form-item label="抄表员姓名">
-        <a-input v-decorator="[
-          'readName',
-          { rules: [{ required: true, message: '请输入抄表员姓名!' }] },
-        ]" :disabled="localDisable" placeholder="请输入抄表员姓名" />
+        <a-input
+          v-decorator="[
+            'readName',
+            { rules: [{ required: true, message: '请输入抄表员姓名!' }] },
+          ]"
+          :disabled="localDisable"
+          placeholder="请输入抄表员姓名" />
       </a-form-item>
       <a-form-item label="供电单位">
-        <a-cascader v-decorator="[
-          'orgNo',
-          {
-            rules: [{ required: true, message: '请选择供电单位' }],
-          },
-        ]" :disabled="selectedRowKeys.disable" :options="cascaderOptions" :style="{ minWidth: '150px' }"
-          placeholder="请选择供电单位" @change="orgNoSelected" changeOnSelect></a-cascader>
+        <a-cascader
+          v-decorator="[
+            'orgNo',
+            {
+              rules: [{ required: true, message: '请选择供电单位' }],
+            },
+          ]"
+          :disabled="selectedRowKeys.disable"
+          :options="cascaderOptions"
+          :style="{ minWidth: '150px' }"
+          placeholder="请选择供电单位"
+          @change="orgNoSelected"
+          changeOnSelect></a-cascader>
       </a-form-item>
       <a-form-item label="用户权限">
-        <a-select v-decorator="[
-          'isRole',
-          { rules: [{ required: true, message: '请选择用户角色' }] },
-        ]" :disabled="selectedRowKeys.disable" placeholder="请选择用户角色" @change="roleSelected">
+        <a-select
+          v-decorator="[
+            'isRole',
+            { rules: [{ required: true, message: '请选择用户角色' }] },
+          ]"
+          :disabled="selectedRowKeys.disable"
+          placeholder="请选择用户角色"
+          @change="roleSelected">
           <a-select-option value="1">所站长</a-select-option>
           <a-select-option value="2">台区经理</a-select-option>
           <a-select-option value="3">管理员</a-select-option>
@@ -99,7 +125,7 @@ export default {
         let alhpa = []
         if (this.selectedRowKeys['orgNo']) {
           alhpa = [this.selectedRowKeys['orgNo']]
-          if (this.selectedRowKeys['orgNo'].length == 9) {
+          if (this.selectedRowKeys['orgNo'].length === 9) {
             alhpa.unshift(this.selectedRowKeys['orgNo'].slice(0, 7))
           }
         }
