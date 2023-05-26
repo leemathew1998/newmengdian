@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     confirm() {
-      postAction(`SysUser/logout1`)
+      window.open('http://25.73.1.171/api/SysUser/logout1', '_self')
       this.$store.commit('clearUserInfo', [])
       this.$notification['success']({
         message: '注销成功',

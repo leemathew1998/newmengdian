@@ -3,6 +3,7 @@ import axios from 'axios'
 import store from '@/store'
 import { VueAxios } from './axios'
 import router from '@/router/index'
+import cookie from '@/utils/cookie.js'
 import { ACCESS_TOKEN, TENANT_ID } from '@/store/mutation-types'
 /**
  * 【指定 axios的 baseURL】
@@ -130,6 +131,8 @@ service.interceptors.request.use(
       config.params = {}
     }
     // console.log('request config', config)
+    let userName = cookie.getCookie('userName')
+    config.params['loginName'] = userName || 'test'
     config.params['loName2'] = store.getters.username || 'test'
     config.params['role'] = store.getters.role || 'test'
     config.headers['Authorization'] = store.getters.token // 让每个请求携带自定义 token 请根据实际情况自行修改
