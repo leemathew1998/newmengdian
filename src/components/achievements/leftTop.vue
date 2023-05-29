@@ -10,14 +10,14 @@
       <div class="Ranking">
         <div class="Ranking-title">日排名</div>
         <div class="Ranking-center">
-          <div>{{ ranks.day }}</div>
+          <div>第{{ ranks.day }}名</div>
           <!-- <div class="Ranking-ratio">日环比+2</div> -->
         </div>
       </div>
       <div class="Ranking">
         <div class="Ranking-title">月排名</div>
         <div class="Ranking-center">
-          <div>{{ ranks.month }}</div>a
+          <div>第{{ ranks.month }}名</div>
           <!-- <div class="Ranking-ratio">日环比+1</div> -->
         </div>
       </div>
@@ -48,7 +48,7 @@ export default {
     },
     ranks: {
       type: Object,
-      default: () => ({ day: '第一名', month: '第一名' })
+      default: () => ({ day: '1', month: '1' })
     }
   },
   computed: {

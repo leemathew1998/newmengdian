@@ -2,7 +2,7 @@
   <div class="warp-site">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop :name="username" :dateTime.sync="dateTime"></leftTop>
+        <leftTop :name="username" :ranks="ranks" :dateTime.sync="dateTime"></leftTop>
       </div>
       <div class="left-bottom">
         <leftBottom
@@ -53,6 +53,7 @@ export default {
       this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
     this.username = this.$route.query.name || this.$store.getters.username
     this.orgNo = this.$route.query.orgNo
+    this.ranks = this.$route.query.ranks
     this.init2()
   },
   watch: {
@@ -188,7 +189,8 @@ export default {
       dateTime:
         this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD'), // .add(-1, 'days')
       orgNo: '',
-      username: ''
+      username: '',
+      ranks: { day: '-', month: '-' }
     }
   }
 }

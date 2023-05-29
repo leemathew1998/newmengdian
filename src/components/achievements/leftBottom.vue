@@ -19,7 +19,7 @@
       return {
         on: {
           click: () => {
-            this.$emit('clickRow', record)
+            this.$emit('clickRow', record, index)
           }
         }
       }

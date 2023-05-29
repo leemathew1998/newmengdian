@@ -106,12 +106,16 @@ export default {
       this.centerData = temp
       this.tableLoading = false
     },
-    async leftBottomClickRow(record) {
+    async leftBottomClickRow(record, index) {
       let params = {
         name: record.countyName,
         orgNo: record.orgNo,
         ymd: this.dateTime,
-        router: 'achievements'
+        router: 'achievements',
+        ranks: {
+          day: index,
+          month: index
+        }
       }
       this.$store.commit(
         'setUserAchievementsList',
