@@ -5,7 +5,9 @@
     bordered
     :loading="tableLoading"
     :pagination="false"
-    style="width:100%;">
+    style="width:100%;"
+    rowKey="indexItems"
+  >
     <template slot="operation" slot-scope="text, record">
       <div style="display: flex;justify-content: center;">
         <slot :table_key="record"></slot>

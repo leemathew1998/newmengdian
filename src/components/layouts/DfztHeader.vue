@@ -10,7 +10,7 @@
     class="warp"
   >
     <div class="left">
-      <img src="@/assets/u506.png" alt="" class="img">
+      <img src="@/assets/u506.png" alt="" class="img" />
       <div class="text">
         <div class="chinese">国网呼伦贝尔供电公司</div>
         <div class="english">STATE GRID HULUNBEIER</div>
@@ -20,6 +20,10 @@
     <div class="center">台区网格化精细管理</div>
     <!-- <div class="center">主界面</div> -->
     <div class="right">
+      <a-button style="margin-right: 8px;" @click="returnBack" v-if="showBackButton">
+        <a-icon type="rollback" />
+        返回上一级</a-button
+        >
       <img src="@/assets/u513.svg" alt="" class="right_img" />
       <span class="username">{{ username }}</span>
       <img src="@/assets/u511.svg" alt="" class="avatar" />
@@ -47,6 +51,11 @@ export default {
   created() {
     this.username = this.$store.getters.username
   },
+  computed: {
+    showBackButton() {
+      return this.$store.state.user.userAchievementsList.length > 0
+    }
+  },
   methods: {
     confirm() {
       window.open('http://25.73.1.171/api/SysUser/logout1', '_self')
@@ -62,14 +71,18 @@ export default {
           needLogin: false
         }
       })
-      // this.$store.commit('clearUserInfo', [])
-      // console.log('与张升测试ISC，在此处修改跳转，如需要改变，直接切换即可！')
-      // this.$router.push('/overView')
-      // // this.$router.push('/user/login')
-      // this.$notification['success']({
-      //   message: '退出成功！',
-      //   duration: 4
-      // })
+    },
+    returnBack() {
+      // this.$store.state.user.userAchievementsList.pop()
+      const item = this.$store.state.user.userAchievementsList.pop()
+      let left = this.$store.state.user.userAchievementsList
+      left = left.length > 0 ? left : false
+      this.$store.commit('setUserAchievementsList', left)
+      this.$router.push({
+        // path: item.router,
+        name: item.router,
+        query: item
+      })
     }
   }
 }

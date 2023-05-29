@@ -2,14 +2,15 @@
   <div class="warp-site">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop :name="$route.params.name" :dateTime.sync="dateTime"></leftTop>
+        <leftTop :name="username" :dateTime.sync="dateTime"></leftTop>
       </div>
       <div class="left-bottom">
         <leftBottom
           :leftBottomColumns="leftBottomColumns"
           :leftBottomData="leftBottomData"
           :leftBottomLoading="leftBottomLoading"
-          @clickRow="leftBottomClickRow"></leftBottom>
+          @clickRow="leftBottomClickRow"
+        ></leftBottom>
       </div>
     </div>
     <div class="wrap-center animated fadeInUp">
@@ -18,16 +19,11 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"></center>
+        :rightPageData.sync="rightPageData"
+      ></center>
     </div>
     <div class="wrap-right animated fadeInRight">
-      <div ref="rightInitPage" class="box">
-        <rightPageForSite
-          :rightInitPageColumns="rightInitPageColumns"
-          :rightInitPageData="rightInitPageData"
-          :rightPageLoading="rightPageLoading"></rightPageForSite>
-      </div>
-      <div ref="rightMainPage" class="box" style="display: none;height: 100%;">
+      <div ref="rightMainPage" class="box" style="height: 100%">
         <div class="head">
           <sites :data="rightPageData"> </sites>
         </div>
@@ -42,43 +38,27 @@ import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
 import rightPageForSite from '@/components/achievements/rightPageForSite'
 import sites from '@/components/achievements/sites'
-import {
-  postAction
-} from '@/api/manage'
+import { postAction } from '@/api/manage'
 import {
   indexCenter16List,
   leftBottomColumns,
   rightInitPageColumns
 } from './const.js'
-import {
-  sortRanking
-} from './utils.js'
+import { sortRanking, MAP_NAME_TO_FUNC } from './utils.js'
 import moment from 'moment'
 export default {
   created() {
-    // this.init()
-    // console.log(this.$route.params)
-    this.dateTime = this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
+    console.log(this.$route)
+    this.dateTime =
+      this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
+    this.username = this.$route.query.name || this.$store.getters.username
+    this.orgNo = this.$route.query.orgNo
     this.init2()
   },
   watch: {
-    rightInitPage: {
+    'rightPageData.name': {
       handler: function (newVal) {
-        if (newVal) {
-          this.$refs['rightInitPage'].className = 'box animated fadeOutRight'
-          setTimeout(() => {
-            this.$refs['rightInitPage'].style.display = 'none'
-            this.$refs['rightMainPage'].style.display = 'block'
-            this.$refs['rightMainPage'].className = 'box animated fadeInRight'
-          }, 400)
-        } else {
-          this.$refs['rightMainPage'].className = 'box animated fadeOutRight'
-          setTimeout(() => {
-            this.$refs['rightMainPage'].style.display = 'none'
-            this.$refs['rightInitPage'].style.display = 'block'
-            this.$refs['rightInitPage'].className = 'box animated fadeInRight'
-          }, 400)
-        }
+        this.loadRightMathPage()
       }
     },
     dateTime() {
@@ -91,46 +71,93 @@ export default {
   methods: {
     async init2() {
       this.leftBottomLoading = true
-      const res = await postAction(`ach/stationList?ymd=${this.dateTime}&orgNo=${this.$route.params.orgNo}`)
-      res.data.forEach(i => {
+      const res = await postAction(
+        `ach/stationList?ymd=${this.dateTime}&orgNo=${this.$route.query.orgNo}`
+      )
+      res.data.forEach((i) => {
         i.countyName = i.stationName
       })
       this.leftBottomData = sortRanking(res.data)
+      // 此处直接模拟点击左下第一条数据
+      if (this.leftBottomData.length > 0) {
+        await this.renderCenterData(this.leftBottomData[0])
+        if (this.centerData.length > 0) {
+          this.rightPageData.data = []
+          this.rightPageData.params = this.centerData[0]
+          this.rightPageData.name = this.centerData[0].indexItems
+        }
+      }
       this.leftBottomLoading = false
     },
-    async leftBottomClickRow(record) {
-      console.warn('record', record)
-      this.rightInitPage = false
+    async renderCenterData(record) {
       this.tableLoading = true
-      this.rightPageLoading = true
-      const res = await Promise.all([
-        postAction(`ach/stationList?ymd=${this.dateTime}&id=${record.id}`),
-        postAction(`ach/selectStaByman?ymd=${this.dateTime}&orgNo=${record.orgNo}`)
-      ])
+      const res = await postAction(
+        `ach/stationList?ymd=${this.dateTime}&id=${record.id}`
+      )
+      // Promise.all([
+      //   postAction(`ach/stationList?ymd=${this.dateTime}&id=${record.id}`),
+      //   postAction(
+      //     `ach/selectStaByman?ymd=${this.dateTime}&orgNo=${record.orgNo}`
+      //   )
+      // ])
       // 处理中间数据
       let temp = []
       for (const key in indexCenter16List) {
-        let originalValue = res[0].data[0][indexCenter16List[key].rate]
-        originalValue = originalValue != null ? `${originalValue}${indexCenter16List[key].tail}` : '0'
+        let originalValue = res.data[0][indexCenter16List[key].rate]
+        originalValue =
+          originalValue != null
+            ? `${originalValue}${indexCenter16List[key].tail}`
+            : '0'
         temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,
           originalValue: originalValue,
-          integral: res[0].data[0][indexCenter16List[key].point]
+          integral: res.data[0][indexCenter16List[key].point],
+          orgNo: res.data[0].orgNo,
+          ymd: this.dateTime
         })
       }
       this.centerData = temp
       this.tableLoading = false
-      // 处理右面数据
-      let resRight = res[1].data
-      for (let i = 0; i < resRight.length; i++) {
-        resRight[i].ymd = this.dateTime
-        resRight[i].orgNo = record.orgNo
-        resRight[i].stationName = resRight[i].tgManager
-        // resRight[i].toPoint = resRight[i].totalScore
+    },
+    async leftBottomClickRow(record) {
+      let params = {
+        name: record.countyName,
+        orgNo: record.orgNo,
+        ymd: this.dateTime,
+        router: 'achievements/site'
       }
-      this.rightInitPageData = sortRanking(resRight)
-      this.rightPageLoading = false
+      console.log(record)
+      this.$store.commit(
+        'setUserAchievementsList',
+        {
+          name: this.$route.query.name,
+          orgNo: this.$route.query.orgNo,
+          ymd: this.dateTime,
+          router: 'achievements/site'
+        })
+      this.$router.push({
+        name: 'achievements/manger',
+        query: params
+      })
+    },
+    // 右侧16接口请求
+    async loadRightMathPage() {
+      this.rightPageData.data = []
+      let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
+        orgNo: this.rightPageData.params.orgNo,
+        ymd: this.rightPageData.params.ymd
+      })
+      if (res && Array.isArray(res)) {
+        res.forEach((item, i) => {
+          this.rightPageData.data.push(item)
+        })
+      } else if (res && res.constructor === Object) {
+        // 终止发行比例"noop"
+        res.noop = 0
+        this.rightPageData.data.push(res)
+      }
+      console.log(this.rightPageData.data)
     }
   },
   components: {
@@ -158,7 +185,10 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')// .add(-1, 'days')
+      dateTime:
+        this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD'), // .add(-1, 'days')
+      orgNo: '',
+      username: ''
     }
   }
 }

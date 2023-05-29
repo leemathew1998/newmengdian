@@ -4,19 +4,21 @@
       <div class="greenTitle">
         {{ name }}
       </div>
-      <div class="dateTime">{{ dateTime }}</div>
+      <div class="dateTime">
+        {{ dateTime }}
+      </div>
       <div class="Ranking">
         <div class="Ranking-title">日排名</div>
         <div class="Ranking-center">
-          <div>第一名</div>
-          <div class="Ranking-ratio">日环比+2</div>
+          <div>{{ ranks.day }}</div>
+          <!-- <div class="Ranking-ratio">日环比+2</div> -->
         </div>
       </div>
       <div class="Ranking">
         <div class="Ranking-title">月排名</div>
         <div class="Ranking-center">
-          <div>第二名</div>
-          <div class="Ranking-ratio">日环比+1</div>
+          <div>{{ ranks.month }}</div>a
+          <!-- <div class="Ranking-ratio">日环比+1</div> -->
         </div>
       </div>
       <div class="dataTimePicker">
@@ -37,7 +39,18 @@
 <script>
 import moment from 'moment'
 export default {
-  props: ['name', 'dateTime'],
+  props: {
+    name: {
+      type: String
+    },
+    dateTime: {
+      required: true
+    },
+    ranks: {
+      type: Object,
+      default: () => ({ day: '第一名', month: '第一名' })
+    }
+  },
   computed: {
     initDate() {
       return moment(this.dateTime, 'YYYY-MM-DD')
@@ -68,7 +81,7 @@ export default {
   border: 1px #f5f5f5 solid;
   border-radius: 5px;
   padding: 2px;
-  height:100%;
+  height: 100%;
 
   .left-top-head {
     height: 100%;

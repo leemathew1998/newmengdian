@@ -10,7 +10,8 @@
             :leftBottomColumns="leftBottomColumns"
             :leftBottomData="leftBottomData"
             :leftBottomLoading="leftBottomLoading"
-            @clickRow="leftBottomClickRow"></leftBottom>
+            @clickRow="leftBottomClickRow"
+          ></leftBottom>
         </div>
       </div>
     </div>
@@ -20,15 +21,13 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"></center>
+        :rightPageData.sync="rightPageData"
+      ></center>
     </div>
     <div class="wrap-right animated fadeInRight">
-      <div ref="rightInitPage" class="box">
-        <rightPageForManger></rightPageForManger>
-      </div>
-      <div ref="rightMainPage" class="box" style="display: none;height: 100%;">
+      <div ref="rightMainPage" class="box" style="height: 100%">
         <div class="head">
-          <manger :rightInitPage="rightInitPage"> </manger>
+          <manger :data="rightPageData"> </manger>
         </div>
       </div>
     </div>
@@ -41,83 +40,85 @@ import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
 import manger from '@/components/achievements/manger'
 import rightPageForManger from '@/components/achievements/rightPageForManger'
-import {
-  postAction
-} from '@/api/manage'
+import { postAction } from '@/api/manage'
 import {
   indexCenter16List,
   leftBottomColumns,
   rightInitPageColumns
 } from './const.js'
-import {
-  sortRanking
-} from './utils.js'
+import { sortRanking, MAP_NAME_TO_FUNC } from './utils.js'
 import moment from 'moment'
 export default {
-  mounted() {
-    this.dateTime = this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
-    this.orgNo = this.$route.params.orgNo
-    this.username = this.$route.params.name || this.$store.state.username
+  created() {
+    this.dateTime =
+      this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
+    this.orgNo = this.$route.query.orgNo
+    // this.username = this.$route.query.name || this.$store.getters.username
     this.init2()
   },
   watch: {
-    rightInitPage: {
-      handler: function (newVal) {
-        if (newVal) {
-          this.$refs['rightInitPage'].className = 'box animated fadeOutRight'
-          setTimeout(() => {
-            this.$refs['rightInitPage'].style.display = 'none'
-            this.$refs['rightMainPage'].style.display = 'block'
-            this.$refs['rightMainPage'].className = 'box animated fadeInRight'
-          }, 400)
-        } else {
-          this.$refs['rightMainPage'].className = 'box animated fadeOutRight'
-          setTimeout(() => {
-            this.$refs['rightMainPage'].style.display = 'none'
-            this.$refs['rightInitPage'].style.display = 'block'
-            this.$refs['rightInitPage'].className = 'box animated fadeInRight'
-          }, 400)
-        }
-      }
-    },
     dateTime() {
       this.centerData = []
       this.rightInitPageData = []
       this.rightInitPage = false
       this.init2()
+    },
+    'rightPageData.name': {
+      handler: function (newVal) {
+        this.loadRightMathPage()
+      }
     }
   },
   methods: {
     async init2() {
       this.leftBottomLoading = true
-      const res = await postAction(`ach/selectStaByman?ymd=${this.dateTime}&orgNo=${this.orgNo}`)
-      console.log(res)
-      res.data.forEach(i => {
+      const res = await postAction(
+        `ach/selectStaByman?ymd=${this.dateTime}&orgNo=${this.orgNo}`
+      )
+      res.data.forEach((i) => {
         i.countyName = i.tgManager
       })
       this.leftBottomData = sortRanking(res.data)
+      // 此处直接模拟点击左下第一条数据
+      if (this.leftBottomData.length > 0) {
+        // 目前直接使用leftBottomClickRow方法
+        await this.leftBottomClickRow(this.leftBottomData[0])
+        if (this.centerData.length > 0) {
+          this.rightPageData.data = []
+          this.rightPageData.params = this.centerData[0]
+          this.rightPageData.name = this.centerData[0].indexItems
+        }
+      }
       this.leftBottomLoading = false
     },
     async leftBottomClickRow(record) {
-      console.warn('record', record)
+      this.username = record.tgManager
       this.rightInitPage = false
       this.tableLoading = true
       this.rightPageLoading = true
-      const res = await Promise.all([
-        postAction(`ach/selectStaByman?ymd=${this.dateTime}&id=${record.id}`)
-        // postAction(`ach/selectStaByman?ymd=${this.dateTime}&orgNo=${record.orgNo}`)
-      ])
+      const res = await postAction(
+        `ach/selectStaByman?ymd=${this.dateTime}&id=${record.id}`
+      )
+      // Promise.all([
+      //   postAction(`ach/selectStaByman?ymd=${this.dateTime}&id=${record.id}`)
+      //   // postAction(`ach/selectStaByman?ymd=${this.dateTime}&orgNo=${record.orgNo}`)
+      // ])
       console.log(res)
       // 处理中间数据
       let temp = []
       for (const key in indexCenter16List) {
-        let originalValue = res[0].data[0][indexCenter16List[key].rate]
-        originalValue = originalValue != null ? `${originalValue}${indexCenter16List[key].tail}` : '0'
+        let originalValue = res.data[0][indexCenter16List[key].rate]
+        originalValue =
+          originalValue != null
+            ? `${originalValue}${indexCenter16List[key].tail}`
+            : '0'
         temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,
           originalValue: originalValue,
-          integral: res[0].data[0][indexCenter16List[key].point]
+          integral: res.data[0][indexCenter16List[key].point],
+          orgNo: res.data[0].acStationId,
+          ymd: this.dateTime
         })
       }
       this.centerData = temp
@@ -125,8 +126,25 @@ export default {
       // 处理右面数据
 
       this.rightPageLoading = false
+    },
+    // 右侧16接口请求
+    async loadRightMathPage() {
+      console.log(this.rightPageData)
+      this.rightPageData.data = []
+      let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
+        orgNo: this.rightPageData.params.orgNo,
+        ymd: this.rightPageData.params.ymd
+      })
+      if (res && Array.isArray(res)) {
+        res.forEach((item, i) => {
+          this.rightPageData.data.push(item)
+        })
+      } else if (res && res.constructor === Object) {
+        // 终止发行比例"noop"
+        res.noop = 0
+        this.rightPageData.data.push(res)
+      }
     }
-
   },
   components: {
     manger,
@@ -153,8 +171,10 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: this.$route.params.ymd || moment().add(-1, 'days').format('yyyy-MM-DD'),
-      orgNo: 154212205
+      dateTime:
+        this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD'),
+      orgNo: '',
+      username: ''
     }
   }
 }

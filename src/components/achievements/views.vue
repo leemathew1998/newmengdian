@@ -8,10 +8,10 @@
       <p class="p2" style="font-size: 14px">指标考核方式</p>
       <p class="p3" style="font-size: 11px">{{ reasonListV2[data.name] }}</p>
       <!-- 隐藏 -->
-      <p class="p2" style="font-size: 14px" v-show="false">计算过程</p>
+      <!-- <p class="p2" style="font-size: 14px" v-show="false">计算过程</p>
       <div class="formula" v-show="false">
         {{ formula }}
-      </div>
+      </div> -->
     </div>
     <!-- 表单 -->
     <div class="lower">
@@ -29,13 +29,10 @@
   </div>
 </template>
 <script>
-import MathJax from '@/utils/globalVariable.js'
 import { reasonList, reasonListV2, tableColumnList } from './constion.js'
 export default {
   data() {
     return {
-      formula:
-        '$$等分=\\sum _{nT}^{i=1}\\frac{第i期支付金额}{1+年化综合成本}$$',
       reasonList,
       reasonListV2,
       tableColumnList
@@ -46,67 +43,21 @@ export default {
       type: Object
     },
     loading: {
-      type: Boolean
+      type: Boolean,
+      default: false
     }
-  },
-  computed: {
-    sumNumber: function () {
-      let sum = 0
-      for (let i = this.data.length - 1; i >= 0; i--) {
-        let num = Number(this.data[i].caiji)
-        sum += num
-        // console.log(this.centerdata[i].integral,'ll');
-        // sum = sum.toFixed(2);
-      }
-      return sum
-    },
-    allNumber: function () {
-      let sum = 0
-      for (let i = this.data.length - 1; i >= 0; i--) {
-        let num = Number(this.data[i].COUNT)
-        sum += num
-        // console.log(this.centerdata[i].integral,'ll');
-        // sum = sum.toFixed(2);
-      }
-      return sum
-    },
-    heNumber: function () {
-      let sum = 0
-      for (let i = this.data.length - 1; i >= 0; i--) {
-        let num = Number(this.data[i].zongshu)
-        sum += num
-        // console.log(this.centerdata[i].integral,'ll');
-        // sum = sum.toFixed(2);
-      }
-      return sum
-    }
-  },
-  created() {
-    this.formatMath()
   },
   methods: {
-    formatMath() {
-      let that = this
-      setTimeout(function () {
-        that.$nextTick(function () {
-          if (MathJax.isMathjaxConfig) {
-            // 判断是否初始配置，若无则配置。
-            MathJax.initMathjaxConfig()
-          }
-          MathJax.MathQueue('formula') // 传入组件id，让组件被MathJax渲染
-        })
-      }, 500)
-    },
     rowClick(record, index) {
       return {
         on: {
           click: () => {
-            this.$router.push({
-              name: 'achievements/site',
-              params: {
-                name: record.name
-              }
-            })
+            // this.$router.push({
+            //   name: 'achievements/site',
+            //   params: {
+            //     name: record.name
+            //   }
+            // })
           }
         }
       }

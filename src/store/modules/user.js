@@ -50,7 +50,8 @@ const user = {
 		permissionList: [],
 		info: {},
 		// 系统安全模式
-		sysSafeMode: null
+		sysSafeMode: null,
+		userAchievementsList: []
 	},
 
 	mutations: {
@@ -82,6 +83,18 @@ const user = {
 				'department': null,
 				'isManage': 0
 			}))
+		},
+		setUserAchievementsList: (state, info) => {
+			if (typeof info === 'object') {
+				if (Array.isArray(info)) {
+					state.userAchievementsList = info
+				} else {
+					state.userAchievementsList.push(info)
+				}
+			} else {
+				state.userAchievementsList = []
+			}
+			console.log('存储->', info, state.userAchievementsList)
 		},
 		SET_ROLE: (state, role) => {
 			state.role = role

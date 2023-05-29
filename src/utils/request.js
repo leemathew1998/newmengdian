@@ -5,6 +5,7 @@ import { VueAxios } from './axios'
 import router from '@/router/index'
 import cookie from '@/utils/cookie.js'
 import { ACCESS_TOKEN, TENANT_ID } from '@/store/mutation-types'
+import { notification } from 'ant-design-vue'
 /**
  * 【指定 axios的 baseURL】
  * 如果手工指定 baseURL: '/jeecg-boot'
@@ -129,6 +130,19 @@ service.interceptors.request.use(
   (config) => {
     if (!config.params) {
       config.params = {}
+    }
+    if (!store.getters.username && config.url.indexOf('SysUser') != -1) {
+      // store.commit('clearUserInfo', [])
+      notification['warning']({
+        message: '登录异常！请重新登录！但是先不处理',
+        duration: 4
+      })
+      // router.push({
+      //   name: '/overView',
+      //   params: {
+      //     needLogin: false
+      //   }
+      // })
     }
     // console.log('request config', config)
     let userName = cookie.getCookie('userName')

@@ -23,14 +23,7 @@
       ></center>
     </div>
     <div class="wrap-right animated fadeInRight">
-      <div ref="rightInitPage" class="box" style="height: 100%">
-        <rightPageForMaster
-          :rightInitPageColumns="rightInitPageColumns"
-          :rightInitPageData="rightInitPageData"
-          :rightPageLoading="rightPageLoading"
-        ></rightPageForMaster>
-      </div>
-      <div ref="rightMainPage" class="box" style="display: none;height: 100%;">
+      <div ref="rightMainPage" class="box" style="height: 100%">
         <div class="head">
           <views :data="rightPageData"> </views>
         </div>
@@ -44,7 +37,6 @@ import views from '@/components/achievements/views'
 import leftTop from '@/components/achievements/leftTop'
 import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
-import rightPageForMaster from '@/components/achievements/rightPageForMaster'
 import { postAction } from '@/api/manage'
 import {
   indexCenter16List,
@@ -54,37 +46,10 @@ import {
 import { sortRanking, MAP_NAME_TO_FUNC } from './utils.js'
 import moment from 'moment'
 export default {
-  created() {
+  mounted() {
     this.init2()
   },
-  mounted() {
-    //     Array.from({ length: 10 }, (_, i) => i).forEach(i => {
-    //   this.rightInitPageData.push({
-    //     ranking: i,
-    //     id: Math.random()
-    //   })
-    // })
-  },
   watch: {
-    rightInitPage: {
-      handler: function (newVal) {
-        if (newVal) {
-          this.$refs['rightInitPage'].className = 'box animated fadeOutRight'
-          setTimeout(() => {
-            this.$refs['rightInitPage'].style.display = 'none'
-            this.$refs['rightMainPage'].style.display = 'block'
-            this.$refs['rightMainPage'].className = 'box animated fadeInRight'
-          }, 400)
-        } else {
-          this.$refs['rightMainPage'].className = 'box animated fadeOutRight'
-          setTimeout(() => {
-            this.$refs['rightMainPage'].style.display = 'none'
-            this.$refs['rightInitPage'].style.display = 'block'
-            this.$refs['rightInitPage'].className = 'box animated fadeInRight'
-          }, 400)
-        }
-      }
-    },
     'rightPageData.name': {
       handler: function (newVal) {
         this.loadRightMathPage()
@@ -104,42 +69,58 @@ export default {
         `ach/countyList?ymd=${this.dateTime}`
       )
       this.leftBottomData = sortRanking(resRightBottom.data)
+      // 此处直接模拟点击左下第一条数据
+      if (this.leftBottomData.length > 0) {
+        await this.renderCenterData(this.leftBottomData[0])
+        if (this.centerData.length > 0) {
+          this.rightPageData.data = []
+          this.rightPageData.params = this.centerData[0]
+          this.rightPageData.name = this.centerData[0].indexItems
+        }
+      }
       this.leftBottomLoading = false
     },
-    async leftBottomClickRow(record) {
-      this.rightInitPage = false
+    // 只请求中间的数据
+    async renderCenterData(record) {
       this.tableLoading = true
-      this.rightPageLoading = true
-      const res = await Promise.all([
-        postAction(`ach/countyList?ymd=${this.dateTime}&id=${record.id}`),
-        postAction(
-          `ach/stationList?ymd=${this.dateTime}&orgNo=${record.orgNo}`
-        )
-      ])
+      const res = await postAction(
+        `ach/countyList?ymd=${this.dateTime}&id=${record.id}`
+      )
       // 处理中间数据
       let temp = []
       for (const key in indexCenter16List) {
-        let originalValue = res[0].data[0][indexCenter16List[key].rate]
-        originalValue = originalValue != null ? `${originalValue}${indexCenter16List[key].tail}` : '0'
+        let originalValue = res.data[0][indexCenter16List[key].rate]
+        originalValue =
+          originalValue != null
+            ? `${originalValue}${indexCenter16List[key].tail}`
+            : '0'
         temp.push({
           id: key,
           indexItems: indexCenter16List[key].name,
           originalValue: originalValue,
-          integral: res[0].data[0][indexCenter16List[key].point],
-          orgNo: res[0].data[0].orgNo,
+          integral: res.data[0][indexCenter16List[key].point],
+          orgNo: res.data[0].orgNo,
           ymd: this.dateTime
         })
       }
       this.centerData = temp
       this.tableLoading = false
-      // 处理右面数据
-      let resRight = res[1].data
-      for (let i = 0; i < resRight.length; i++) {
-        resRight[i].ymd = this.dateTime
-        resRight[i].orgNo = record.orgNo
+    },
+    async leftBottomClickRow(record) {
+      let params = {
+        name: record.countyName,
+        orgNo: record.orgNo,
+        ymd: this.dateTime,
+        router: 'achievements'
       }
-      this.rightInitPageData = sortRanking(resRight)
-      this.rightPageLoading = false
+      this.$store.commit(
+        'setUserAchievementsList',
+        JSON.parse(JSON.stringify(params))
+      )
+      this.$router.push({
+        name: 'achievements/site',
+        query: params
+      })
     },
     async loadRightMathPage() {
       this.rightPageData.data = []
@@ -163,8 +144,7 @@ export default {
     views,
     leftTop,
     leftBottom,
-    center,
-    rightPageForMaster
+    center
   },
   data() {
     return {
@@ -188,7 +168,8 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
+      // dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
+      dateTime: moment('2023-04-21').format('yyyy-MM-DD')
     }
   }
 }

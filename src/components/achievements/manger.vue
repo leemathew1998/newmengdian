@@ -2,24 +2,22 @@
   <div class="manage-detail-page">
     <div class="top">
       <!-- 简介 -->
-      <p class="p1" style="font-size: 23px">绩效指标详情—采集成功率</p>
-      <p class="p2" style="font-size: 14px">计算规则</p>
-      <p class="p3" style="font-size: 11px">满分10分</p>
-      <p class="p3" style="font-size: 11px">
-        采集成功的用户数量/该区域管辖的所有用户数量
-        目标值定为100%，每低0.5%，扣1分。采集成功率为95%时， 此项分数扣减为0
-      </p>
+      <p class="p1" style="font-size: 23px">绩效指标详情—{{ data.name }}</p>
+      <p class="p2" style="font-size: 14px">指标计算方式</p>
+      <p class="p3" style="font-size: 11px">{{ reasonList[data.name] }}</p>
+      <p class="p2" style="font-size: 14px">指标考核方式</p>
+      <p class="p3" style="font-size: 11px">{{ reasonListV2[data.name] }}</p>
       <!-- <p class="p2" style="font-size: 14px">计算过程</p> -->
     </div>
     <!-- 表单 -->
     <div class="lower">
       <p class="p2" style="font-size: 14px">原始数据</p>
       <a-table
-        class="manage-table"
-        :columns="columns"
-        :data-source="data"
+        :columns="tableColumnList[data.name]"
+        :data-source="data.data"
         :customRow="rowClick"
         bordered
+        :loading="loading"
         :pagination="false"
       >
       </a-table>
@@ -27,8 +25,11 @@
   </div>
 </template>
 <script>
-import { collect, control } from '@/components/achievements/constion.js'
 
+// 将control赋值给sent
+// var sent = control();
+// const rightdata = []
+import { reasonList, reasonListV2, tableColumnList } from './constion.js'
 const columns = [
   {
     title: '变压器编号',
@@ -78,75 +79,22 @@ const data = [
     total: '458'
   }
 ]
-// 将control赋值给sent
-// var sent = control();
-// const rightdata = []
-
 export default {
   data() {
     return {
-      data,
-      columns
+      reasonList,
+      reasonListV2,
+      tableColumnList
     }
   },
 
   props: {
-    rightdata: {
+    data: {
       type: Object
     },
-    rightInitPage: {
-      type: Boolean
-    }
-  },
-
-  mounted() {
-    // Array.from({ length: 100 }, (_, i) => i).forEach((i) => {
-    //   this.data.push({
-    //     name: 'C010',
-    //     success: '453',
-    //     failed: '5',
-    //     total: '458'
-    //   })
-    // })
-    // el.style.height = `${el.clientHeight}px`
-    // collect().then((res) => {
-    //   this.shuju = res
-    //   console.log(res, 'kkk')
-    // })
-    // control().then((res) => {
-    //   // this.shuju = res;
-    //   // console.log(res, "mmm");.
-    // })
-  },
-
-  watch: {
-    rightdata: {
-      deep: true,
-      handler(newval, oldval) {
-        // console.log(newval,'ssa');
-        if (oldval.id == '0') {
-          this.data = this.shuju
-        }
-        if (newval.id == '0') {
-          this.data = this.shuju
-          // console.log(this.data, "ppppp");
-        }
-        if (newval.id == '1') {
-          this.data = this.shuju
-          // console.log(this.data, "kk");
-        }
-      }
-    },
-    rightInitPage(newVal) {
-      if (newVal) {
-        setTimeout(() => {
-          this.$nextTick(() => {
-            const el = document.querySelector('.manage-table')
-            el.style.height = `${el.clientHeight}px`
-            console.dir(el.clientHeight)
-          })
-        }, 400)
-      }
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -155,12 +103,12 @@ export default {
       return {
         on: {
           click: () => {
-            this.data.push({
-              name: 'C010',
-              success: '453',
-              failed: '5',
-              total: '458'
-            })
+            // this.data.push({
+            //   name: 'C010',
+            //   success: '453',
+            //   failed: '5',
+            //   total: '458'
+            // })
             // this.$router.push('/achievements/site')
           }
         }
