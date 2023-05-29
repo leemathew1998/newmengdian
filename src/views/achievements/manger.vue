@@ -2,7 +2,7 @@
   <div class="warp-managr">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop :name="username" :dateTime.sync="dateTime"></leftTop>
+        <leftTop :name="username" :ranks="ranks" :dateTime.sync="dateTime"></leftTop>
       </div>
       <div class="left-bottom">
         <div class="box">
@@ -53,6 +53,7 @@ export default {
     this.dateTime =
       this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
     this.orgNo = this.$route.query.orgNo
+    this.ranks = JSON.parse(this.$route.query.ranks)
     // this.username = this.$route.query.name || this.$store.getters.username
     this.init2()
   },
@@ -103,7 +104,6 @@ export default {
       //   postAction(`ach/selectStaByman?ymd=${this.dateTime}&id=${record.id}`)
       //   // postAction(`ach/selectStaByman?ymd=${this.dateTime}&orgNo=${record.orgNo}`)
       // ])
-      console.log(res)
       // 处理中间数据
       let temp = []
       for (const key in indexCenter16List) {
@@ -129,7 +129,6 @@ export default {
     },
     // 右侧16接口请求
     async loadRightMathPage() {
-      console.log(this.rightPageData)
       this.rightPageData.data = []
       let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
         orgNo: this.rightPageData.params.orgNo,
@@ -174,7 +173,8 @@ export default {
       dateTime:
         this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD'),
       orgNo: '',
-      username: ''
+      username: '',
+      ranks: { day: '-', month: '-' }
     }
   }
 }

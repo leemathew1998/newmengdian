@@ -9,8 +9,7 @@
           :leftBottomColumns="leftBottomColumns"
           :leftBottomData="leftBottomData"
           :leftBottomLoading="leftBottomLoading"
-          @clickRow="leftBottomClickRow"
-        ></leftBottom>
+          @clickRow="leftBottomClickRow"></leftBottom>
       </div>
     </div>
     <div class="wrap-center animated fadeInUp">
@@ -19,8 +18,7 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"
-      ></center>
+        :rightPageData.sync="rightPageData"></center>
     </div>
     <div class="wrap-right animated fadeInRight">
       <div ref="rightMainPage" class="box" style="height: 100%">
@@ -48,12 +46,11 @@ import { sortRanking, MAP_NAME_TO_FUNC } from './utils.js'
 import moment from 'moment'
 export default {
   created() {
-    console.log(this.$route)
     this.dateTime =
       this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD')
     this.username = this.$route.query.name || this.$store.getters.username
     this.orgNo = this.$route.query.orgNo
-    this.ranks = this.$route.query.ranks
+    this.ranks = JSON.parse(this.$route.query.ranks)
     this.init2()
   },
   watch: {
@@ -121,21 +118,25 @@ export default {
       this.centerData = temp
       this.tableLoading = false
     },
-    async leftBottomClickRow(record) {
+    async leftBottomClickRow(record, index) {
       let params = {
         name: record.countyName,
         orgNo: record.orgNo,
         ymd: this.dateTime,
-        router: 'achievements/site'
+        router: 'achievements/site',
+        ranks: JSON.stringify({
+          day: index + 1,
+          month: index + 1
+        })
       }
-      console.log(record)
       this.$store.commit(
         'setUserAchievementsList',
         {
           name: this.$route.query.name,
           orgNo: this.$route.query.orgNo,
           ymd: this.dateTime,
-          router: 'achievements/site'
+          router: 'achievements/site',
+          ranks: JSON.stringify(this.ranks)
         })
       this.$router.push({
         name: 'achievements/manger',
@@ -158,7 +159,6 @@ export default {
         res.noop = 0
         this.rightPageData.data.push(res)
       }
-      console.log(this.rightPageData.data)
     }
   },
   components: {

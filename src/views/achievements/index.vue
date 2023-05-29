@@ -112,10 +112,10 @@ export default {
         orgNo: record.orgNo,
         ymd: this.dateTime,
         router: 'achievements',
-        ranks: {
-          day: index,
-          month: index
-        }
+        ranks: JSON.stringify({
+          day: index + 1,
+          month: index + 1
+        })
       }
       this.$store.commit(
         'setUserAchievementsList',
@@ -141,7 +141,6 @@ export default {
         res.noop = 0
         this.rightPageData.data.push(res)
       }
-      console.log(this.rightPageData.data)
     }
   },
   components: {
@@ -172,8 +171,8 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      // dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
-      dateTime: moment('2023-04-21').format('yyyy-MM-DD')
+      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
+      // dateTime: moment('2023-04-21').format('yyyy-MM-DD')
     }
   }
 }

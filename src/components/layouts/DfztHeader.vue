@@ -78,6 +78,10 @@ export default {
       let left = this.$store.state.user.userAchievementsList
       left = left.length > 0 ? left : false
       this.$store.commit('setUserAchievementsList', left)
+      if (item.ranks && typeof item.ranks === 'object') {
+        item.ranks = JSON.stringify(item.ranks)
+      }
+      // console.warn(item, this.$store.state.user.userAchievementsList)
       this.$router.push({
         // path: item.router,
         name: item.router,
