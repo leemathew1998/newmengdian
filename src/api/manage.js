@@ -344,3 +344,11 @@ export const getNetmuWorkOrder = (data) => {
     data: data
   })
 }
+
+export const getPicmaWorkOrder = (data) => {
+  return axios({
+    url: 'expansionBusiness/selectPicmaWorkOrder',
+    method: 'post',
+    data: data
+  })
+}

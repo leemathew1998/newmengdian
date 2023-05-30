@@ -1,127 +1,129 @@
 <template>
-  <div class="warp">
-    <div class="cardShadow">
-      <!-- 搜索 -->
-      <div class="form">
-        <SearchForm @formData="solveformData"></SearchForm>
-      </div>
-
-      <!-- 表格 -->
-      <Tables
-        @changeSelectedRowKeys="changeSelectedRowKeys"
-        @clickRow="clickRows"
-        :columns="columns"
-        :data="data"
-        :loading="loading"
-        :scroll="1500"
-      ></Tables>
+  <div class="warp-order">
+    <!-- 搜索 -->
+    <div class="form">
+      <SearchForm @formData="solveformData"></SearchForm>
     </div>
-    <!-- 弹窗 -->
-    <NewModel
+
+    <!-- 表格 -->
+    <Tables
+      @tablePaginationChange="initList"
+      :columns="columns"
+      :data="data"
+      :loading="loading"
+      :scroll="1500"
+      ref="table"
+      exportUrl="coll"
+      :showExportButton="false"
+    ></Tables>
+  </div>
+  <!-- 弹窗 -->
+  <!-- <NewModel
       :visible="NewModalVisible"
       @changeModal="NewModalVisible = !NewModalVisible"
       :newModelData="newModelData"
       :dictionary="dictionary"
       :progress="progress"
       :imgdata="imgdata"
-      name="采集运维"
-    ></NewModel>
-  </div>
+      name="图模维护"
+    ></NewModel> -->
 </template>
 <script>
-import Tables from '@/components/tables/baseTables'
+import Tables from '@/components/tables/Tables'
 import NewModel from '@/components/NewModel/pubService'
 import SearchForm from '@/components/searchform/sensitiveSearch'
 // import {
 // 	list
 // } from "@/api/collection";
 import {
-  getAction,
-  postAction,
-  selectAll
+  getPicmaWorkOrder
 } from '@/api/manage'
 // import axios from "axios";
-import {
-  sensitive
-} from '@/components/NewModel/constant.js'
 import moment from 'moment'
-const columns = [{
-  title: '用户编号',
-  dataIndex: 'consNo',
-  align: 'center',
-  ellipsis: true,
-  width: 80
-},
-{
-  title: '用户名称',
-  dataIndex: 'consName',
-  align: 'center',
-  ellipsis: true,
-  width: 70
-},
-{
-  title: '用户电话',
-  dataIndex: 'mobile',
-  ellipsis: true,
-  align: 'center',
-  width: 100
-},
-{
-  title: '用户地址',
-  dataIndex: 'elecAddr',
-  ellipsis: true,
-  align: 'center',
-  width: 200
-},
-{
-  title: '台区编号',
-  dataIndex: 'tgId',
-  align: 'center',
-  ellipsis: true,
-  width: 100
-},
-{
-  title: '台区名称',
-  dataIndex: 'tgName',
-  align: 'center',
-  ellipsis: true,
-  width: 90
-},
-{
-  title: '供电单位',
-  dataIndex: 'orgNo',
-  align: 'center',
-  ellipsis: true,
-  width: 135
-},
-{
-  title: '标记时间',
-  dataIndex: 'labelTime',
-  align: 'center',
-  ellipsis: true,
-  width: 130
-},
-{
-  title: '标记原因',
-  dataIndex: 'labelCause',
-  align: 'center',
-  ellipsis: true,
-  width: 80
-},
-{
-  title: '标记人',
-  dataIndex: 'labelName',
-  align: 'center',
-  ellipsis: true,
-  width: 80
-}
+const columns = [
+  {
+    title: '工单编号',
+    dataIndex: 'workOrderNo',
+    align: 'center',
+    ellipsis: true,
+    width: 130
+  },
+  {
+    title: '申请编号',
+    dataIndex: 'appNo',
+    align: 'center',
+    ellipsis: true,
+    width: 130
+  },
+  {
+    title: '新换装标识',
+    dataIndex: 'newReplaceId',
+    align: 'center',
+    ellipsis: true,
+    width: 150
+  },
+  {
+    title: '用户名称',
+    dataIndex: 'consName',
+    ellipsis: true,
+    align: 'center',
+    width: 70
+  },
+  {
+    title: '用户编号',
+    dataIndex: 'consNo',
+    ellipsis: true,
+    align: 'center',
+    width: 100
+  },
+  {
+    title: '台区编号',
+    dataIndex: 'tgNo',
+    align: 'center',
+    ellipsis: true,
+    width: 160
+  },
+  {
+    title: '台区名称',
+    dataIndex: 'tgName',
+    align: 'center',
+    ellipsis: true,
+    width: 120
+  },
+  {
+    title: '供电单位编号',
+    dataIndex: 'orgNo',
+    align: 'center',
+    ellipsis: true,
+    width: 120
+  },
+  {
+    title: '供电单位名称',
+    dataIndex: 'orgName',
+    align: 'center',
+    ellipsis: true,
+    width: 110
+  },
+  {
+    title: '申请类型',
+    dataIndex: 'appMode',
+    align: 'center',
+    ellipsis: true,
+    width: 170
+  },
+  {
+    title: '工单创建时间',
+    dataIndex: 'workOrderCtime',
+    align: 'center',
+    ellipsis: true,
+    width: 180
+  }
 ]
 export default {
   data () {
     return {
       loading: false,
       data: [],
-      // dataa: [],
       columns,
       selectedRowKeys: [], // 选择多行数组
       NewModalVisible: false,
@@ -139,21 +141,27 @@ export default {
     SearchForm,
     NewModel
   },
-  created () {
+  mounted () {
     this.initList()
   },
   methods: {
     // 数据展示分装
     async initList () {
       this.loading = true
-      const res = await postAction('/superiorSensitivity/selectAll')
-      this.data = res.data
+      const res = await getPicmaWorkOrder(this.$refs.table.pageParamsReturn())
+      this.$refs.table.pagination.total = res.data.total
+      res.data.records.forEach(item => {
+        item.workOrderCtime = item.workOrderCtime
+            ? moment(item.workOrderCtime).format('yyyy-MM-DD HH:mm:ss')
+            : '-'
+      })
+      this.data = res.data.records
       this.loading = false
     },
     // 搜索
     async solveformData (e) {
-      const res = await selectAll(e)
-      this.data = res.data
+      // const res = await selectAll(e)
+      // this.data = res.data
     },
     changeSelectedRowKeys (e) {
       this.selectedRowKeys = e
@@ -161,7 +169,6 @@ export default {
     // 处理点击进入详情的数据
     async clickRows (e) {
       this.clickRow = e
-      this.dictionary = sensitive
       this.newModelData = e
       this.progress.progress = 2
       this.NewModalVisible = true
@@ -171,11 +178,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.warp {
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
+.warp-order {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   .form {
     // width: 100%;
     margin: 10px 0;
