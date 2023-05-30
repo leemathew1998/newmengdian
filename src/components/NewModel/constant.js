@@ -1527,3 +1527,86 @@ export const consumer = [
     name: 'remindName'
   }
 ]
+
+export const interworking = [
+  {
+    label: '工单编号',
+    name: 'workOrderNo'
+  },
+  {
+    label: '申请编号',
+    name: 'appNo'
+  },
+  {
+    label: '用户编号',
+    name: 'consNo'
+  },
+  {
+    label: '用户名称',
+    name: 'consName'
+  },
+  {
+    label: '台区编号',
+    name: 'tgNo'
+  },
+  {
+    label: '台区名称',
+    name: 'tgName'
+  },
+  {
+    label: '供电单位编号',
+    name: 'orgNo'
+  },
+  {
+    label: '供电单位名称',
+    name: 'orgName'
+  },
+  {
+    label: '用户地址',
+    name: 'elecAddr'
+  },
+  {
+    label: '申请方式',
+    name: 'appMode'
+  },
+  {
+    label: '业务类型',
+    name: 'appTypeCode'
+  },
+  {
+    label: '受理时间',
+    name: 'handleTime'
+  },
+  {
+    label: '联系人',
+    name: 'contactName'
+  },
+  {
+    label: '联系类型',
+    name: 'contactMode'
+  },
+  {
+    label: '联系方式',
+    name: 'mobile'
+  },
+  {
+    label: '更改后地址',
+    name: 'newElecAddr'
+  },
+  {
+    label: '更改后联系人',
+    name: 'newContactName'
+  },
+  {
+    label: '更改后联系方式',
+    name: 'newMobile'
+  },
+  {
+    label: '工单创建时间',
+    name: 'workOrderCtime'
+  },
+  {
+    label: '工单状态',
+    name: 'workOrderStatus'
+  }
+]

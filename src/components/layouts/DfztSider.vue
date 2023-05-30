@@ -45,10 +45,6 @@
         <img src="@/assets/u142.svg" alt="" class="svg" />
         <span>绩效管理</span>
       </a-menu-item>
-      <!-- <a-menu-item key="/collection" v-show="roleControl['/collection']">
-        <img src="@/assets/u146.svg" alt="" class="svg" />
-        <span>采集数据</span>
-      </a-menu-item> -->
       <a-menu-item key="/basic" v-show="roleControl['/basic']">
         <img src="@/assets/u146.svg" alt="" class="svg" />
         <span>基础服务</span>

@@ -81,16 +81,41 @@ export default {
       })
       this.leftBottomData = sortRanking(res.data)
       // 此处直接模拟点击左下第一条数据
-      if (this.leftBottomData.length > 0) {
         // 目前直接使用leftBottomClickRow方法
-        await this.leftBottomClickRow(this.leftBottomData[0])
+        // await this.leftBottomClickRow(this.leftBottomData[0])
+        await this.renderCenterData(this.$route.query)
+        this.username = this.$route.query.name || this.$store.getters.username
         if (this.centerData.length > 0) {
           this.rightPageData.data = []
           this.rightPageData.params = this.centerData[0]
           this.rightPageData.name = this.centerData[0].indexItems
         }
-      }
       this.leftBottomLoading = false
+    },
+    async renderCenterData(record) {
+      this.tableLoading = true
+      const res = await postAction(
+        `ach/stationList?ymd=${this.dateTime}&id=${record.id}`
+      )
+      // 处理中间数据
+      let temp = []
+      for (const key in indexCenter16List) {
+        let originalValue = res.data[0][indexCenter16List[key].rate]
+        originalValue =
+          originalValue != null
+            ? `${originalValue}${indexCenter16List[key].tail}`
+            : '0'
+        temp.push({
+          id: key,
+          indexItems: indexCenter16List[key].name,
+          originalValue: originalValue,
+          integral: res.data[0][indexCenter16List[key].point],
+          orgNo: res.data[0].orgNo,
+          ymd: this.dateTime
+        })
+      }
+      this.centerData = temp
+      this.tableLoading = false
     },
     async leftBottomClickRow(record) {
       this.username = record.tgManager

@@ -27,6 +27,7 @@
           反向选择
         </a-button> -->
         <a-button
+          v-if="showExportButton"
           type="primary"
           icon="download"
           style="margin-right: 10px; background-color: #28599d"
@@ -106,6 +107,10 @@ export default {
     ids: {
       type: String,
       require: true
+    },
+    showExportButton: {
+      type: Boolean,
+      default: true
     }
   },
   components: {

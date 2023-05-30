@@ -2,14 +2,19 @@
   <div class="warp-site">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop :name="username" :ranks="ranks" :dateTime.sync="dateTime"></leftTop>
+        <leftTop
+          :name="username"
+          :ranks="ranks"
+          :dateTime.sync="dateTime"
+        ></leftTop>
       </div>
       <div class="left-bottom">
         <leftBottom
           :leftBottomColumns="leftBottomColumns"
           :leftBottomData="leftBottomData"
           :leftBottomLoading="leftBottomLoading"
-          @clickRow="leftBottomClickRow"></leftBottom>
+          @clickRow="leftBottomClickRow"
+        ></leftBottom>
       </div>
     </div>
     <div class="wrap-center animated fadeInUp">
@@ -18,7 +23,8 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"></center>
+        :rightPageData.sync="rightPageData"
+      ></center>
     </div>
     <div class="wrap-right animated fadeInRight">
       <div ref="rightMainPage" class="box" style="height: 100%">
@@ -76,28 +82,21 @@ export default {
         i.countyName = i.stationName
       })
       this.leftBottomData = sortRanking(res.data)
-      // 此处直接模拟点击左下第一条数据
-      if (this.leftBottomData.length > 0) {
-        await this.renderCenterData(this.leftBottomData[0])
-        if (this.centerData.length > 0) {
-          this.rightPageData.data = []
-          this.rightPageData.params = this.centerData[0]
-          this.rightPageData.name = this.centerData[0].indexItems
-        }
+      // 此处使用上级传入的centerData
+      await this.renderCenterDataV2(this.$route.query)
+      if (this.centerData.length > 0) {
+        this.rightPageData.data = []
+        this.rightPageData.params = this.centerData[0]
+        this.rightPageData.name = this.centerData[0].indexItems
       }
       this.leftBottomLoading = false
     },
-    async renderCenterData(record) {
+    // 请求河东/河西级别的中间数据
+    async renderCenterDataV2(record) {
       this.tableLoading = true
       const res = await postAction(
-        `ach/stationList?ymd=${this.dateTime}&id=${record.id}`
+        `ach/countyList?ymd=${this.dateTime}&id=${record.id}`
       )
-      // Promise.all([
-      //   postAction(`ach/stationList?ymd=${this.dateTime}&id=${record.id}`),
-      //   postAction(
-      //     `ach/selectStaByman?ymd=${this.dateTime}&orgNo=${record.orgNo}`
-      //   )
-      // ])
       // 处理中间数据
       let temp = []
       for (const key in indexCenter16List) {
@@ -127,17 +126,20 @@ export default {
         ranks: JSON.stringify({
           day: index + 1,
           month: index + 1
-        })
+        }),
+        id: record.id
       }
-      this.$store.commit(
-        'setUserAchievementsList',
-        {
-          name: this.$route.query.name,
-          orgNo: this.$route.query.orgNo,
-          ymd: this.dateTime,
-          router: 'achievements/site',
-          ranks: JSON.stringify(this.ranks)
-        })
+      this.$store.commit('setUserAchievementsList', {
+        name: this.$route.query.name,
+        orgNo: this.$route.query.orgNo,
+        ymd: this.dateTime,
+        router: 'achievements/site',
+        ranks: JSON.stringify({
+          day: index + 1,
+          month: index + 1
+        }),
+        id: this.$route.query.id
+      })
       this.$router.push({
         name: 'achievements/manger',
         query: params

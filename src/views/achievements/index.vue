@@ -115,7 +115,8 @@ export default {
         ranks: JSON.stringify({
           day: index + 1,
           month: index + 1
-        })
+        }),
+        id: record.id
       }
       this.$store.commit(
         'setUserAchievementsList',

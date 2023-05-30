@@ -7,10 +7,10 @@
           <span
             class="title"
             style="color: #999; font-weight: 900; font-size: 18px"
-            >服务类型</span
+          >服务类型</span
           >
         </th>
-       
+
         <th
           class="table_th sensitive"
           @click="changePages('/basic/sensitive')"
@@ -43,6 +43,22 @@
           <div class="topColor rightRadius"></div>
           <div class="mainTitle">计量点档案</div>
         </th>
+        <th
+          class="table_th interworking"
+          @click="changePages('/basic/interworking')"
+          ref="interworking"
+        >
+          <div class="topColor rightRadius"></div>
+          <div class="mainTitle">联网互办</div>
+        </th>
+        <th
+          class="table_th maintenance"
+          @click="changePages('/basic/maintenance')"
+          ref="maintenance"
+        >
+          <div class="topColor rightRadius"></div>
+          <div class="mainTitle">图模维护</div>
+        </th>
       </tr>
     </table>
 
@@ -54,63 +70,50 @@
 export default {
   data() {
     return {
-      selectItem: [
-        "sensitive",
-        "hourly",
-        "consumer",
-        "party",
-        
-      ],
-    };
+      selectItem: ['sensitive', 'hourly', 'consumer', 'party', 'interworking', 'maintenance']
+    }
   },
   mounted() {
-    this.$refs[this.$route.name].children[0].style.backgroundColor = "#28599d";
-    this.$refs[this.$route.name].children[0].style.borderTopLeftRadius = "5px";
-    this.$refs[this.$route.name].children[0].style.borderTopRightRadius = "5px";
-    this.$refs[this.$route.name].children[1].style.borderTopLeftRadius = "5px";
-    this.$refs[this.$route.name].children[1].style.borderTopRightRadius = "5px";
-    this.$refs[this.$route.name].children[1].style.lineHeight = "50px";
-    this.$refs[this.$route.name].children[1].style.background = "#28599d";
+    this.$refs[this.$route.name].children[0].style.backgroundColor = '#28599d'
+    this.$refs[this.$route.name].children[0].style.borderTopLeftRadius = '5px'
+    this.$refs[this.$route.name].children[0].style.borderTopRightRadius = '5px'
+    this.$refs[this.$route.name].children[1].style.borderTopLeftRadius = '5px'
+    this.$refs[this.$route.name].children[1].style.borderTopRightRadius = '5px'
+    this.$refs[this.$route.name].children[1].style.lineHeight = '50px'
+    this.$refs[this.$route.name].children[1].style.background = '#28599d'
   },
   methods: {
     changePages(path) {
-      // console.log(path.split('/')[2],this.$refs['collection'],this.$refs)
       for (let item = 0; item < this.selectItem.length; item++) {
-        this.$refs[this.selectItem[item]].children[0].style.backgroundColor =
-          "#f3f3f3";
-        this.$refs[
-          this.selectItem[item]
-        ].children[0].style.borderTopLeftRadius = "0";
-        this.$refs[
-          this.selectItem[item]
-        ].children[0].style.borderTopRightRadius = "0";
-        this.$refs[
-          this.selectItem[item]
-        ].children[1].style.borderTopLeftRadius = "0";
-        this.$refs[
-          this.selectItem[item]
-        ].children[1].style.borderTopRightRadius = "0";
-        this.$refs[this.selectItem[item]].children[1].style.lineHeight = "25px";
-        this.$refs[this.selectItem[item]].children[1].style.background =
-          "#aaaaaa";
+        const tab = this.selectItem[item]
+        this.$refs[tab].children[0].style.backgroundColor =
+          '#f3f3f3'
+        this.$refs[tab].children[0].style.borderTopLeftRadius = '0'
+        this.$refs[tab].children[0].style.borderTopRightRadius = '0'
+        this.$refs[tab].children[1].style.borderTopLeftRadius = '0'
+        this.$refs[tab].children[1].style.borderTopRightRadius = '0'
+        this.$refs[tab].children[1].style.lineHeight = '25px'
+        this.$refs[tab].children[1].style.background =
+          '#aaaaaa'
       }
-      this.$refs[path.split("/")[2]].children[0].style.height = "0px";
-      this.$refs[path.split("/")[2]].children[1].style.borderTopLeftRadius =
-        "5px";
-      this.$refs[path.split("/")[2]].children[1].style.borderTopRightRadius =
-        "5px";
-      this.$refs[path.split("/")[2]].children[1].style.lineHeight = "50px";
-      this.$refs[path.split("/")[2]].children[1].style.background = "#28599d";
-      this.$router.push(path);
-    },
-  },
-};
+      this.$refs[path.split('/')[2]].children[0].style.height = '0px'
+      this.$refs[path.split('/')[2]].children[1].style.borderTopLeftRadius =
+        '5px'
+      this.$refs[path.split('/')[2]].children[1].style.borderTopRightRadius =
+        '5px'
+      this.$refs[path.split('/')[2]].children[1].style.lineHeight = '50px'
+      this.$refs[path.split('/')[2]].children[1].style.background = '#28599d'
+      this.$router.push(path)
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
 .warp {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   #table_tr {
     display: flex;

@@ -336,3 +336,11 @@ export const getConsListweb = (params) => {
     params: params
   })
 }
+
+export const getNetmuWorkOrder = (data) => {
+  return axios({
+    url: 'expansionBusiness/selectNetmuWorkOrder',
+    method: 'post',
+    data: data
+  })
+}
