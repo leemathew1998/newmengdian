@@ -13,7 +13,7 @@
     <div class="lower">
       <p class="p2" style="font-size: 14px">原始数据</p>
       <a-table
-        :columns="tableColumnList[data.name]"
+        :columns="tableColumnListForManagr[data.name]"
         :data-source="data.data"
         :customRow="rowClick"
         bordered
@@ -29,62 +29,13 @@
 // 将control赋值给sent
 // var sent = control();
 // const rightdata = []
-import { reasonList, reasonListV2, tableColumnList } from './constion.js'
-const columns = [
-  {
-    title: '变压器编号',
-    dataIndex: 'name',
-    align: 'center'
-  },
-  {
-    title: '采集成功',
-    dataIndex: 'success',
-    align: 'center'
-  },
-  {
-    title: '采集失败',
-    dataIndex: 'failed',
-    align: 'center'
-  },
-  {
-    title: '采集总数',
-    dataIndex: 'total',
-    align: 'center'
-  }
-]
-
-const data = [
-  {
-    name: 'C007',
-    success: '453',
-    failed: '5',
-    total: '458'
-  },
-  {
-    name: 'C008',
-    success: '434',
-    failed: '5',
-    total: '439'
-  },
-  {
-    name: 'C009',
-    success: '343',
-    failed: '5',
-    total: '348'
-  },
-  {
-    name: 'C010',
-    success: '453',
-    failed: '5',
-    total: '458'
-  }
-]
+import { reasonList, reasonListV2, tableColumnListForManagr } from './constion.js'
 export default {
   data() {
     return {
       reasonList,
       reasonListV2,
-      tableColumnList
+      tableColumnListForManagr
     }
   },
 

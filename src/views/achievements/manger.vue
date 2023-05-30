@@ -10,8 +10,7 @@
             :leftBottomColumns="leftBottomColumns"
             :leftBottomData="leftBottomData"
             :leftBottomLoading="leftBottomLoading"
-            @clickRow="leftBottomClickRow"
-          ></leftBottom>
+            @clickRow="leftBottomClickRow"></leftBottom>
         </div>
       </div>
     </div>
@@ -21,8 +20,7 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"
-      ></center>
+        :rightPageData.sync="rightPageData"></center>
     </div>
     <div class="wrap-right animated fadeInRight">
       <div ref="rightMainPage" class="box" style="height: 100%">
@@ -46,7 +44,7 @@ import {
   leftBottomColumns,
   rightInitPageColumns
 } from './const.js'
-import { sortRanking, MAP_NAME_TO_FUNC } from './utils.js'
+import { sortRanking, MAP_NAME_TO_FUNC, MAP_NAME_TO_FUNC_TG_MANAGE } from './utils.js'
 import moment from 'moment'
 export default {
   created() {
@@ -81,15 +79,13 @@ export default {
       })
       this.leftBottomData = sortRanking(res.data)
       // 此处直接模拟点击左下第一条数据
-        // 目前直接使用leftBottomClickRow方法
-        // await this.leftBottomClickRow(this.leftBottomData[0])
-        await this.renderCenterData(this.$route.query)
-        this.username = this.$route.query.name || this.$store.getters.username
-        if (this.centerData.length > 0) {
-          this.rightPageData.data = []
-          this.rightPageData.params = this.centerData[0]
-          this.rightPageData.name = this.centerData[0].indexItems
-        }
+      await this.renderCenterData(this.$route.query)
+      this.username = this.$route.query.name || this.$store.getters.username
+      if (this.centerData.length > 0) {
+        this.rightPageData.data = []
+        this.rightPageData.params = this.centerData[0]
+        this.rightPageData.name = this.centerData[0].indexItems
+      }
       this.leftBottomLoading = false
     },
     async renderCenterData(record) {
@@ -118,6 +114,7 @@ export default {
       this.tableLoading = false
     },
     async leftBottomClickRow(record) {
+      this.clickTgManager = true
       this.username = record.tgManager
       this.rightInitPage = false
       this.tableLoading = true
@@ -154,19 +151,29 @@ export default {
     },
     // 右侧16接口请求
     async loadRightMathPage() {
+      // 此处比较特殊，需要判断请求所站的接口还是台区经理的接口
       this.rightPageData.data = []
-      let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
-        orgNo: this.rightPageData.params.orgNo,
-        ymd: this.rightPageData.params.ymd
-      })
-      if (res && Array.isArray(res)) {
-        res.forEach((item, i) => {
-          this.rightPageData.data.push(item)
+
+      if (this.clickTgManager) {
+        let res = await MAP_NAME_TO_FUNC_TG_MANAGE[this.rightPageData.name]({
+          ymd: this.rightPageData.params.ymd,
+          tgManager: this.username
         })
-      } else if (res && res.constructor === Object) {
-        // 终止发行比例"noop"
-        res.noop = 0
         this.rightPageData.data.push(res)
+      } else {
+        let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
+          orgNo: this.rightPageData.params.orgNo,
+          ymd: this.rightPageData.params.ymd
+        })
+        if (res && Array.isArray(res)) {
+          res.forEach((item, i) => {
+            this.rightPageData.data.push(item)
+          })
+        } else if (res && res.constructor === Object) {
+          // 终止发行比例"noop"
+          res.noop = 0
+          this.rightPageData.data.push(res)
+        }
       }
     }
   },
@@ -199,7 +206,8 @@ export default {
         this.$route.query.ymd || moment().add(-1, 'days').format('yyyy-MM-DD'),
       orgNo: '',
       username: '',
-      ranks: { day: '-', month: '-' }
+      ranks: { day: '-', month: '-' },
+      clickTgManager: false
     }
   }
 }
