@@ -13,7 +13,7 @@
     <div class="lower">
       <p class="p2" style="font-size: 14px">原始数据</p>
       <a-table
-        :columns="tableColumnListForManagr[data.name]"
+        :columns="tableColumnList[data.name]"
         :data-source="data.data"
         :customRow="rowClick"
         bordered
@@ -29,13 +29,13 @@
 // 将control赋值给sent
 // var sent = control();
 // const rightdata = []
-import { reasonList, reasonListV2, tableColumnListForManagr } from './constion.js'
+import { reasonList, reasonListV2, tableColumnList } from './constion.js'
 export default {
   data() {
     return {
       reasonList,
       reasonListV2,
-      tableColumnListForManagr
+      tableColumnList
     }
   },
 

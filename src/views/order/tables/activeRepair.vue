@@ -377,9 +377,9 @@ export default {
     },
     dealData(item) {
       item['workOrderCtime'] = moment(item['workOrderCtime']).format(
-        'MM-DD HH:MM:SS'
+        'MM-DD HH:mm:ss'
       )
-      item['faultTime'] = moment(item['faultTime']).format('MM-DD HH:MM:SS')
+      // item['faultTime'] = moment(item['faultTime']).format('MM-DD HH:MM:SS')
       if (item['workOrderStatus'] == '1') {
         item['workOrderStatus'] = '待处理'
       } else if (item['workOrderStatus'] == '2') {

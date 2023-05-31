@@ -352,3 +352,11 @@ export const getPicmaWorkOrder = (data) => {
     data: data
   })
 }
+
+export const getAcAll = (params) => {
+  return axios({
+    url: 'ach/getAcAll',
+    method: 'post',
+    params: params
+  })
+}

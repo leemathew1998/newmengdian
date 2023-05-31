@@ -93,170 +93,176 @@ export const tableColumnList = {
 	'费控复电成功率': [
 		{
 			title: '复电工单数',
-			dataIndex: 'feeNumAll',
+			dataIndex: 'feestartSucnums',
 			align: 'center'
 		},
 		{
 			title: '复电执行成功工单数',
-			dataIndex: 'feeNumSuc',
+			dataIndex: 'feestartAllnums',
 			align: 'center'
 		}
 	],
 	'费控停电成功率': [
 		{
 			title: '停电工单数',
-			dataIndex: 'feeNumAll',
+			dataIndex: 'feestopAllnums',
 			align: 'center'
 		},
 		{
 			title: '停电执行成功工单数',
-			dataIndex: 'feeNumSuc',
+			dataIndex: 'feestopSucnums',
 			align: 'center'
 		}
 	],
 	'投诉意见工单数量': [
 		{
 			title: '投诉意见工单数量',
-			dataIndex: 'num',
+			dataIndex: 'complaintNums',
+			align: 'center'
+		},
+		{
+			title: '意见工单数',
+			dataIndex: 'opinionNums',
 			align: 'center'
 		}
 	],
 	'终止发行比例': [
 		{
-			title: '站长手动归档客户数',
-			dataIndex: 'noop',
+			title: '手动归档客户数',
+			dataIndex: 'handNums',
 			align: 'center'
 		},
 		{
-			title: '该旗县所有用户数',
-			dataIndex: 'num',
+			title: '所有用户数',
+			dataIndex: 'allNums',
 			align: 'center'
 		}
 	],
 	'高损台区占比': [
 		{
 			title: '高损台区个数',
-			dataIndex: 'num1',
+			dataIndex: 'lossrateHigh',
 			align: 'center'
 		},
 		{
 			title: '所有台区个数',
-			dataIndex: 'num2',
+			dataIndex: 'tgNums',
 			align: 'center'
 		}
 	],
 	'负损台区占比': [
 		{
-			title: '负损台区个数',
+			title: 'lossrateLow',
 			dataIndex: 'num1',
 			align: 'center'
 		},
 		{
 			title: '所有台区个数',
-			dataIndex: 'num2',
+			dataIndex: 'tgNums',
 			align: 'center'
 		}
 	],
 	'经济运行台区占比': [
 		{
 			title: '线损率在0-4的台区个数',
-			dataIndex: 'num1',
+			dataIndex: 'lossrateNormal',
 			align: 'center'
 		},
 		{
 			title: '所有台区个数',
-			dataIndex: 'num2',
+			dataIndex: 'tgNums',
 			align: 'center'
 		}
 	],
 	'采集消缺及时率': [
 		{
 			title: '采集失败工单数',
-			dataIndex: 'num1',
+			dataIndex: 'failNums',
 			align: 'center'
 		},
 		{
 			title: '采集失败工单总数',
-			dataIndex: 'num2',
+			dataIndex: 'noop',
+			default: 0,
 			align: 'center'
 		}
 	],
 	'低压线损率': [
 		{
 			title: '损耗电量',
-			dataIndex: 'num1',
+			dataIndex: 'lossPqall',
 			align: 'center'
 		},
 		{
 			title: '供电量',
-			dataIndex: 'num2',
+			dataIndex: 'ppqAll',
 			align: 'center'
 		}
 	],
 	'高负损台区消缺及时率': [
 		{
 			title: '未处理高损台区工单数',
-			dataIndex: 'num1',
+			dataIndex: 'linelossThreehandle',
 			align: 'center'
 		},
 		{
 			title: '所有高损台区工单数',
-			dataIndex: 'num2',
+			dataIndex: 'linelossAlls',
 			align: 'center'
 		}
 	],
 	'电费结零率': [
 		{
 			title: '欠费金额',
-			dataIndex: 'num1',
+			dataIndex: 'rcvblPenalty',
 			align: 'center'
 		},
 		{
 			title: '发行金额',
-			dataIndex: 'num2',
+			dataIndex: 'rcvblAmt',
 			align: 'center'
 		}
 	],
 	'配电异常台区次数': [
 		{
 			title: '异常台区次数',
-			dataIndex: 'num1',
+			dataIndex: 'tgexceNums',
 			align: 'center'
 		}
 	],
 	'现场复电及时率': [
 		{
 			title: '复电时间小于45分钟',
-			dataIndex: 'num1',
+			dataIndex: 'reply45Nums',
 			align: 'center'
 		},
 		{
 			title: '所有复电工单数',
-			dataIndex: 'num2',
+			dataIndex: 'replyAllnums',
 			align: 'center'
 		}
 	],
 	'运维抢修到达及时率': [
 		{
 			title: '45min到达现场的工单数',
-			dataIndex: 'num1',
+			dataIndex: 'sceneNums',
 			align: 'center'
 		},
 		{
 			title: '所有工单数量',
-			dataIndex: 'num2',
+			dataIndex: 'sceneAllnums',
 			align: 'center'
 		}
 	],
 	'计量消缺及时率': [
 		{
 			title: '三天以上未处理',
-			dataIndex: 'num1',
+			dataIndex: 'meterThreenums',
 			align: 'center'
 		},
 		{
 			title: '所有计量异常工单',
-			dataIndex: 'num2',
+			dataIndex: 'meterAllnums',
 			align: 'center'
 		}
 	]

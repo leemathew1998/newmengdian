@@ -189,7 +189,14 @@ export const constantRouterMap = [{
 			roles: ['admin', 'user']
 		},
 		component: () => import('@/views/achievements/manger')
-
+	},
+	{
+		path: '/achievements/manger-copy',
+		name: 'achievements/manger-copy',
+		meta: {
+			roles: ['admin', 'user']
+		},
+		component: () => import('@/views/achievements/manger-copy')
 	},
 	{
 		path: '/basic',

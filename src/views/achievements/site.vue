@@ -2,19 +2,14 @@
   <div class="warp-site">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop
-          :name="username"
-          :ranks="ranks"
-          :dateTime.sync="dateTime"
-        ></leftTop>
+        <leftTop :name="username" :ranks="ranks" :dateTime.sync="dateTime"></leftTop>
       </div>
       <div class="left-bottom">
         <leftBottom
           :leftBottomColumns="leftBottomColumns"
           :leftBottomData="leftBottomData"
           :leftBottomLoading="leftBottomLoading"
-          @clickRow="leftBottomClickRow"
-        ></leftBottom>
+          @clickRow="leftBottomClickRow"></leftBottom>
       </div>
     </div>
     <div class="wrap-center animated fadeInUp">
@@ -23,8 +18,7 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"
-      ></center>
+        :rightPageData.sync="rightPageData"></center>
     </div>
     <div class="wrap-right animated fadeInRight">
       <div ref="rightMainPage" class="box" style="height: 100%">
@@ -42,7 +36,7 @@ import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
 import rightPageForSite from '@/components/achievements/rightPageForSite'
 import sites from '@/components/achievements/sites'
-import { postAction } from '@/api/manage'
+import { postAction, getAcAll } from '@/api/manage'
 import {
   indexCenter16List,
   leftBottomColumns,
@@ -134,10 +128,7 @@ export default {
         orgNo: this.$route.query.orgNo,
         ymd: this.dateTime,
         router: 'achievements/site',
-        ranks: JSON.stringify({
-          day: index + 1,
-          month: index + 1
-        }),
+        ranks: JSON.stringify(this.ranks),
         id: this.$route.query.id
       })
       this.$router.push({
@@ -147,20 +138,27 @@ export default {
     },
     // 右侧16接口请求
     async loadRightMathPage() {
-      this.rightPageData.data = []
-      let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
+      let res = await getAcAll({
         orgNo: this.rightPageData.params.orgNo,
-        ymd: this.rightPageData.params.ymd
+        ymd: this.rightPageData.params.ymd,
+        acId: '3'
       })
-      if (res && Array.isArray(res)) {
-        res.forEach((item, i) => {
-          this.rightPageData.data.push(item)
-        })
-      } else if (res && res.constructor === Object) {
-        // 终止发行比例"noop"
-        res.noop = 0
-        this.rightPageData.data.push(res)
-      }
+      console.warn('acId: 3', res)
+      this.rightPageData.data = []
+      this.rightPageData.data.push(res)
+      // let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
+      //   orgNo: this.rightPageData.params.orgNo,
+      //   ymd: this.rightPageData.params.ymd
+      // })
+      // if (res && Array.isArray(res)) {
+      //   res.forEach((item, i) => {
+      //     this.rightPageData.data.push(item)
+      //   })
+      // } else if (res && res.constructor === Object) {
+      //   // 终止发行比例"noop"
+      //   res.noop = 0
+      //   this.rightPageData.data.push(res)
+      // }
     }
   },
   components: {
