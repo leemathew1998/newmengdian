@@ -7,47 +7,101 @@
           <span
             class="title"
             style="
-                  color: #999;
-                  font-weight: 900;
-                  font-size: 18px;
-                  padding-left: 8px;
-                ">工单类型</span>
+              color: #999;
+              font-weight: 900;
+              font-size: 18px;
+              padding-left: 8px;
+            "
+          >工单类型</span
+          >
         </th>
-        <th class="table_th collection" @click="changePages('/order/collection')" ref="collection">
+        <th
+          class="table_th collection"
+          @click="changePages('/order/collection')"
+          ref="collection"
+        >
           <div class="topColor"></div>
           <div class="mainTitle">采集运维</div>
         </th>
-        <th class="table_th metering" @click="changePages('/order/metering')" ref="metering">
+        <th
+          class="table_th metering"
+          @click="changePages('/order/metering')"
+          ref="metering"
+        >
           <div class="topColor"></div>
           <div class="mainTitle">计量运维</div>
         </th>
-        <th class="table_th lineloss" @click="changePages('/order/lineloss')" ref="lineloss">
+        <th
+          class="table_th lineloss"
+          @click="changePages('/order/lineloss')"
+          ref="lineloss"
+        >
           <div class="topColor"></div>
           <div class="mainTitle">线损治理</div>
         </th>
-        <th class="table_th charge" @click="changePages('/order/charge')" ref="charge">
+        <th
+          class="table_th charge"
+          @click="changePages('/order/charge')"
+          ref="charge"
+        >
           <div class="topColor"></div>
           <div class="mainTitle">费控复电</div>
         </th>
-        <th class="table_th recovery" @click="changePages('/order/recovery')" ref="recovery">
+        <th
+          class="table_th recovery"
+          @click="changePages('/order/recovery')"
+          ref="recovery"
+        >
           <div class="topColor"></div>
           <div class="mainTitle">电费回收</div>
         </th>
-        <th class="table_th copy" @click="changePages('/order/copy')" ref="copy">
+        <th
+          class="table_th copy"
+          @click="changePages('/order/copy')"
+          ref="copy"
+        >
           <div class="topColor"></div>
           <div class="mainTitle">电费补抄</div>
         </th>
-        <th class="table_th service" @click="changePages('/order/service')" ref="service">
+        <th
+          class="table_th service"
+          @click="changePages('/order/service')"
+          ref="service"
+        >
           <div class="topColor"></div>
           <div class="mainTitle">优质服务</div>
         </th>
-        <th class="table_th activeMetering" @click="changePages('/order/activeMetering')" ref="activeMetering">
+        <th
+          class="table_th activeMetering"
+          @click="changePages('/order/activeMetering')"
+          ref="activeMetering"
+        >
           <div class="topColor"></div>
           <div class="mainTitle">主动运维</div>
         </th>
-        <th class="table_th activeRepair" @click="changePages('/order/activeRepair')" ref="activeRepair">
+        <th
+          class="table_th activeRepair"
+          @click="changePages('/order/activeRepair')"
+          ref="activeRepair"
+        >
           <div class="topColor rightRadius"></div>
           <div class="mainTitle">主动抢修</div>
+        </th>
+        <th
+          class="table_th interworking"
+          @click="changePages('/order/interworking')"
+          ref="interworking"
+        >
+          <div class="topColor rightRadius"></div>
+          <div class="mainTitle">联网互办</div>
+        </th>
+        <th
+          class="table_th maintenance"
+          @click="changePages('/order/maintenance')"
+          ref="maintenance"
+        >
+          <div class="topColor rightRadius"></div>
+          <div class="mainTitle">图模维护</div>
         </th>
       </tr>
     </table>
@@ -70,7 +124,9 @@ export default {
         'copy',
         'service',
         'activeMetering',
-        'activeRepair'
+        'activeRepair',
+        'interworking',
+        'maintenance'
       ]
     }
   },
@@ -87,23 +143,14 @@ export default {
     changePages(path) {
       // console.log(path.split('/')[2],this.$refs['collection'],this.$refs)
       for (let item = 0; item < this.selectItem.length; item++) {
-        this.$refs[this.selectItem[item]].children[0].style.backgroundColor =
-          '#f3f3f3'
-        this.$refs[
-          this.selectItem[item]
-        ].children[0].style.borderTopLeftRadius = '0'
-        this.$refs[
-          this.selectItem[item]
-        ].children[0].style.borderTopRightRadius = '0'
-        this.$refs[
-          this.selectItem[item]
-        ].children[1].style.borderTopLeftRadius = '0'
-        this.$refs[
-          this.selectItem[item]
-        ].children[1].style.borderTopRightRadius = '0'
-        this.$refs[this.selectItem[item]].children[1].style.lineHeight = '25px'
-        this.$refs[this.selectItem[item]].children[1].style.background =
-          '#aaaaaa'
+        const name = this.selectItem[item]
+        this.$refs[name].children[0].style.backgroundColor = '#f3f3f3'
+        this.$refs[name].children[0].style.borderTopLeftRadius = '0'
+        this.$refs[name].children[0].style.borderTopRightRadius = '0'
+        this.$refs[name].children[1].style.borderTopLeftRadius = '0'
+        this.$refs[name].children[1].style.borderTopRightRadius = '0'
+        this.$refs[name].children[1].style.lineHeight = '25px'
+        this.$refs[name].children[1].style.background = '#aaaaaa'
       }
       this.$refs[path.split('/')[2]].children[0].style.height = '0px'
       this.$refs[path.split('/')[2]].children[1].style.borderTopLeftRadius =

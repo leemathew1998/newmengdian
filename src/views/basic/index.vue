@@ -43,22 +43,7 @@
           <div class="topColor rightRadius"></div>
           <div class="mainTitle">计量点档案</div>
         </th>
-        <th
-          class="table_th interworking"
-          @click="changePages('/basic/interworking')"
-          ref="interworking"
-        >
-          <div class="topColor rightRadius"></div>
-          <div class="mainTitle">联网互办</div>
-        </th>
-        <th
-          class="table_th maintenance"
-          @click="changePages('/basic/maintenance')"
-          ref="maintenance"
-        >
-          <div class="topColor rightRadius"></div>
-          <div class="mainTitle">图模维护</div>
-        </th>
+
       </tr>
     </table>
 
@@ -70,7 +55,7 @@
 export default {
   data() {
     return {
-      selectItem: ['sensitive', 'hourly', 'consumer', 'party', 'interworking', 'maintenance']
+      selectItem: ['sensitive', 'hourly', 'consumer', 'party' ]
     }
   },
   mounted() {

@@ -128,6 +128,22 @@ export const constantRouterMap = [{
 				roles: ['admin', 'user']
 			},
 			component: () => import('@/views/order/tables/activeRepair')
+		},
+		{
+			path: 'interworking',
+			name: 'interworking',
+			meta: {
+				roles: ['admin', 'user']
+			},
+			component: () => import('@/views/order/tables/interworking')
+		},
+		{
+			path: 'maintenance',
+			name: 'maintenance',
+			meta: {
+				roles: ['admin', 'user']
+			},
+			component: () => import('@/views/order/tables/maintenance')
 		}]
 	},
 	{
@@ -215,23 +231,8 @@ export const constantRouterMap = [{
 				roles: ['admin', 'user']
 			},
 			component: () => import('@/views/basic/tables/party')
-		},
-		{
-			path: 'interworking',
-			name: 'interworking',
-			meta: {
-				roles: ['admin', 'user']
-			},
-			component: () => import('@/views/basic/tables/interworking')
-		},
-		{
-			path: 'maintenance',
-			name: 'maintenance',
-			meta: {
-				roles: ['admin', 'user']
-			},
-			component: () => import('@/views/basic/tables/maintenance')
 		}
+
 		]
 	},
 	{

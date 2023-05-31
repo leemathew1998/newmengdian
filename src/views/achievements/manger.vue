@@ -115,7 +115,10 @@ export default {
     },
     async leftBottomClickRow(record) {
       this.clickTgManager = true
+      // 更改左上角名称和排名
       this.username = record.tgManager
+      this.ranks.day = record.ranking
+      this.ranks.month = record.ranking
       this.rightInitPage = false
       this.tableLoading = true
       this.rightPageLoading = true
