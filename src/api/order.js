@@ -30,7 +30,7 @@ export const getAllStation = async () => {
   res.forEach(item => {
     returnList.push({
       value: item.orgNo,
-      label: item.orgName.replace('国网内蒙古东部电力有限公司', ''),
+      label: item.orgName.replace('国网内蒙古东部电力有限公司', '国网'),
       children: []
     })
     batchList.push(getAllStationByCorg(item.orgNo))
@@ -40,7 +40,7 @@ export const getAllStation = async () => {
     station.forEach(item => {
       returnList[index].children.push({
         value: item.orgNo,
-        label: item.orgName.replace('国网内蒙古东部电力有限公司', '')
+        label: item.orgName
       })
     })
   })

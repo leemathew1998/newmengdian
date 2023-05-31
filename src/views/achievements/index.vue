@@ -68,6 +68,9 @@ export default {
       const resRightBottom = await postAction(
         `ach/countyList?ymd=${this.dateTime}`
       )
+      resRightBottom.data.forEach(item => {
+        item.countyName = item.countyName.replace('国网内蒙古东部电力有限公司', '国网')
+      })
       this.leftBottomData = sortRanking(resRightBottom.data)
       // 此处直接模拟点击左下第一条数据
       if (this.leftBottomData.length > 0) {

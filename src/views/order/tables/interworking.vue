@@ -1,7 +1,7 @@
 <template>
   <div class="warp-order">
     <!-- 搜索 -->
-    <div class="form" v-if="false">
+    <div class="form">
       <SearchForm @formData="solveformData"></SearchForm>
       <!-- <SearchForm v-model="solveformData"></SearchForm> -->
     </div>
@@ -34,7 +34,7 @@
 <script>
 import Tables from '@/components/tables/Tables'
 import NewModel from '@/components/NewModel/interworking'
-import SearchForm from '@/components/searchform/SearchCollection'
+import SearchForm from '@/components/searchform/SearchInterWorking'
 import { getNetmuWorkOrder } from '@/api/manage'
 import { interworking } from '@/components/NewModel/constant.js'
 import moment from 'moment'
@@ -210,14 +210,12 @@ export default {
     SearchForm,
     NewModel
   },
-  mounted() {
-    this.initList()
-  },
   methods: {
     // 数据展示分装
     async initList() {
       this.loading = true
       let res = await getNetmuWorkOrder({
+        ...this.copyTheQueryParams,
         ...this.$refs.table.pageParamsReturn()
       })
       if (res) {
@@ -248,23 +246,8 @@ export default {
     solveformData(e) {
       console.log('solveformData', e)
       this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
-      this.loading = true
-      // coll({
-      //   ...this.copyTheQueryParams,
-      //   ...this.$refs.table.pageParamsReturn()
-      // })
-      //   .then((res) => {
-      //     let total = Object.keys(res.data)[0]
-      //     this.$refs.table.pagination.total = Number(total)
-
-      //     res.data[total].map((val) => {
-      //       this.convertFormat(val)
-      //     })
-      //     this.data = res.data[total]
-      //   })
-      //   .finally(() => {
-      //     this.loading = false
-      //   })
+      this.$refs.table.pagination.current = 1
+      this.initList()
     },
     // 处理点击进入详情的数据
     async clickRows(e) {

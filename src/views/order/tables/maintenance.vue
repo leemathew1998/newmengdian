@@ -31,7 +31,7 @@
 <script>
 import Tables from '@/components/tables/Tables'
 import NewModel from '@/components/NewModel/pubService'
-import SearchForm from '@/components/searchform/sensitiveSearch'
+import SearchForm from '@/components/searchform/SearchInterWorking'
 // import {
 // 	list
 // } from "@/api/collection";
@@ -141,14 +141,14 @@ export default {
     SearchForm,
     NewModel
   },
-  mounted () {
-    this.initList()
-  },
   methods: {
     // 数据展示分装
     async initList () {
       this.loading = true
-      const res = await getPicmaWorkOrder(this.$refs.table.pageParamsReturn())
+      const res = await getPicmaWorkOrder({
+        ...this.copyTheQueryParams,
+        ...this.$refs.table.pageParamsReturn()
+      })
       this.$refs.table.pagination.total = res.data.total
       res.data.records.forEach(item => {
         item.workOrderCtime = item.workOrderCtime
@@ -160,8 +160,9 @@ export default {
     },
     // 搜索
     async solveformData (e) {
-      // const res = await selectAll(e)
-      // this.data = res.data
+      this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
+      this.$refs.table.pagination.current = 1
+      this.initList()
     },
     changeSelectedRowKeys (e) {
       this.selectedRowKeys = e
