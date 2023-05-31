@@ -30,14 +30,14 @@
           <a-form-model-item>
             <a-date-picker
               v-decorator="[
-                'workOrderCtime1',
+                'faultTime',
                 {
-                  rules: [{ required: false, message: '请选择日期' }],
+                  rules: [{ required: false, message: '请选择停电日期' }],
                 },
               ]"
               valueFormat="yyyy-MM-DD"
               :style="{ width: '150px' }"
-              placeholder="请选择日期"
+              placeholder="请选择停电日期"
             />
           </a-form-model-item>
           <!-- 台区名称 -->
@@ -112,6 +112,7 @@
 
 <script>
 import { getAllStation } from '@/api/order.js'
+import moment from 'moment'
 export default {
   data() {
     return {
@@ -127,6 +128,9 @@ export default {
     })
     this.$nextTick(() => {
       this.form.validateFields()
+      this.form.setFieldsValue({
+        faultTime: moment().format('yyyy-MM-DD')
+      })
     })
   },
   methods: {
@@ -135,13 +139,16 @@ export default {
 
       this.form.validateFields((err, values) => {
         this.$emit('formData', values)
-        // if (!err) {
-        // 	console.log("Received values of form: ", values);
-        // }
+        if (!err) {
+        	console.log('Received values of form: ', values)
+        }
       })
     },
     handleReset() {
       this.form.resetFields()
+      this.form.setFieldsValue({
+        faultTime: moment().format('yyyy-MM-DD')
+      })
       this.$parent.loadData()
     },
 
