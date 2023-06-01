@@ -2,7 +2,11 @@
   <div class="warp-managr">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop :name="username" :ranks="ranks" :dateTime.sync="dateTime"></leftTop>
+        <leftTop
+          :name="username"
+          :ranks="ranks"
+          :dateTime.sync="dateTime"
+        ></leftTop>
       </div>
       <div class="left-bottom">
         <div class="box">
@@ -10,7 +14,8 @@
             :leftBottomColumns="leftBottomColumns"
             :leftBottomData="leftBottomData"
             :leftBottomLoading="leftBottomLoading"
-            @clickRow="leftBottomClickRow"></leftBottom>
+            @clickRow="leftBottomClickRow"
+          ></leftBottom>
         </div>
       </div>
     </div>
@@ -20,7 +25,8 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"></center>
+        :rightPageData.sync="rightPageData"
+      ></center>
     </div>
     <div class="wrap-right animated fadeInRight">
       <div ref="rightMainPage" class="box" style="height: 100%">
@@ -44,7 +50,11 @@ import {
   leftBottomColumns,
   rightInitPageColumns
 } from './const.js'
-import { sortRanking, MAP_NAME_TO_FUNC, MAP_NAME_TO_FUNC_TG_MANAGE } from './utils.js'
+import {
+  sortRanking,
+  MAP_NAME_TO_FUNC,
+  MAP_NAME_TO_FUNC_TG_MANAGE
+} from './utils.js'
 import moment from 'moment'
 export default {
   created() {
@@ -126,6 +136,7 @@ export default {
       }
       this.clickTgManager = true
       // 更改左上角名称和排名
+      this.rightPageData.tgManager = record.tgManager
       this.username = record.tgManager
       this.ranks.day = record.ranking
       this.ranks.month = record.ranking
@@ -159,7 +170,7 @@ export default {
       this.centerData = temp
       this.tableLoading = false
       // 处理右面数据
-
+      this.loadRightMathPage()
       this.rightPageLoading = false
     },
     // 右侧16接口请求
@@ -175,7 +186,7 @@ export default {
         })
         console.warn('acId: 1', res)
         this.rightPageData.data = []
-        this.rightPageData.data.push(res)
+        this.rightPageData.data.push(res || {})
         // let res = await MAP_NAME_TO_FUNC_TG_MANAGE[this.rightPageData.name]({
         //   ymd: this.rightPageData.params.ymd,
         //   tgManager: this.username
@@ -189,7 +200,7 @@ export default {
         })
         console.warn('acId: 2', res)
         this.rightPageData.data = []
-        this.rightPageData.data.push(res)
+        this.rightPageData.data.push(res || {})
         // let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
         //   orgNo: this.rightPageData.params.orgNo,
         //   ymd: this.rightPageData.params.ymd
@@ -225,6 +236,7 @@ export default {
       rightInitPageColumns,
       rightPageData: {
         name: null,
+        tgManager: null,
         data: []
       },
       leftBottomLoading: false,

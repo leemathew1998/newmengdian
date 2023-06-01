@@ -13,7 +13,8 @@
     <div class="lower">
       <p class="p2" style="font-size: 14px">原始数据</p>
       <a-table
-        :columns="tableColumnList[data.name]"
+        style="height:100px"
+        :columns="tableColumnListForManagr[data.name]"
         :data-source="data.data"
         :customRow="rowClick"
         bordered
@@ -29,13 +30,13 @@
 // 将control赋值给sent
 // var sent = control();
 // const rightdata = []
-import { reasonList, reasonListV2, tableColumnList } from './constion.js'
+import { reasonList, reasonListV2, tableColumnListForManagr } from './constion.js'
 export default {
   data() {
     return {
       reasonList,
       reasonListV2,
-      tableColumnList
+      tableColumnListForManagr
     }
   },
 
@@ -95,30 +96,6 @@ export default {
     flex-direction: column;
     .p2 {
       color: #1c9399;
-    }
-    .manage-table {
-      // flex: 1;
-			height: 100%;
-      /deep/.ant-spin-nested-loading {
-        height: 100%;
-
-        .ant-table-content {
-          height: 100%;
-
-          .ant-table-placeholder {
-            height: calc(100% - 43px);
-          }
-        }
-
-        .ant-spin-container {
-          height: 100%;
-        }
-
-        .ant-table {
-          height: 100%;
-          overflow-y: scroll;
-        }
-      }
     }
   }
 }

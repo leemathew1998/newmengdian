@@ -2,14 +2,19 @@
   <div class="warp-site">
     <div class="wrap-left animated fadeInLeft">
       <div class="left-top">
-        <leftTop :name="username" :ranks="ranks" :dateTime.sync="dateTime"></leftTop>
+        <leftTop
+          :name="username"
+          :ranks="ranks"
+          :dateTime.sync="dateTime"
+        ></leftTop>
       </div>
       <div class="left-bottom">
         <leftBottom
           :leftBottomColumns="leftBottomColumns"
           :leftBottomData="leftBottomData"
           :leftBottomLoading="leftBottomLoading"
-          @clickRow="leftBottomClickRow"></leftBottom>
+          @clickRow="leftBottomClickRow"
+        ></leftBottom>
       </div>
     </div>
     <div class="wrap-center animated fadeInUp">
@@ -18,7 +23,8 @@
         :tableLoading="tableLoading"
         :rightInitPage.sync="rightInitPage"
         :rightInitPageData="rightInitPageData"
-        :rightPageData.sync="rightPageData"></center>
+        :rightPageData.sync="rightPageData"
+      ></center>
     </div>
     <div class="wrap-right animated fadeInRight">
       <div ref="rightMainPage" class="box" style="height: 100%">
@@ -138,11 +144,20 @@ export default {
     },
     // 右侧16接口请求
     async loadRightMathPage() {
-      let res = await getAcAll({
-        orgNo: this.rightPageData.params.orgNo,
-        ymd: this.rightPageData.params.ymd,
-        acId: '3'
-      })
+      let res
+      if (this.rightPageData.name == '采集成功率') {
+        res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
+          orgNo: this.rightPageData.params.orgNo,
+          ymd: this.rightPageData.params.ymd
+        })
+      } else {
+        res = await getAcAll({
+          orgNo: this.rightPageData.params.orgNo,
+          ymd: this.rightPageData.params.ymd,
+          acId: '3'
+        })
+      }
+
       console.warn('acId: 3', res)
       this.rightPageData.data = []
       this.rightPageData.data.push(res)

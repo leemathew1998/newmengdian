@@ -10,7 +10,7 @@ export const sortRanking = (data) => {
 }
 export const MAP_NAME_TO_FUNC = {
 	'采集成功率': (params) => axios({
-		url: 'ach/getCouDetails',
+		url: 'ach/getCouDetails2',
 		method: 'post',
 		params: params
 	}),
