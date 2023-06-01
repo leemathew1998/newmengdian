@@ -361,9 +361,9 @@ export const getAcAll = (params) => {
   })
 }
 
-export const oneEach = (params) => {
+export const getAcManDetails1 = (params) => {
   return axios({
-    url: 'ach/oneEach',
+    url: 'achdetails/getAcManDetails1',
     method: 'post',
     params: params
   })

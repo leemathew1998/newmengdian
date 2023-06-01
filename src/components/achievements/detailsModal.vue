@@ -18,16 +18,8 @@
 </template>
 
 <script>
-import { oneEach } from '@/api/manage'
+import { getAcManDetails1 } from '@/api/manage'
 const columns = [
-  {
-    title: 'Full Name',
-    width: 100,
-    dataIndex: 'name',
-    key: 'name',
-    fixed: 'left'
-  },
-  { title: 'Age', width: 100, dataIndex: 'age', key: 'age', fixed: 'left' },
   { title: 'Column 1', dataIndex: 'address', key: '1', width: 150 },
   { title: 'Column 2', dataIndex: 'address', key: '2', width: 150 },
   { title: 'Column 3', dataIndex: 'address', key: '3', width: 150 },
@@ -77,9 +69,10 @@ export default {
   methods: {
     async loadData() {
       this.loading = true
-      const res = await oneEach({
+      console.log(this.data)
+      const res = await getAcManDetails1({
         tgManager: this.data.tgManager,
-        achOne: Number(this.data.params.id) + 1
+        ymd: this.data.params.ymd
       }).catch((err) => console.log(err))
       console.log(res)
       this.loading = false

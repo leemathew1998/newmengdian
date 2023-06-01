@@ -70,15 +70,16 @@ export default {
         `ach/countyList?ymd=${this.dateTime}`
       )
       resRightBottom.data.forEach((item) => {
-        let orgName = ''
-        if (MAP_NAME_TO_SORT[item.orgName]) {
-          orgName = MAP_NAME_TO_SORT[item.orgName]
+        let countyName = ''
+
+        if (MAP_NAME_TO_SORT[item.countyName]) {
+          countyName = MAP_NAME_TO_SORT[item.countyName]
         } else {
-          orgName = item.orgName
+          countyName = item.countyName
             .replace('国网内蒙古东部电力有限公司', '国网')
             .replace('分', '')
         }
-        item.countyName = orgName
+        item.countyName = countyName
       })
       this.leftBottomData = sortRanking(resRightBottom.data)
       // 此处直接模拟点击左下第一条数据
