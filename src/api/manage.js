@@ -368,3 +368,19 @@ export const getAcManDetails1 = (params) => {
     params: params
   })
 }
+
+export const getAcStaDetails1 = (params) => {
+  return axios({
+    url: 'achdetails/getAcStaDetails1',
+    method: 'post',
+    params: params
+  })
+}
+
+export const getAcCouDetails1 = (params) => {
+  return axios({
+    url: 'achdetails/getAcCouDetails1',
+    method: 'post',
+    params: params
+  })
+}

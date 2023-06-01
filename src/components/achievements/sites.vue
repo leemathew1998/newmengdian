@@ -10,72 +10,52 @@
     </div>
     <!-- 表单 -->
     <div class="lower">
-      <p class="p2" style="font-size: 14px">原始数据</p>
+      <p class="p2" style="font-size: 14px">原始数据
+        <a href="javascript:;" v-if="isShowDetailModal" @click.prevent="openModal">查看详情</a>
+      </p>
       <a-table
         :columns="tableColumnList[data.name]"
         :data-source="data.data"
-        :customRow="rowClick"
         bordered
         :loading="loading"
-        :pagination="false"
-      >
+        :pagination="false">
       </a-table>
     </div>
+    <details-modal :toggleModal.sync="toggleModal" :data="data"></details-modal>
   </div>
 </template>
 
 <script>
 import { reasonList, reasonListV2, tableColumnList } from './constion.js'
-const columns = [
-  {
-    title: '台区经理',
-    dataIndex: 'name',
-    align: 'center'
-  },
-  {
-    title: '采集成功',
-    dataIndex: 'success',
-    align: 'center'
-  },
-  {
-    title: '采集失败',
-    dataIndex: 'fail',
-    align: 'center'
-  },
-  {
-    title: '采集总数',
-    dataIndex: 'total',
-    align: 'center'
-  }
-]
-
+import detailsModal from './detailsModal.vue'
 export default {
   data() {
     return {
       reasonList,
       reasonListV2,
-      tableColumnList
+      tableColumnList,
+      toggleModal: false
     }
   },
-  props: ['data', 'loading'],
+  props: ['data', 'loading', 'clickTgManager'],
+  components: {
+    detailsModal
+  },
+  computed: {
+    isShowDetailModal() {
+      if (['采集消缺及时率'].includes(this.data.name)) {
+        return true
+      }
+      return false
+    }
+  },
   methods: {
     tablePaginationChange(pagination) {
       this.pagination.current = pagination.current // 重新设置当前页
       this.pagination.pageSize = pagination.pageSize
     },
-    rowClick(record, index) {
-      return {
-        on: {
-          click: () => {
-            // this.$router.push({
-            //   name: 'achievements/manger',
-            //   params: {
-            //     name: record.name
-            //   }
-            // })
-          }
-        }
-      }
+    openModal() {
+      this.toggleModal = true
     }
   }
 }

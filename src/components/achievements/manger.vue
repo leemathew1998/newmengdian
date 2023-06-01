@@ -13,7 +13,7 @@
     <div class="lower">
       <p class="p2" style="font-size: 14px">
         原始数据
-        <a href="javascript:;" @click.prevent="openModal">查看详情</a>
+        <a href="javascript:;" v-if="isShowDetailModal" @click.prevent="openModal">查看详情</a>
       </p>
 
       <a-table
@@ -21,8 +21,7 @@
         :data-source="data.data"
         bordered
         :loading="loading"
-        :pagination="false"
-      >
+        :pagination="false">
       </a-table>
     </div>
     <details-modal :toggleModal.sync="toggleModal" :data="data"></details-modal>
@@ -51,10 +50,22 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    clickTgManager: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
     detailsModal
+  },
+  computed: {
+    isShowDetailModal() {
+      if (['采集消缺及时率'].includes(this.data.name)) {
+        return true
+      }
+      return false
+    }
   },
   methods: {
     openModal() {
@@ -69,6 +80,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+
   .top {
     .p1 {
       color: #1c9399;
@@ -84,10 +96,12 @@ export default {
       width: 95%;
     }
   }
+
   .lower {
     flex: 1;
     display: flex;
     flex-direction: column;
+
     .p2 {
       color: #1c9399;
     }

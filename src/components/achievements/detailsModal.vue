@@ -5,41 +5,37 @@
     title="工单详情"
     :maskClosable="false"
     @cancel="close"
-    @ok="close"
-  >
+    @ok="close">
     <a-table
       :columns="columns"
       :data-source="tableData"
-      :scroll="{ x: 1500, y: 300 }"
+      :scroll="{ x: 500, y: 300 }"
       :loading="loading"
-    >
+      :pagination="false"
+      row-key="id">
     </a-table>
   </a-modal>
 </template>
 
 <script>
-import { getAcManDetails1 } from '@/api/manage'
+import moment from 'moment'
+import { getAcManDetails1, getAcStaDetails1, getAcCouDetails1 } from '@/api/manage'
 const columns = [
-  { title: 'Column 1', dataIndex: 'address', key: '1', width: 150 },
-  { title: 'Column 2', dataIndex: 'address', key: '2', width: 150 },
-  { title: 'Column 3', dataIndex: 'address', key: '3', width: 150 },
-  { title: 'Column 4', dataIndex: 'address', key: '4', width: 150 },
-  { title: 'Column 5', dataIndex: 'address', key: '5', width: 150 },
-  { title: 'Column 6', dataIndex: 'address', key: '6', width: 150 },
-  { title: 'Column 7', dataIndex: 'address', key: '7', width: 150 },
-  { title: 'Column 8', dataIndex: 'address', key: '8' }
+  { title: '工单编号', dataIndex: 'workOrderNo', width: 150 },
+  { title: '台区经理名称', dataIndex: 'tgManager', width: 150 },
+  { title: '台区编号', dataIndex: 'tgId', width: 150 },
+  { title: '台区名称', dataIndex: 'tgName', width: 150 },
+  { title: '供电单位', dataIndex: 'orgName', width: 150 },
+  { title: '用户名称', dataIndex: 'consName', width: 150 },
+  { title: '用户编号', dataIndex: 'consNo', width: 150 },
+  { title: '用户地址', dataIndex: 'elecAddr', width: 150 },
+  { title: '用户电话', dataIndex: 'mobile', width: 150 },
+  { title: '电能表资产号', dataIndex: 'meterAssetNo', width: 150 },
+  { title: '工单创建时间', dataIndex: 'workOrderCtime', width: 150 }
 ]
-
-const tableData = []
-for (let i = 0; i < 100; i++) {
-  tableData.push({
-    key: i,
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`
-  })
+const MAP_NAME_TO_FUNC = {
+  '采集消缺及时率': ['', getAcManDetails1, getAcStaDetails1, getAcCouDetails1]
 }
-
 export default {
   props: {
     toggleModal: {
@@ -62,7 +58,7 @@ export default {
     return {
       innerToggle: false,
       loading: false,
-      tableData,
+      tableData: [],
       columns
     }
   },
@@ -70,11 +66,16 @@ export default {
     async loadData() {
       this.loading = true
       console.log(this.data)
-      const res = await getAcManDetails1({
-        tgManager: this.data.tgManager,
+      const res = await MAP_NAME_TO_FUNC[this.data.name][this.data.distLv]({
+        pOrgName: this.data.params.orgName,
+        orgName: this.data.params.orgName,
+        tgManager: this.data.tgManager || undefined,
         ymd: this.data.params.ymd
       }).catch((err) => console.log(err))
-      console.log(res)
+      res && Array.isArray(res) && res.forEach(item => {
+        item.workOrderCtime = moment(item.workOrderCtime).format('yyyy-MM-DD HH:mm:ss')
+      })
+      this.tableData = Array.isArray(res) ? res : []
       this.loading = false
     },
     close() {

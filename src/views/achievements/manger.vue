@@ -31,7 +31,7 @@
     <div class="wrap-right animated fadeInRight">
       <div ref="rightMainPage" class="box" style="height: 100%">
         <div class="head">
-          <manger :data="rightPageData"> </manger>
+          <manger :data="rightPageData" :clickTgManager="clickTgManager"> </manger>
         </div>
       </div>
     </div>
@@ -51,9 +51,7 @@ import {
   rightInitPageColumns
 } from './const.js'
 import {
-  sortRanking,
-  MAP_NAME_TO_FUNC,
-  MAP_NAME_TO_FUNC_TG_MANAGE
+  sortRanking
 } from './utils.js'
 import moment from 'moment'
 export default {
@@ -117,6 +115,7 @@ export default {
           originalValue: originalValue,
           integral: res.data[0][indexCenter16List[key].point],
           orgNo: res.data[0].orgNo,
+          orgName: res.data[0].stationName,
           ymd: this.dateTime
         })
       }
@@ -138,6 +137,7 @@ export default {
       // 更改左上角名称和排名
       this.username = record.tgManager
       this.rightPageData.tgManager = record.tgManager
+      this.rightPageData.distLv = 1
       this.ranks.day = record.ranking
       this.ranks.month = record.ranking
       this.rightInitPage = false
@@ -160,6 +160,7 @@ export default {
           originalValue: originalValue,
           integral: res.data[0][indexCenter16List[key].point],
           orgNo: res.data[0].acStationId,
+          orgName: res.data[0].stationName,
           ymd: this.dateTime
         })
       }
@@ -183,11 +184,6 @@ export default {
         console.warn('acId: 1', res)
         this.rightPageData.data = []
         this.rightPageData.data.push(res || {})
-        // let res = await MAP_NAME_TO_FUNC_TG_MANAGE[this.rightPageData.name]({
-        //   ymd: this.rightPageData.params.ymd,
-        //   tgManager: this.username
-        // })
-        // this.rightPageData.data.push(res)
       } else {
         let res = await getAcAll({
           orgNo: this.rightPageData.params.orgNo,
@@ -197,19 +193,6 @@ export default {
         console.warn('acId: 2', res)
         this.rightPageData.data = []
         this.rightPageData.data.push(res || {})
-        // let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
-        //   orgNo: this.rightPageData.params.orgNo,
-        //   ymd: this.rightPageData.params.ymd
-        // })
-        // if (res && Array.isArray(res)) {
-        //   res.forEach((item, i) => {
-        //     this.rightPageData.data.push(item)
-        //   })
-        // } else if (res && res.constructor === Object) {
-        //   // 终止发行比例"noop"
-        //   res.noop = 0
-        //   this.rightPageData.data.push(res)
-        // }
       }
     }
   },
@@ -232,6 +215,7 @@ export default {
       rightInitPageColumns,
       rightPageData: {
         name: null,
+        distLv: 2,
         tgManager: null,
         data: []
       },

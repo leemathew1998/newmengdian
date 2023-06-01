@@ -111,6 +111,7 @@ export default {
           originalValue: originalValue,
           integral: res.data[0][indexCenter16List[key].point],
           orgNo: res.data[0].orgNo,
+          orgName: res.data[0].countyName,
           ymd: this.dateTime
         })
       }
@@ -195,6 +196,7 @@ export default {
       rightInitPageColumns,
       rightPageData: {
         name: null,
+        distLv: 3,
         data: []
       },
       leftBottomLoading: false,

@@ -81,8 +81,8 @@ module.exports = {
       '/api': {
         // target: 'http://10.168.2.150:9001',
         // target: 'http://10.168.4.233:8080',//杜阳阳
-        // target: 'http://25.73.1.171', // 张升（远程）
-        target: 'http://localhost:18080', // 魏加锴
+        target: 'http://25.73.1.171', // 张升（远程）
+        // target: 'http://localhost:18080', // 魏加锴
         // target: 'http://10.168.4.147:8080', //张升`
         // target: 'http://10.168.4.247:8080',//邢俊豪
         // target: 'http://10.168.4.240:8080',//程传林

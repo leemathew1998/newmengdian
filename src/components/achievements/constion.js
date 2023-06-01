@@ -93,12 +93,12 @@ export const tableColumnList = {
 	'费控复电成功率': [
 		{
 			title: '复电工单数',
-			dataIndex: 'feestartSucnums',
+			dataIndex: 'feestartAllnums',
 			align: 'center'
 		},
 		{
 			title: '复电执行成功工单数',
-			dataIndex: 'feestartAllnums',
+			dataIndex: 'feestartSucnums',
 			align: 'center'
 		}
 	],
@@ -283,12 +283,12 @@ export const tableColumnListForManagr = {
 	'费控复电成功率': [
 		{
 			title: '复电工单数',
-			dataIndex: 'feestartSucnums',
+			dataIndex: 'feestartAllnums',
 			align: 'center'
 		},
 		{
 			title: '复电执行成功工单数',
-			dataIndex: 'feestartAllnums',
+			dataIndex: 'feestartSucnums',
 			align: 'center'
 		}
 	],

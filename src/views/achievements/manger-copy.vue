@@ -31,7 +31,7 @@
     <div class="wrap-right animated fadeInRight">
       <div ref="rightMainPage" class="box" style="height: 100%">
         <div class="head">
-          <manger :data="rightPageData"> </manger>
+          <manger :data="rightPageData" :clickTgManager="clickTgManager"> </manger>
         </div>
       </div>
     </div>
@@ -51,9 +51,7 @@ import {
   rightInitPageColumns
 } from './const.js'
 import {
-  sortRanking,
-  MAP_NAME_TO_FUNC,
-  MAP_NAME_TO_FUNC_TG_MANAGE
+  sortRanking
 } from './utils.js'
 import moment from 'moment'
 export default {
@@ -117,6 +115,7 @@ export default {
           originalValue: originalValue,
           integral: res.data[0][indexCenter16List[key].point],
           orgNo: res.data[0].orgNo,
+          orgName: res.data[0].stationName,
           ymd: this.dateTime
         })
       }
@@ -136,6 +135,7 @@ export default {
       }
       this.clickTgManager = true
       // 更改左上角名称和排名
+      this.rightPageData.distLv = 1
       this.rightPageData.tgManager = record.tgManager
       this.username = record.tgManager
       this.ranks.day = record.ranking
@@ -164,6 +164,7 @@ export default {
           originalValue: originalValue,
           integral: res.data[0][indexCenter16List[key].point],
           orgNo: res.data[0].acStationId,
+          orgName: res.data[0].stationName,
           ymd: this.dateTime
         })
       }
@@ -236,6 +237,7 @@ export default {
       rightInitPageColumns,
       rightPageData: {
         name: null,
+        distLv: 2,
         tgManager: null,
         data: []
       },
