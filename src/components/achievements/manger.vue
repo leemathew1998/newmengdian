@@ -11,35 +11,39 @@
     </div>
     <!-- 表单 -->
     <div class="lower">
-      <p class="p2" style="font-size: 14px">原始数据</p>
+      <p class="p2" style="font-size: 14px">
+        原始数据
+        <a href="javascript:;" @click.prevent="openModal">查看详情</a>
+      </p>
+
       <a-table
-        style="height:100px"
         :columns="tableColumnListForManagr[data.name]"
         :data-source="data.data"
-        :customRow="rowClick"
         bordered
         :loading="loading"
         :pagination="false"
       >
       </a-table>
     </div>
+    <details-modal :toggleModal.sync="toggleModal" :data="data"></details-modal>
   </div>
 </template>
 <script>
-
-// 将control赋值给sent
-// var sent = control();
-// const rightdata = []
-import { reasonList, reasonListV2, tableColumnListForManagr } from './constion.js'
+import {
+  reasonList,
+  reasonListV2,
+  tableColumnListForManagr
+} from './constion.js'
+import detailsModal from './detailsModal.vue'
 export default {
   data() {
     return {
       reasonList,
       reasonListV2,
-      tableColumnListForManagr
+      tableColumnListForManagr,
+      toggleModal: false
     }
   },
-
   props: {
     data: {
       type: Object
@@ -49,22 +53,12 @@ export default {
       default: false
     }
   },
-
+  components: {
+    detailsModal
+  },
   methods: {
-    rowClick(record, index) {
-      return {
-        on: {
-          click: () => {
-            // this.data.push({
-            //   name: 'C010',
-            //   success: '453',
-            //   failed: '5',
-            //   total: '458'
-            // })
-            // this.$router.push('/achievements/site')
-          }
-        }
-      }
+    openModal() {
+      this.toggleModal = true
     }
   }
 }

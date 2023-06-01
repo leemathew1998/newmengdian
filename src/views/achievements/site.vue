@@ -124,8 +124,8 @@ export default {
         ymd: this.dateTime,
         router: 'achievements/site',
         ranks: JSON.stringify({
-          day: index + 1,
-          month: index + 1
+          day: record.ranking,
+          month: record.ranking
         }),
         id: record.id
       }

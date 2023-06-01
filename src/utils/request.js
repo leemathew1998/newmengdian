@@ -19,7 +19,7 @@ let apiBaseUrl = '/api/'
 const service = axios.create({
   // baseURL: '/jeecg-boot',
   baseURL: apiBaseUrl, // api base_url
-  timeout: 3000 // 请求超时时间
+  timeout: 90000 // 请求超时时间
 })
 
 const err = (error) => {
@@ -131,12 +131,12 @@ service.interceptors.request.use(
     if (!config.params) {
       config.params = {}
     }
-    if (!store.getters.username && config.url.indexOf('SysUser') != -1) {
+    if (!store.getters.username && config.url.indexOf('SysUser') === -1) {
       // store.commit('clearUserInfo', [])
-      notification['warning']({
-        message: '登录异常！请重新登录！但是先不处理',
-        duration: 4
-      })
+      // notification['warning']({
+      //   message: '登录异常！请重新登录！但是先不处理',
+      //   duration: 4
+      // })
       // router.push({
       //   name: '/overView',
       //   params: {

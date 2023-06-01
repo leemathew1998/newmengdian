@@ -38,6 +38,7 @@ import leftTop from '@/components/achievements/leftTop'
 import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
 import { postAction } from '@/api/manage'
+import { MAP_NAME_TO_SORT } from '@/api/order.js'
 import {
   indexCenter16List,
   leftBottomColumns,
@@ -68,8 +69,16 @@ export default {
       const resRightBottom = await postAction(
         `ach/countyList?ymd=${this.dateTime}`
       )
-      resRightBottom.data.forEach(item => {
-        item.countyName = item.countyName.replace('国网内蒙古东部电力有限公司', '国网')
+      resRightBottom.data.forEach((item) => {
+        let orgName = ''
+        if (MAP_NAME_TO_SORT[item.orgName]) {
+          orgName = MAP_NAME_TO_SORT[item.orgName]
+        } else {
+          orgName = item.orgName
+            .replace('国网内蒙古东部电力有限公司', '国网')
+            .replace('分', '')
+        }
+        item.countyName = orgName
       })
       this.leftBottomData = sortRanking(resRightBottom.data)
       // 此处直接模拟点击左下第一条数据
@@ -116,8 +125,8 @@ export default {
         ymd: this.dateTime,
         router: 'achievements',
         ranks: JSON.stringify({
-          day: index + 1,
-          month: index + 1
+          day: record.ranking,
+          month: record.ranking
         }),
         id: record.id
       }
@@ -175,8 +184,8 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      // dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
-      dateTime: moment('2023-04-21').format('yyyy-MM-DD')
+      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
+      // dateTime: moment('2023-04-21').format('yyyy-MM-DD')
     }
   }
 }

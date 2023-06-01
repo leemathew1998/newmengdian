@@ -360,3 +360,11 @@ export const getAcAll = (params) => {
     params: params
   })
 }
+
+export const oneEach = (params) => {
+  return axios({
+    url: 'ach/oneEach',
+    method: 'post',
+    params: params
+  })
+}
