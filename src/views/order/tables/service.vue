@@ -93,6 +93,13 @@ const columns = [
     width: 100
   },
   {
+    title: '供电单位',
+    dataIndex: 'orgName',
+    align: 'center',
+    ellipsis: true,
+    width: 120
+  },
+  {
     title: '工单日期',
     dataIndex: 'workOrderCtime',
     align: 'center',
