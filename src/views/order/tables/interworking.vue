@@ -145,27 +145,27 @@ const columns = [
     ellipsis: true,
     width: 110
   },
-  {
-    title: '更改后地址',
-    dataIndex: 'newElecAddr',
-    align: 'center',
-    ellipsis: true,
-    width: 110
-  },
-  {
-    title: '更改后联系人',
-    dataIndex: 'newContactName',
-    align: 'center',
-    ellipsis: true,
-    width: 110
-  },
-  {
-    title: '更改后联系方式',
-    dataIndex: 'newMobile',
-    align: 'center',
-    ellipsis: true,
-    width: 110
-  },
+  // {
+  //   title: '更改后地址',
+  //   dataIndex: 'newElecAddr',
+  //   align: 'center',
+  //   ellipsis: true,
+  //   width: 110
+  // },
+  // {
+  //   title: '更改后联系人',
+  //   dataIndex: 'newContactName',
+  //   align: 'center',
+  //   ellipsis: true,
+  //   width: 110
+  // },
+  // {
+  //   title: '更改后联系方式',
+  //   dataIndex: 'newMobile',
+  //   align: 'center',
+  //   ellipsis: true,
+  //   width: 110
+  // },
   // {
   //   title: '所站长查看标识',
   //   dataIndex: 'countStatus',

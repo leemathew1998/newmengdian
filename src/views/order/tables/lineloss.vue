@@ -82,12 +82,12 @@ const columns = [
   //   // ellipsis: true,
   //   align: 'center'
   // },
-  // {
-  //   title: '工单周期',
-  //   dataIndex: 'workOrderCycle',
-  //   ellipsis: true,
-  //   align: 'center'
-  // },
+  {
+    title: '工单周期',
+    dataIndex: 'workOrderCycle',
+    ellipsis: true,
+    align: 'center'
+  },
   {
     title: '工单状态',
     dataIndex: 'workOrderStatus',
@@ -143,13 +143,12 @@ export default {
       this.$refs.table.pagination.total = Number(total)
       this.data = res.data[total]
       for (let i = 0; i < this.data.length; i++) {
-        if (this.data[i].workOrderCycle == '1') {
-          this.data[i].workOrderCycle = '连续1天工单'
-        } else if (this.data[i].workOrderCycle >= '2') {
-          this.data[i].workOrderCycle = '连续2天工单'
-        } else if (this.data[i].workOrderCycle == '0') {
-          this.data[i].workOrderCycle = '连续0天工单'
+        if (this.data[i].workOrderCycle == 0) {
+          this.data[i].workOrderCycle = `当日工单`
+        } else {
+          this.data[i].workOrderCycle = `连续${this.data[i].workOrderCycle}天工单`
         }
+
         if (this.data[i].workOrderStatus == '1') {
           this.data[i].workOrderStatus = '待处理'
         } else if (this.data[i].workOrderStatus == '2') {
@@ -243,12 +242,10 @@ export default {
       this.$refs.table.pagination.total = Number(total)
       this.data = res.data[total]
       for (let i = 0; i < this.data.length; i++) {
-        if (this.data[i].workOrderCycle == '1') {
-          this.data[i].workOrderCycle = '连续1天工单'
-        } else if (this.data[i].workOrderCycle >= '2') {
-          this.data[i].workOrderCycle = '连续2天工单'
-        } else if (this.data[i].workOrderCycle == '0') {
-          this.data[i].workOrderCycle = '连续0天工单'
+        if (this.data[i].workOrderCycle == 0) {
+          this.data[i].workOrderCycle = `当日工单`
+        } else {
+          this.data[i].workOrderCycle = `连续${this.data[i].workOrderCycle}天工单`
         }
         if (this.data[i].workOrderStatus == '1') {
           this.data[i].workOrderStatus = '待处理'
