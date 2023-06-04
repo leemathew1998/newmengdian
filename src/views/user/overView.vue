@@ -194,35 +194,11 @@ export default {
       this.userName = '请登录'
       this.orgName = ''
       cookie.clearCookie('ticket')
-      // this.$router.push("/user/login");
-      // this.$router.push('/overView')
     },
     // 免登录获取token
     handleSubmit() {
       console.log('进入isc')
       window.open('http://25.73.1.171/api/SysUser/login1', '_self')
-      // await getAction(`http://25.73.1.171/api/SysUser/login1`)
-      // this.userName = "？？？";
-      // this.Login()
-      //   .then((res) => {
-      //     this.$store.commit("setUserInfo", {
-      //       token: res.token,
-      //       username: "刘月焱",
-      //       role: "admin",
-      //       password: 111,
-      //       department: "哈克供电营业站",
-      //     });
-      //     this.$emit("success", res);
-      //   })
-      //   .catch((err) => {
-      //     this.$emit("fail", err);
-      //     // if (err.info == "用户已存在,自动登录") {
-      //     // 	// this.$router.push('/dashboard')
-      //     // 	this.$emit('success', err.info)
-      //     // } else {
-      //     // 	this.$emit('fail', err)
-      //     // }
-      //   });
     }
   },
   components: {
