@@ -19,7 +19,7 @@
 
 <script>
 import moment from 'moment'
-import { getAcManDetails1, getAcStaDetails1, getAcCouDetails1 } from '@/api/manage'
+import { getAcManDetails1, getAcStaDetails1, getAcCouDetails1, getAcCityDetails1 } from '@/api/manage'
 const columns = [
   { title: '工单编号', dataIndex: 'workOrderNo', width: 150 },
   { title: '台区经理名称', dataIndex: 'tgManager', width: 150 },
@@ -34,7 +34,7 @@ const columns = [
   { title: '工单创建时间', dataIndex: 'workOrderCtime', width: 150 }
 ]
 const MAP_NAME_TO_FUNC = {
-  '采集消缺及时率': ['', getAcManDetails1, getAcStaDetails1, getAcCouDetails1]
+  '采集消缺及时率': ['', getAcManDetails1, getAcStaDetails1, getAcCouDetails1, getAcCityDetails1]
 }
 export default {
   props: {
@@ -70,7 +70,8 @@ export default {
         pOrgName: this.data.params.orgName,
         orgName: this.data.params.orgName,
         tgManager: this.data.tgManager || undefined,
-        ymd: this.data.params.ymd
+        ymd: this.data.params.ymd,
+        orgNo: this.data.params.orgNo
       }).catch((err) => console.log(err))
       res && Array.isArray(res) && res.forEach(item => {
         item.workOrderCtime = moment(item.workOrderCtime).format('yyyy-MM-DD HH:mm:ss')

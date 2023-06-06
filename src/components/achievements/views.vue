@@ -15,27 +15,31 @@
     </div>
     <!-- 表单 -->
     <div class="lower">
-      <p class="p2" style="font-size: 14px">原始数据</p>
+      <p class="p2" style="font-size: 14px">原始数据
+        <a href="javascript:;" v-if="isShowDetailModal" @click.prevent="openModal">查看详情</a>
+      </p>
       <a-table
-        :columns="tableColumnList[data.name]"
+        :columns="tableColumnListForManagr[data.name]"
         :data-source="data.data"
-        :customRow="rowClick"
         bordered
         :loading="loading"
         :pagination="false"
       >
       </a-table>
     </div>
+    <details-modal :toggleModal.sync="toggleModal" :data="data"></details-modal>
   </div>
 </template>
 <script>
-import { reasonList, reasonListV2, tableColumnList } from './constion.js'
+import { reasonList, reasonListV2, tableColumnListForManagr } from './constion.js'
+import detailsModal from './detailsModal.vue'
 export default {
   data() {
     return {
       reasonList,
       reasonListV2,
-      tableColumnList
+      tableColumnListForManagr,
+      toggleModal: false
     }
   },
   props: {
@@ -47,20 +51,20 @@ export default {
       default: false
     }
   },
-  methods: {
-    rowClick(record, index) {
-      return {
-        on: {
-          click: () => {
-            // this.$router.push({
-            //   name: 'achievements/site',
-            //   params: {
-            //     name: record.name
-            //   }
-            // })
-          }
-        }
+  components: {
+    detailsModal
+  },
+  computed: {
+    isShowDetailModal() {
+      if (['采集消缺及时率'].includes(this.data.name)) {
+        return true
       }
+      return false
+    }
+  },
+  methods: {
+    openModal() {
+      this.toggleModal = true
     }
   }
 }

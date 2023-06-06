@@ -211,15 +211,16 @@ export default {
         {
           label: '皮尔逊公式',
           name: 'pilsonFormula'
-        },
-        {
-          label: '分时计算结果',
-          name: 'timeCalculation'
-        },
-        {
-          label: '分相计算结果',
-          name: 'phaseCalculation'
         }
+        // 张升6.6日说先注销
+        // {
+        //   label: '分时计算结果',
+        //   name: 'timeCalculation'
+        // },
+        // {
+        //   label: '分相计算结果',
+        //   name: 'phaseCalculation'
+        // }
       )
       this.newModelData['pilsonFormula'] = '点击查看'
       this.newModelData['timeCalculation'] = '点击查看'

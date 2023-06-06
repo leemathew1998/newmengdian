@@ -37,18 +37,24 @@ import views from '@/components/achievements/views'
 import leftTop from '@/components/achievements/leftTop'
 import leftBottom from '@/components/achievements/leftBottom'
 import center from '@/components/achievements/center'
-import { postAction } from '@/api/manage'
+import { postAction, getAcAll } from '@/api/manage'
 import { MAP_NAME_TO_SORT } from '@/api/order.js'
 import {
   indexCenter16List,
   leftBottomColumns,
   rightInitPageColumns
 } from './const.js'
-import { sortRanking, MAP_NAME_TO_FUNC } from './utils.js'
+import { sortRanking } from './utils.js'
 import moment from 'moment'
 export default {
-  mounted() {
+  async mounted() {
     this.init2()
+    await this.renderCenterData()
+    if (this.centerData.length > 0) {
+      this.rightPageData.data = []
+      this.rightPageData.params = this.centerData[0]
+      this.rightPageData.name = this.centerData[0].indexItems
+    }
   },
   watch: {
     'rightPageData.name': {
@@ -82,22 +88,13 @@ export default {
         item.countyName = countyName
       })
       this.leftBottomData = sortRanking(resRightBottom.data)
-      // 此处直接模拟点击左下第一条数据
-      if (this.leftBottomData.length > 0) {
-        await this.renderCenterData(this.leftBottomData[0])
-        if (this.centerData.length > 0) {
-          this.rightPageData.data = []
-          this.rightPageData.params = this.centerData[0]
-          this.rightPageData.name = this.centerData[0].indexItems
-        }
-      }
       this.leftBottomLoading = false
     },
     // 只请求中间的数据
-    async renderCenterData(record) {
+    async renderCenterData() {
       this.tableLoading = true
       const res = await postAction(
-        `ach/countyList?ymd=${this.dateTime}&id=${record.id}`
+        `ach/cityList?ymd=${this.dateTime}&orgNo=15421`
       )
       // 处理中间数据
       let temp = []
@@ -140,21 +137,17 @@ export default {
         query: params
       })
     },
+    // 右侧16接口请求
     async loadRightMathPage() {
-      this.rightPageData.data = []
-      let res = await MAP_NAME_TO_FUNC[this.rightPageData.name]({
-        orgNo: this.rightPageData.params.orgNo,
-        ymd: this.rightPageData.params.ymd
+      let res = await getAcAll({
+        orgNo: '15421',
+        ymd: this.rightPageData.params.ymd,
+        acId: '4'
       })
-      if (res && Array.isArray(res)) {
-        res.forEach((item, i) => {
-          this.rightPageData.data.push(item)
-        })
-      } else if (res && res.constructor === Object) {
-        // 终止发行比例"noop"
-        res.noop = 0
-        this.rightPageData.data.push(res)
-      }
+
+      console.warn('acId: 4', res)
+      this.rightPageData.data = []
+      this.rightPageData.data.push(res)
     }
   },
   components: {
@@ -174,6 +167,7 @@ export default {
       rightInitPageColumns,
       rightPageData: {
         name: null,
+        distLv: 4,
         params: {
           successALL: 0,
           failALL: 0,
