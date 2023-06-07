@@ -31,7 +31,8 @@
     <div class="wrap-right animated fadeInRight">
       <div ref="rightMainPage" class="box" style="height: 100%">
         <div class="head">
-          <manger :data="rightPageData" :clickTgManager="clickTgManager"> </manger>
+          <manger :data="rightPageData" :clickTgManager="clickTgManager">
+          </manger>
         </div>
       </div>
     </div>
@@ -50,9 +51,7 @@ import {
   leftBottomColumns,
   rightInitPageColumns
 } from './const.js'
-import {
-  sortRanking
-} from './utils.js'
+import { sortRanking } from './utils.js'
 import moment from 'moment'
 export default {
   created() {
@@ -103,35 +102,42 @@ export default {
       )
       // 处理中间数据
       let temp = []
-      for (const key in indexCenter16List) {
-        let originalValue = res.data[0][indexCenter16List[key].rate]
-        originalValue =
-          originalValue != null
-            ? `${originalValue}${indexCenter16List[key].tail}`
-            : '0'
-        temp.push({
-          id: key,
-          indexItems: indexCenter16List[key].name,
-          originalValue: originalValue,
-          integral: res.data[0][indexCenter16List[key].point],
-          orgNo: res.data[0].orgNo,
-          orgName: res.data[0].stationName,
-          ymd: this.dateTime
-        })
+      if (res.data.length > 0) {
+        for (const key in indexCenter16List) {
+          let originalValue = res.data[0][indexCenter16List[key].rate]
+          originalValue =
+            originalValue != null
+              ? `${originalValue}${indexCenter16List[key].tail}`
+              : '0'
+          temp.push({
+            id: key,
+            indexItems: indexCenter16List[key].name,
+            originalValue: originalValue,
+            integral: res.data[0][indexCenter16List[key].point],
+            orgNo: res.data[0].orgNo,
+            orgName: res.data[0].stationName,
+            ymd: this.dateTime
+          })
+        }
       }
+
       this.centerData = temp
       this.tableLoading = false
     },
     async leftBottomClickRow(record) {
       if (!this.clickTgManager) {
-        const previous = JSON.parse(JSON.stringify(this.$route.query))
-        if (this.$router.history.current.name == 'achievements/manger') {
-          previous.router = 'achievements/manger-copy'
-        } else {
-          previous.router = 'achievements/manger'
+        const len = this.$store.state.user.userAchievementsList.length
+        const theLastOne = this.$store.state.user.userAchievementsList[len - 1]
+        if (theLastOne.router.indexOf('manger') === -1) {
+          const previous = JSON.parse(JSON.stringify(this.$route.query))
+          if (this.$router.history.current.name == 'achievements/manger') {
+            previous.router = 'achievements/manger-copy'
+          } else {
+            previous.router = 'achievements/manger'
+          }
+          // 由于此处会重复push进入同一个页面，直接复制了一个页面出来，这样的坏处就是修改需要修改两个文件
+          this.$store.commit('setUserAchievementsList', previous)
         }
-        // 由于此处会重复push进入同一个页面，直接复制了一个页面出来，这样的坏处就是修改需要修改两个文件
-        this.$store.commit('setUserAchievementsList', previous)
       }
       this.clickTgManager = true
       // 更改左上角名称和排名

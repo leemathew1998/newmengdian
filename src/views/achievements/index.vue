@@ -48,8 +48,11 @@ import { sortRanking } from './utils.js'
 import moment from 'moment'
 export default {
   async mounted() {
+    // 处理左下角数据
     this.init2()
+    // 中间数据
     await this.renderCenterData()
+    // 如果中间有数据，那就把右侧也给显示出来
     if (this.centerData.length > 0) {
       this.rightPageData.data = []
       this.rightPageData.params = this.centerData[0]
@@ -98,21 +101,24 @@ export default {
       )
       // 处理中间数据
       let temp = []
-      for (const key in indexCenter16List) {
-        let originalValue = res.data[0][indexCenter16List[key].rate]
-        originalValue =
-          originalValue != null
-            ? `${originalValue}${indexCenter16List[key].tail}`
-            : '0'
-        temp.push({
-          id: key,
-          indexItems: indexCenter16List[key].name,
-          originalValue: originalValue,
-          integral: res.data[0][indexCenter16List[key].point],
-          orgNo: res.data[0].orgNo,
-          ymd: this.dateTime
-        })
+      if (res.data.length > 0) {
+        for (const key in indexCenter16List) {
+          let originalValue = res.data[0][indexCenter16List[key].rate]
+          originalValue =
+            originalValue != null
+              ? `${originalValue}${indexCenter16List[key].tail}`
+              : '0'
+          temp.push({
+            id: key,
+            indexItems: indexCenter16List[key].name,
+            originalValue: originalValue,
+            integral: res.data[0][indexCenter16List[key].point],
+            orgNo: res.data[0].orgNo,
+            ymd: this.dateTime
+          })
+        }
       }
+
       this.centerData = temp
       this.tableLoading = false
     },
@@ -128,6 +134,7 @@ export default {
         }),
         id: record.id
       }
+      // 提供给右上角返回使用
       this.$store.commit(
         'setUserAchievementsList',
         JSON.parse(JSON.stringify(params))
@@ -139,6 +146,7 @@ export default {
     },
     // 右侧16接口请求
     async loadRightMathPage() {
+      // 点击查看详情
       let res = await getAcAll({
         orgNo: '15421',
         ymd: this.rightPageData.params.ymd,
@@ -179,7 +187,7 @@ export default {
       tableLoading: false,
       rightPageLoading: false,
       // 结束
-      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD') //
+      dateTime: moment().add(-1, 'days').format('yyyy-MM-DD')
       // dateTime: moment('2023-04-21').format('yyyy-MM-DD')
     }
   }
