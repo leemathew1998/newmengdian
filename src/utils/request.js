@@ -146,6 +146,8 @@ service.interceptors.request.use(
     }
     // console.log('request config', config)
     let userName = cookie.getCookie('userName')
+    let orgNo = cookie.getCookie('orgNo')
+    config.params['orgNo1'] = orgNo || 'test'
     config.params['loginName'] = userName || 'test'
     config.params['loName2'] = store.getters.username || 'test'
     config.params['role'] = store.getters.role || 'test'
