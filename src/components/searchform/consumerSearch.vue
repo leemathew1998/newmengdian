@@ -9,8 +9,7 @@
             v-decorator="['consNo', { rules: [{ message: '请输入用户编号' }] }]"
             placeholder="用户编号"
             :style="{ width: '150px' }"
-            allowClear
-          >
+            allowClear>
             <!-- @change="ande" 实时-->
           </a-input>
         </a-form-item>
@@ -23,8 +22,7 @@
             ]"
             placeholder="请输入用户名称"
             :style="{ width: '150px' }"
-            allowClear
-          >
+            allowClear>
           </a-input>
         </a-form-item>
 
@@ -41,6 +39,8 @@
             :style="{ minWidth: '150px' }"
             placeholder="请选择供电单位"
             allowClear
+            @change="orgNoSelected"
+            changeOnSelect
           ></a-cascader>
         </a-form-item>
         <!-- 台区名称 -->
@@ -64,8 +64,7 @@
             search-placeholder="请选择用电类别"
             placeholder="请选择用电类别"
             :style="{ minWidth: '150px', maxWidth: '250px' }"
-            allowClear
-          />
+            allowClear />
         </a-form-item>
         <!-- 标记时间 -->
         <!-- <a-form-item>
@@ -73,14 +72,7 @@
 						allowClear />
 				</a-form-item> -->
         <a-form-item class="search">
-          <a-button
-            id="sear"
-            type="primary"
-            icon="search"
-            html-type="submit"
-            @click="handleSubmit"
-          >查询</a-button
-          >
+          <a-button id="sear" type="primary" icon="search" html-type="submit" @click="handleSubmit">查询</a-button>
         </a-form-item>
         <a-form-item>
           <a-button icon="reload" @click="handleReset"> 重置 </a-button>
@@ -226,7 +218,17 @@ export default {
         this.$emit('formData', values)
       })
     },
-
+    // 管理单位选择
+    orgNoSelected(_, selectedOptions) {
+      const item = selectedOptions.pop()
+      if (item.children && item.children.length > 0) {
+        this.$nextTick(() => {
+          this.form.setFieldsValue({
+            orgNo: [item.value]
+          })
+        })
+      }
+    },
     onChange(date, dateString) {
       console.log(dateString)
     }
@@ -267,9 +269,11 @@ export default {
   // display: none;
   margin-bottom: 0;
 }
+
 /deep/ .ant-btn-primary {
   background-color: #28599d;
 }
+
 // .ant-form,
 // .ant-form-inline {
 // 	display: flex;

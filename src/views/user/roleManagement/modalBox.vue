@@ -153,7 +153,6 @@ export default {
         values.orgNo = this.tempSaveSelectOrgNo
 
         // values.orgNo = values.orgNo ? values.orgNo[0] : undefined
-        console.log(values, this.tempSaveSelectOrgNo)
         let res
         // 新增和修改都在这里
         if (values.hasOwnProperty('readNameList')) {

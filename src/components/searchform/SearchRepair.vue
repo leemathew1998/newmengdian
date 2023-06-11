@@ -53,10 +53,12 @@
               :style="{ minWidth: '150px' }"
               placeholder="请选择供电单位"
               allowClear
+              @change="orgNoSelected"
+              changeOnSelect
             />
           </a-form-item>
           <!-- 工单状态 -->
-          <a-form-item>
+          <!-- <a-form-item>
             <a-select
               v-decorator="[
                 'errorStetus',
@@ -69,7 +71,7 @@
               <a-select-option value="分">分</a-select-option>
               <a-select-option value="合">合</a-select-option>
             </a-select>
-          </a-form-item>
+          </a-form-item> -->
           <!-- 工单编号 -->
           <!-- <a-form-item>
 						<a-input v-decorator="[
@@ -128,16 +130,14 @@ export default {
     })
     this.$nextTick(() => {
       this.form.validateFields()
-      this.form.setFieldsValue({
-        faultTime: moment().format('yyyy-MM-DD')
-      })
+      this.handleSubmit()
     })
   },
   methods: {
     handleSubmit(e) {
-      e.preventDefault()
-
+      e && e.preventDefault()
       this.form.validateFields((err, values) => {
+        values.orgNo = values.orgNo ? values.orgNo.slice(-1)[0] : values.orgNo
         this.$emit('formData', values)
         if (!err) {
         	console.log('Received values of form: ', values)
@@ -146,12 +146,19 @@ export default {
     },
     handleReset() {
       this.form.resetFields()
-      this.form.setFieldsValue({
-        faultTime: moment().format('yyyy-MM-DD')
-      })
-      this.$parent.loadData()
+      this.handleSubmit()
     },
-
+    // 管理单位选择
+    orgNoSelected(_, selectedOptions) {
+      const item = selectedOptions.pop()
+      if (item.children && item.children.length > 0) {
+        this.$nextTick(() => {
+          this.form.setFieldsValue({
+            orgNo: [item.value]
+          })
+        })
+      }
+    },
     onChange(date, dateString) {
       console.log(date, dateString)
     }

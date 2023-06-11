@@ -78,6 +78,8 @@
               :style="{ minWidth: '150px' }"
               placeholder="请选择供电单位"
               allowClear
+              @change="orgNoSelected"
+              changeOnSelect
             />
           </a-form-item>
           <!-- 工单编号 -->
@@ -149,7 +151,17 @@ export default {
       this.form.resetFields()
       this.handleSubmit()
     },
-
+    // 管理单位选择
+    orgNoSelected(_, selectedOptions) {
+      const item = selectedOptions.pop()
+      if (item.children && item.children.length > 0) {
+        this.$nextTick(() => {
+          this.form.setFieldsValue({
+            orgNo: [item.value]
+          })
+        })
+      }
+    },
     onChange(date, dateString) {
       console.log(date, dateString)
     }

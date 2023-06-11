@@ -5,16 +5,16 @@
     </div>
     <Tables
       @changeSelectedRowKeys="changeSelectedRowKeys"
+      @tablePaginationChange="loadData"
       @clickRow="clickRows"
       :columns="columns"
       :data="data"
       xlsxName="主动抢修"
       :exportUrl="exportUrl"
+      :loading="loading"
       :ids="ids"
-    >
-      <!-- 			<template v-slot="slotProps">
-				<a-button @click.stop="operation(slotProps.table_key)">转派</a-button>
-			</template> -->
+      ref="table"
+      :copyTheQueryParams="copyTheQueryParams">
     </Tables>
     <!-- 弹窗 -->
     <NewModel
@@ -26,8 +26,7 @@
       :dictionary="dictionary"
       :progress="progress"
       :imgdata="imgdata"
-      name="activeRepair"
-    ></NewModel>
+      name="activeRepair"></NewModel>
   </div>
 </template>
 <script>
@@ -35,7 +34,7 @@ import Tables from '@/components/tables/Tables'
 import NewModel from '@/components/NewModel/active'
 import SearchForm from '@/components/searchform/SearchRepair'
 import { activeRepairList } from '@/components/NewModel/constant.js'
-import { getAction, postAction, repairsWorkOrder } from '../../../api/manage'
+import { getAction, postAction, repairsWorkOrder } from '@/api/manage'
 import moment from 'moment'
 // const columns = [{
 //   title: '工单编号',
@@ -144,15 +143,13 @@ const columns = [
   {
     title: '告警类型',
     dataIndex: 'faultType',
-    align: 'center',
-    width: 50
+    align: 'center'
   },
   {
     title: '工单状态',
     dataIndex: 'workOrderStatus',
     // ellipsis: true,
-    align: 'center',
-    width: 50
+    align: 'center'
   },
   {
     title: '线路名称',
@@ -215,8 +212,10 @@ export default {
       },
       clickRow: {},
       imgdata: [],
+      loading: false,
       exportUrl: 'repairsWorkOrder',
-      ids: 'workOrderNo'
+      ids: 'workOrderNo',
+      copyTheQueryParams: {}
     }
   },
   components: {
@@ -227,51 +226,42 @@ export default {
     NewModel
   },
   computed: {},
-  created() {
-    this.loadData()
-  },
   methods: {
     async loadData() {
-      const {
-        data: { records }
-      } = await postAction('repairsWorkOrder/selectAll')
-      records.map((item) => {
-        this.dealData(item)
+      this.loading = true
+      const res = await repairsWorkOrder({
+        ...this.copyTheQueryParams,
+        ...this.$refs.table.pageParamsReturn()
       })
-      // 张生要求，"采集你先把时间最近的放前面"
-      records.sort((a, b) => {
-        return (
-          moment(b.workOrderCtime).format('X') -
-          moment(a.workOrderCtime).format('X')
-        )
-      })
-      this.data = records
+      this.$refs.table.pagination.total = res.data.total || 0
+      if (res.data && res.data.records && res.data.records.length > 0) {
+        res.data.records.map((item) => {
+          this.dealData(item)
+        })
+      }
+      this.data = res.data.records
+      this.loading = false
     },
     changeSelectedRowKeys(e) {
       this.selectedRowKeys = e
     },
     async solveformData(e) {
-      let tempStatus = e.workOrderStatus
-      delete e.workOrderStatus
-      let {
-        data: { records }
-      } = await repairsWorkOrder(e)
-      // 张生要求，"采集你先把时间最近的放前面"
-      records.sort((a, b) => {
-        return (
-          moment(b.workOrderCtime).format('X') -
-          moment(a.workOrderCtime).format('X')
-        )
-      })
-      records.map((item) => {
-        this.dealData(item)
-      })
-      if (tempStatus && tempStatus.length > 0) {
-        records = records.filter((item) => {
-          return tempStatus.includes(item.workOrderStatus)
+      console.log('solveformData', e)
+      this.loading = true
+      this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
+      let res = await repairsWorkOrder({
+        ...this.copyTheQueryParams,
+        ...this.$refs.table.pageParamsReturn()
+      }).catch(() => { })
+      this.$refs.table.pagination.total = res.data.total || 0
+      if (res.data && res.data.records && res.data.records.length > 0) {
+        res.data.records.map((item) => {
+          this.dealData(item)
         })
       }
-      this.data = records
+
+      this.data = res.data.records
+      this.loading = false
     },
     async clickRows(e) {
       this.newModelData = e
@@ -409,6 +399,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+
   .form {
     // width: 100%;
     margin: 10px 0;
@@ -423,12 +414,12 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .ant-table-tbody > tr > td {
+/deep/ .ant-table-tbody>tr>td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/deep/ .ant-table-thead > tr > th {
+/deep/ .ant-table-thead>tr>th {
   padding-top: 10px;
   padding-bottom: 10px;
 }

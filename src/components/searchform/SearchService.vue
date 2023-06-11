@@ -98,14 +98,10 @@
               :style="{ minWidth: '150px' }"
               placeholder="请选择供电单位"
               allowClear
+              @change="orgNoSelected"
+              changeOnSelect
             />
           </a-form-item>
-          <!-- 开始时间 -->
-          <!-- <a-form-item>
-						<a-range-picker v-decorator="['synchro_time']" :style="{ width: '230px' }" @change="onChange"
-							allowClear />
-					</a-form-item> -->
-          <!-- 结束时间 -->
         </div>
       </div>
 
@@ -166,7 +162,17 @@ export default {
       this.form.resetFields()
       this.handleSubmit()
     },
-
+    // 管理单位选择
+    orgNoSelected(_, selectedOptions) {
+      const item = selectedOptions.pop()
+      if (item.children && item.children.length > 0) {
+        this.$nextTick(() => {
+          this.form.setFieldsValue({
+            orgNo: [item.value]
+          })
+        })
+      }
+    },
     onChange(date, dateString) {
       console.log(date, dateString)
     }
