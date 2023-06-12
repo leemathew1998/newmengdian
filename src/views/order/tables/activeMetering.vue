@@ -5,14 +5,18 @@
     </div>
     <Tables
       @changeSelectedRowKeys="changeSelectedRowKeys"
+      @tablePaginationChange="loadData"
       @clickRow="clickRows"
       :columns="columns"
       :data="data"
+      :loading="loading"
+      :scroll="1500"
+      ref="table"
       xlsxName="主动运维"
       :exportUrl="exportUrl"
       :ids="ids"
-    >
-    </Tables>
+      :copyTheQueryParams="copyTheQueryParams"
+    ></Tables>
     <!-- 弹窗 -->
     <NewModel
       :visible="NewModalVisible"
@@ -44,7 +48,7 @@ const columns = [{
   title: '工单编号',
   dataIndex: 'workOrderNo',
   align: 'center',
-  width: 100
+  width: 170
 },
 {
   title: '工单日期',
@@ -93,7 +97,7 @@ const columns = [{
   title: '异常时间',
   dataIndex: 'excpDate',
   align: 'center',
-  width: 100
+  width: 170
 },
 {
   title: '研判分析结果',
@@ -129,7 +133,9 @@ export default {
       },
       dictionary: [],
       exportUrl: 'activeOperation',
-      ids: 'workOrderNo'
+      ids: 'workOrderNo',
+      copyTheQueryParams: {},
+      loading: false
     }
   },
   components: {
@@ -137,11 +143,7 @@ export default {
     SearchForm,
     NewModel
   },
-  created () {
-    this.loadData()
-  },
   methods: {
-
     // 列表数据
     async loadData () {
       const { data } = await postAction('activeOperation/list1')
@@ -258,6 +260,8 @@ export default {
     },
     // 搜索
     solveformData (e) {
+      console.log('solveformData', e)
+      this.copyTheQueryParams = JSON.parse(JSON.stringify(e))
       activeOperation(e).then(res => {
         this.data = res
       })

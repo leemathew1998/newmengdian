@@ -39,7 +39,7 @@ const columns = [
     title: '计量点编号',
     dataIndex: 'mpNo',
     align: 'center',
-    width: 50
+    width: 100
   },
   {
     title: '计量点容量',
@@ -77,7 +77,7 @@ const columns = [
     title: '台区名称',
     dataIndex: 'tgName',
     align: 'center',
-    width: 70
+    width: 150
   }
 ]
 export default {

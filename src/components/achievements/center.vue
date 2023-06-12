@@ -4,7 +4,11 @@
       <span class="title">当日总积分：{{ allNumber }}分</span>
       <!-- <span class="ranking">日环比+3</span> -->
     </div>
-    <Tables class="center-table" :data="centerData" :tableLoading="tableLoading">
+    <Tables
+      class="center-table"
+      :data="centerData"
+      :tableLoading="tableLoading"
+    >
       <template v-slot="slotProps">
         <a-button
           style="display: flex; justify-content: center"
@@ -25,9 +29,12 @@ export default {
   methods: {
     // 查看右侧详情
     operations: function (payload) {
-      this.rightPageData.data = []
-			this.rightPageData.params = payload
-      this.rightPageData.name = payload.indexItems
+      if (payload.indexItems != this.rightPageData.name) {
+        this.rightPageData.data = []
+        this.rightPageData.params = payload
+        this.rightPageData.name = payload.indexItems
+      }
+
       if (!this.rightInitPage) {
         this.$emit('update:rightInitPage', true)
       }
@@ -90,24 +97,23 @@ export default {
       font-size: 10px;
     }
   }
-  .center-table{
+  .center-table {
     height: calc(100% - 40px);
-    /deep/.ant-spin-nested-loading{
+    /deep/.ant-spin-nested-loading {
       height: 100%;
       overflow-y: scroll;
-      .ant-table-content{
+      .ant-table-content {
         height: 100%;
-        .ant-table-placeholder{
+        .ant-table-placeholder {
           height: calc(100% - 43px);
         }
       }
-      .ant-spin-container{
+      .ant-spin-container {
         height: 100%;
       }
-      .ant-table{
+      .ant-table {
         height: 100%;
       }
-
     }
   }
 }

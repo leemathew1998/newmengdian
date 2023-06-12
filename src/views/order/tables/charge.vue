@@ -45,7 +45,7 @@ const columns = [
     dataIndex: 'workOrderNo',
     align: 'center',
     ellipsis: true,
-    width: 130
+    width: 170
   },
   {
     title: '工单生成时间',

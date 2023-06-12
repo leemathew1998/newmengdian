@@ -45,7 +45,7 @@ const columns = [
     dataIndex: 'appNo',
     align: 'center',
     ellipsis: true,
-    width: 150,
+    width: 170,
     scopedSlots: {
       customRender: 'appNo'
     }
@@ -104,7 +104,7 @@ const columns = [
     dataIndex: 'workOrderCtime',
     align: 'center',
     ellipsis: true,
-    width: 120
+    width: 170
   }
 ]
 

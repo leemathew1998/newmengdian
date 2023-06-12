@@ -78,7 +78,7 @@ const columns = [
     dataIndex: 'appNo',
     align: 'center',
     ellipsis: true,
-    width: 100
+    width: 170
   },
   {
     title: '工单电压等级',

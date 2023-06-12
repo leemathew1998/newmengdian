@@ -102,13 +102,15 @@ export default {
     // 验证字段
     this.$nextTick(() => {
       this.form.validateFields()
+      // this.handleSubmit()
     })
   },
   methods: {
     // 搜索传值
     handleSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
+      e && e.preventDefault()
+      this.form.validateFields((_, values) => {
+        values.mpId = values.mpId || ''
         this.$emit('formData', values)
         // this.$emit('input', values);
         // console.log(values,'asdd');
@@ -127,11 +129,7 @@ export default {
     // 重置为空
     handleReset(e) {
       this.form.resetFields()
-      e.preventDefault()
-
-      this.form.validateFields((err, values) => {
-        this.$emit('formData', values)
-      })
+      // this.handleSubmit()
     },
 
     onChange(date, dateString) {

@@ -45,7 +45,7 @@ const columns = [
     dataIndex: 'workOrderNo',
     align: 'center',
     ellipsis: true,
-    width: 130
+    width: 170
   },
   {
     title: '申请编号',
@@ -82,13 +82,13 @@ const columns = [
     align: 'center',
     width: 100
   },
-  {
-    title: '供电单位编号',
-    dataIndex: 'orgNo',
-    align: 'center',
-    ellipsis: true,
-    width: 160
-  },
+  // {
+  //   title: '供电单位编号',
+  //   dataIndex: 'orgNo',
+  //   align: 'center',
+  //   ellipsis: true,
+  //   width: 160
+  // },
   {
     title: '供电单位名称',
     dataIndex: 'orgName',
@@ -173,13 +173,13 @@ const columns = [
   //   ellipsis: true,
   //   width: 110
   // },
-  {
-    title: '工单创建时间',
-    dataIndex: 'workOrderCtime',
-    align: 'center',
-    ellipsis: true,
-    width: 170
-  },
+  // {
+  //   title: '工单创建时间',
+  //   dataIndex: 'workOrderCtime',
+  //   align: 'center',
+  //   ellipsis: true,
+  //   width: 170
+  // },
   {
     title: '工单状态',
     dataIndex: 'workOrderStatus',

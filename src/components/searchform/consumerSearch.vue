@@ -196,7 +196,7 @@ export default {
     // 验证字段
     this.$nextTick(() => {
       this.form.validateFields()
-      this.handleSubmit()
+      // this.handleSubmit()
     })
   },
   methods: {
@@ -212,11 +212,9 @@ export default {
     // 重置为空
     handleReset(e) {
       this.form.resetFields()
-      e.preventDefault()
 
-      this.form.validateFields((_, values) => {
-        this.$emit('formData', values)
-      })
+            // this.handleSubmit()
+            e.preventDefault()
     },
     // 管理单位选择
     orgNoSelected(_, selectedOptions) {

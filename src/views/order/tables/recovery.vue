@@ -48,7 +48,7 @@ const columns = [
     dataIndex: 'workOrderNo',
     // align: 'center',
     ellipsis: true,
-    width: 120
+    width: 170
   },
   {
     title: '台区经理',

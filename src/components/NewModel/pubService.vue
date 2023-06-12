@@ -276,7 +276,7 @@ export default {
   watch: {
     // 弹窗现场情况
     visible (nval, oval) {
-      immediate: true
+      // immediate: true
       this.modalVisible = nval
       // console.log(this.situation, 'asdd')
       if (this.name === '优质服务') {

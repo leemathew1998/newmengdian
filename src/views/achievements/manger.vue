@@ -188,7 +188,6 @@ export default {
           acId: '1'
         })
         console.warn('acId: 1', res)
-        this.rightPageData.data = []
         this.rightPageData.data.push(res || {})
       } else {
         let res = await getAcAll({
@@ -197,7 +196,6 @@ export default {
           acId: '2'
         })
         console.warn('acId: 2', res)
-        this.rightPageData.data = []
         this.rightPageData.data.push(res || {})
       }
     }

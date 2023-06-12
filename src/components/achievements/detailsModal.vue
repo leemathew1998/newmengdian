@@ -21,7 +21,7 @@
 import moment from 'moment'
 import { getAcManDetails1, getAcStaDetails1, getAcCouDetails1, getAcCityDetails1 } from '@/api/manage'
 const columns = [
-  { title: '工单编号', dataIndex: 'workOrderNo', width: 150 },
+  { title: '工单编号', dataIndex: 'workOrderNo', width: 170 },
   { title: '台区经理名称', dataIndex: 'tgManager', width: 150 },
   { title: '台区编号', dataIndex: 'tgId', width: 150 },
   { title: '台区名称', dataIndex: 'tgName', width: 150 },
@@ -31,7 +31,7 @@ const columns = [
   { title: '用户地址', dataIndex: 'elecAddr', width: 150 },
   { title: '用户电话', dataIndex: 'mobile', width: 150 },
   { title: '电能表资产号', dataIndex: 'meterAssetNo', width: 150 },
-  { title: '工单创建时间', dataIndex: 'workOrderCtime', width: 150 }
+  { title: '工单创建时间', dataIndex: 'workOrderCtime', width: 170 }
 ]
 const MAP_NAME_TO_FUNC = {
   '采集消缺及时率': ['', getAcManDetails1, getAcStaDetails1, getAcCouDetails1, getAcCityDetails1]

@@ -4,6 +4,7 @@
     <a-modal
       v-model="modalVisible"
       @cancel="handleCancel"
+      title="用户档案详情"
       :width="1100"
       :footer="null"
     >
@@ -57,51 +58,51 @@
 </template>
 <script>
 export default {
-  name: "NewModel",
+  name: 'NewModel',
   props: {
     visible: {
       type: Boolean,
-      required: true,
+      required: true
     },
     ccontactData: {
       type: Array,
-      required: true,
+      required: true
     },
     cinformationData: {
       type: Array,
-      required: true,
+      required: true
     },
     electricityPriceData: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
 
   data() {
     return {
       modalVisible: false,
-      activeKey: ["1"],
-    };
+      activeKey: ['1']
+    }
   },
   watch: {
     // 弹窗现场情况
     async visible(val, valOld) {
-      this.modalVisible = val;
+      this.modalVisible = val
       // console.log(this.situation,'asdd')
-    },
+    }
   },
   methods: {
     // 点击
     handleOk(e) {
-      this.modalVisible = false;
+      this.modalVisible = false
     },
     // 点击取消
     handleCancel() {
-      this.modalVisible = !this.modalVisible;
-      this.$emit("changeModal", false);
-    },
-  },
-};
+      this.modalVisible = !this.modalVisible
+      this.$emit('changeModal', false)
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .top {

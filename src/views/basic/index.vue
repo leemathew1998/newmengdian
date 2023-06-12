@@ -25,7 +25,7 @@
           ref="hourly"
         >
           <div class="topColor"></div>
-          <div class="mainTitle">频繁用电</div>
+          <div class="mainTitle">频繁停电</div>
         </th>
         <th
           class="table_th consumer"

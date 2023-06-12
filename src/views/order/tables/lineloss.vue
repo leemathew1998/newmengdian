@@ -44,37 +44,43 @@ const columns = [
     title: '工单编号',
     dataIndex: 'workOrderNo',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   },
   {
     title: '台区编号',
     dataIndex: 'tgId',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   },
   {
     title: '台区名称',
     dataIndex: 'tgName',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   },
   {
     title: '台区经理',
     dataIndex: 'tgManager',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   },
   {
     title: '台区容量',
-    dataIndex: 'tgSpq',
+    dataIndex: 'tgCap',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   },
   {
     title: '线损率',
     dataIndex: 'linelossRate',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   },
   // {
   //   title: '事件类型',
@@ -86,25 +92,29 @@ const columns = [
     title: '工单周期',
     dataIndex: 'workOrderCycle',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   },
   {
     title: '工单状态',
     dataIndex: 'workOrderStatus',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   },
-    {
+  {
     title: '损耗电量',
     dataIndex: 'lossPq',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   },
   {
     title: '工单时间',
     dataIndex: 'workOrderCtime',
     ellipsis: true,
-    align: 'center'
+    align: 'center',
+    width: 170
   }
 ]
 export default {
@@ -146,7 +156,9 @@ export default {
         if (this.data[i].workOrderCycle == 0) {
           this.data[i].workOrderCycle = `当日工单`
         } else {
-          this.data[i].workOrderCycle = `连续${this.data[i].workOrderCycle}天工单`
+          this.data[
+            i
+          ].workOrderCycle = `连续${this.data[i].workOrderCycle}天工单`
         }
 
         if (this.data[i].workOrderStatus == '1') {
@@ -246,7 +258,9 @@ export default {
         if (this.data[i].workOrderCycle == 0) {
           this.data[i].workOrderCycle = `当日工单`
         } else {
-          this.data[i].workOrderCycle = `连续${this.data[i].workOrderCycle}天工单`
+          this.data[
+            i
+          ].workOrderCycle = `连续${this.data[i].workOrderCycle}天工单`
         }
         if (this.data[i].workOrderStatus == '1') {
           this.data[i].workOrderStatus = '待处理'

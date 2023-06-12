@@ -49,8 +49,8 @@ const columns = [
     title: '工单编号',
     dataIndex: 'workOrderNo',
     align: 'center',
-    ellipsis: true,
-    width: 130
+    ellipsis: false,
+    width: 170
   },
   {
     title: '电能表资产号',
@@ -71,7 +71,7 @@ const columns = [
     dataIndex: 'tgManager',
     ellipsis: true,
     align: 'center',
-    width: 70
+    width: 100
   },
   {
     title: '用户名称',
@@ -120,7 +120,7 @@ const columns = [
     dataIndex: 'workOrderCtime',
     align: 'center',
     ellipsis: true,
-    width: 110
+    width: 150
   }
 ]
 export default {

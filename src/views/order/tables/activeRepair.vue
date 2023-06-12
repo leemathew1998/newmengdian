@@ -114,7 +114,7 @@ const columns = [
     title: '工单编号',
     dataIndex: 'workNo',
     align: 'center',
-    width: 150
+    width: 170
   },
   {
     title: '市供电单位',
@@ -184,7 +184,7 @@ const columns = [
     dataIndex: 'faultTime',
     // ellipsis: true,
     align: 'center',
-    width: 100
+    width: 170
   }
 ]
 export default {
@@ -255,7 +255,7 @@ export default {
       }).catch(() => { })
       this.$refs.table.pagination.total = res.data.total || 0
       if (res.data && res.data.records && res.data.records.length > 0) {
-        res.data.records.map((item) => {
+        res.data.records.forEach((item) => {
           this.dealData(item)
         })
       }

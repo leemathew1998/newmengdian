@@ -46,22 +46,22 @@ const columns = [
     dataIndex: 'workOrderNo',
     align: 'center',
     ellipsis: true,
-    width: 130
+    width: 170
   },
-  {
-    title: '申请编号',
-    dataIndex: 'appNo',
-    align: 'center',
-    ellipsis: true,
-    width: 130
-  },
-  {
-    title: '新换装标识',
-    dataIndex: 'newReplaceId',
-    align: 'center',
-    ellipsis: true,
-    width: 150
-  },
+  // {
+  //   title: '申请编号',
+  //   dataIndex: 'appNo',
+  //   align: 'center',
+  //   ellipsis: true,
+  //   width: 130
+  // },
+  // {
+  //   title: '新换装标识',
+  //   dataIndex: 'newReplaceId',
+  //   align: 'center',
+  //   ellipsis: true,
+  //   width: 150
+  // },
   {
     title: '用户名称',
     dataIndex: 'consName',
@@ -91,8 +91,8 @@ const columns = [
     width: 120
   },
   {
-    title: '供电单位编号',
-    dataIndex: 'orgNo',
+    title: '原工单归档时间',
+    dataIndex: '-',
     align: 'center',
     ellipsis: true,
     width: 120
@@ -116,7 +116,7 @@ const columns = [
     dataIndex: 'workOrderCtime',
     align: 'center',
     ellipsis: true,
-    width: 180
+    width: 170
   }
 ]
 export default {
